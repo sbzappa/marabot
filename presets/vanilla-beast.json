@@ -1,0 +1,17 @@
+{
+  "name": "Vanilla Mana Beast",
+  "version": "1.21",
+  "options": [
+    {
+      "opManaBeastScale": "vanilla",
+      "mode": "open",
+      "opStatGrowth": "boss",
+      "opExp": "triple",
+      "opCharacters": "findbothCL",
+      "opLogic": "restrictive",
+      "opStartChar": "random"
+    }
+  ],
+  "author": "Menblock",
+  "description": "Open mode - Mana Beast is buff" 
+}

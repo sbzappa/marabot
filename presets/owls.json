@@ -1,0 +1,23 @@
+{
+  "name": "Oops! All owls!",
+  "version": "1.21",
+  "options": [
+    {
+      "opComplexity": "hard",
+      "oopsAllThis": "49",
+      "opNumSeeds": "random",
+      "opMinSeeds": "5",
+      "opMaxSeeds": "7",
+      "mode": "open",
+      "opDifficulty": "kindahard",
+      "opCharacters": "find1L1",
+      "opStatusAilments": "annoying",
+      "opGoal": "mtr",
+      "opEnemies": "oops",
+      "opLogic": "restrictive",
+      "opStartChar": "random"
+    }
+  ],
+  "author": "Cyb3R",
+  "description": "Open mode - owls everywhere!"
+}

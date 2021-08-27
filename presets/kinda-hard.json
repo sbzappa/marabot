@@ -1,0 +1,20 @@
+{
+  "name": "Kinda hard",
+  "version": "1.21",
+  "options": [
+    {
+      "mode": "open",
+      "opDifficulty": "kindahard",
+      "opCharacters": "findbothCL",
+      "opStatusAilments": "annoying",
+      "opGoal": "mtr",
+      "opEnemies": "random",
+      "opBosses": "swap",
+      "opLogic": "restrictive",
+      "opStartChar": "random",
+      "opMusic": "no"
+    }
+  ],
+  "author": "CrashTestGenius",
+  "description": "Open mode - Kinda hard"
+}

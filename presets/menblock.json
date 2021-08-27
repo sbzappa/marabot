@@ -1,0 +1,21 @@
+{
+  "name": "Menblock's Insanity %",
+  "version": "1.21",
+  "options": [
+    {
+      "aggBosses": "yes",
+      "confusionFix": "no",
+      "moreItems": "no",
+      "ohko": "yes",
+      "opManaBeastScale": "vanilla",
+      "opGPEleRando": "no",
+      "mode": "open",
+      "opDifficulty": "hard",
+      "opGoal": "vlong",
+      "opEnemies": "oops",
+      "opLogic": "restrictive"
+    }
+  ],
+  "author": "Moppleton",
+  "description": "Open mode - Just how Menblock likes it"
+}
