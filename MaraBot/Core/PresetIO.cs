@@ -40,14 +40,21 @@ namespace MaraBot.Core
     {
         static readonly string[] k_PresetFolders = new []
         {
-            "../../../presets",
+            "$HOME/marabot/presets",
             "presets",
-            "$HOME/marabot/presets"
+            "../../../presets"
         };
         
         public static Dictionary<string, Preset> LoadPresets()
         {
+            var homeFolder =
+                (Environment.OSVersion.Platform == PlatformID.Unix ||
+                 Environment.OSVersion.Platform == PlatformID.MacOSX)
+                    ? Environment.GetEnvironmentVariable("HOME")
+                    : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+            
             var presetFolder = k_PresetFolders
+                .Select(path => path.Replace("$HOME", homeFolder))
                 .FirstOrDefault(path => Directory.Exists(path));
 
             if (String.IsNullOrEmpty(presetFolder))
