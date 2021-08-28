@@ -13,7 +13,8 @@ namespace MaraBot.Core
         {
             "$HOME/marabot/config",
             "config",
-            "../../../config"
+            "../../../config",
+            "../../../../config"
         };
         
         public static Config LoadConfig()
