@@ -1,5 +1,5 @@
 {
-  "name": "Oops! All owls!",
+  "name": "Oops! All ~~owls~~ metal crawlers!",
   "version": "1.21",
   "options": [
     {
@@ -19,5 +19,5 @@
     }
   ],
   "author": "Cyb3R",
-  "description": "Open mode - owls everywhere!"
+  "description": "They crawl everywhere!"
 }

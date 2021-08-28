@@ -1,5 +1,5 @@
 {
-  "name": "Menblock's Insanity %",
+  "name": "Insanity%",
   "version": "1.21",
   "options": [
     {
@@ -16,6 +16,6 @@
       "opLogic": "restrictive"
     }
   ],
-  "author": "Moppleton",
-  "description": "Open mode - Just how Menblock likes it"
+  "author": "Menblock",
+  "description": ":owl:"
 }

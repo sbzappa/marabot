@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.IO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
@@ -19,7 +21,12 @@ namespace MaraBot
         {
             var config = ConfigIO.LoadConfig();
             var presets = PresetIO.LoadPresets();
-            
+			using (StreamReader r = new StreamReader("config/options.json"))
+			{
+				var json = r.ReadToEnd();
+				Option.Options = JsonConvert.DeserializeObject<Dictionary<string, Option>>(json);
+			}
+
             var discord = new DiscordShardedClient(new DiscordConfiguration()
             {
                 Token = config.Token,

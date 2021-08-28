@@ -37,8 +37,8 @@ namespace MaraBot.Messages
             
             embed
                 .AddField(preset.Name, preset.Description)
-                .AddField("Seed", seed)
                 .AddOptionsToEmbed(preset)
+                .AddField("Seed", Formatter.BlockCode(seed))
                 .AddField("Raw Options", Formatter.BlockCode(rawOptionsString));
             
             var mainBuilder = new DiscordMessageBuilder()
@@ -61,7 +61,7 @@ namespace MaraBot.Messages
             
             foreach (var preset in presets)
             {
-                presetKeys += $"**{preset.Key}**:\n";
+                presetKeys += $"**{preset.Key}**\n";
                 presetNames += $"{preset.Value.Name}\n";
                 presetDescriptions += $"{preset.Value.Description}\n"; 
             }
@@ -85,15 +85,17 @@ namespace MaraBot.Messages
             embed
                 .AddField("Name", preset.Name)
                 .AddField("Description", preset.Description)
+                .AddField("Version", preset.Version)
+                .AddField("Author", preset.Author)
                 .AddOptionsToEmbed(preset);
             
             await ctx.RespondAsync(embed); 
         }
 
-        private static DiscordEmbedBuilder AddOptionsToEmbed(this DiscordEmbedBuilder embed, Preset preset)
-        {
-            int numberOfColumns = Math.Min((int)Math.Ceiling(preset.Options.Count / (float) kMinNumberOfElementsPerColumn), kMaxNumberOfColumns);
-            int numberOfElementsPerColumn = (int)Math.Ceiling(preset.Options.Count / (float) numberOfColumns);
+		private static DiscordEmbedBuilder AddOptionDictionaryToEmbed(this DiscordEmbedBuilder embed, string title, Dictionary<string, string> options)
+		{
+            int numberOfColumns = Math.Min((int)Math.Ceiling(options.Count / (float) kMinNumberOfElementsPerColumn), kMaxNumberOfColumns);
+            int numberOfElementsPerColumn = (int)Math.Ceiling(options.Count / (float) numberOfColumns);
             
             var optionStrings = new string[numberOfColumns];
             for (int i = 0; i < numberOfColumns; ++i)
@@ -101,9 +103,9 @@ namespace MaraBot.Messages
             
             int index = 0;
             int columnIndex = 0;
-            foreach (var option in preset.Options)
+            foreach (var option in options)
             {
-                optionStrings[columnIndex] += $"**{option.Key}**: {option.Value}";
+                optionStrings[columnIndex] += $"{option.Key}: _{option.Value}_";
 
                 if ((++index % numberOfElementsPerColumn == 0))
                 {
@@ -115,11 +117,41 @@ namespace MaraBot.Messages
                 }
             }
 
-            embed.AddField("Options", optionStrings[0], true);
+			embed.AddField(title, optionStrings[0], optionStrings.Length > 1);
             for (int i = 1; i < optionStrings.Length; ++i)
-            {
                 embed.AddField("\u200B", optionStrings[i], true);
-            }
+
+			return embed;
+		}
+
+        private static DiscordEmbedBuilder AddOptionsToEmbed(this DiscordEmbedBuilder embed, Preset preset)
+        {
+			Dictionary<string, string> generalOptions = new Dictionary<string, string>();
+			Dictionary<string, string> modeOptions = new Dictionary<string, string>();
+			Dictionary<string, string> otherOptions = new Dictionary<string, string>();
+
+			Mode mode = Option.StringToMode(preset.Options["mode"]);
+			var options = preset.MakeDisplayable();
+
+			foreach(var option in options)
+			{
+				if(option.Item1 == Mode.Mode)
+					continue;
+				if(option.Item1 == mode)
+					modeOptions.Add(option.Item2, option.Item3);
+				else if(option.Item1 == Mode.General)
+					generalOptions.Add(option.Item2, option.Item3);
+				else
+					otherOptions.Add(option.Item2, option.Item3);
+			}
+
+            embed.AddField(Option.ModeToString(Mode.Mode), Option.ModeToString(mode));
+			if(generalOptions.Count > 0)
+				embed.AddOptionDictionaryToEmbed($"{Option.ModeToString(Mode.General)} Options", generalOptions);
+			if(modeOptions.Count > 0)
+				embed.AddOptionDictionaryToEmbed($"{Option.ModeToString(mode)} Options", modeOptions);
+			if(otherOptions.Count > 0)
+				embed.AddOptionDictionaryToEmbed($"{Option.ModeToString(Mode.Other)} Options", otherOptions);
 
             return embed;
         }
