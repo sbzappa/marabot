@@ -54,6 +54,10 @@ namespace MaraBot.Core
 		 */
 		public string ValidateOptions()
 		{
+			return ValidateOptions(Options);
+		}
+		public static string ValidateOptions(Dictionary<string, string> Options)
+		{
 			/*
 			 * Mode
 			 */

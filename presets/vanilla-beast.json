@@ -1,6 +1,8 @@
 {
   "name": "Vanilla Mana Beast",
+  "description": "Mana Beast is buff",
   "version": "1.21",
+  "author": "Menblock",
   "options": [
     {
       "opManaBeastScale": "vanilla",
@@ -11,7 +13,5 @@
       "opLogic": "restrictive",
       "opStartChar": "random"
     }
-  ],
-  "author": "Menblock",
-  "description": "Mana Beast is buff" 
+  ]
 }

@@ -48,6 +48,7 @@ namespace MaraBot
             commands.RegisterCommands<Commands.PresetsCommandModule>();
             commands.RegisterCommands<Commands.PresetCommandModule>();
             commands.RegisterCommands<Commands.RaceCommandModule>();
+            commands.RegisterCommands<Commands.CreatePresetCommandModule>();
             
             await discord.StartAsync();
             await Task.Delay(-1);
