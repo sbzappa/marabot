@@ -10,5 +10,6 @@ namespace MaraBot.Core
         [JsonConverter(typeof(OptionsConverter))] public Dictionary<string, string> Options;
         public string Author;
         public string Description;
+        public int Weight;
     }
 }

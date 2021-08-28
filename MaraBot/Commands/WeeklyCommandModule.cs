@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
@@ -7,24 +8,42 @@ using DSharpPlus.Entities;
 namespace MaraBot.Commands
 {
     using Core;
+    using Messages;
     
     public class WeeklyCommandModule : BaseCommandModule
     {
-        public IWeeklyConfig Config { private get; set; }
-        
-        private const string k_ValidCommandEmoji = ":white_check_mark:";
-        private const string k_InvalidCommandEmoji = ":no_entry_sign:"; 
+        public Weekly Weekly { private get; set; }
+        public IReadOnlyDictionary<string, Preset> Presets { private get; set; }
         
         [Command("weekly")]
         [Cooldown(2, 900, CooldownBucketType.Channel)]
         [RequireGuild]
         public async Task Execute(CommandContext ctx)
         {
-            // TODO...
-            // 1. Randomly select a preset among list of weekly presets and generate a race.
-            // 2. In a more advanced state, write weekly seed to server log and repost the same
-            // race for the current week.
-            throw new NotImplementedException();
+            var weekNumber = RandomUtils.GetWeekNumber();
+
+            // Generate a new weekly seed
+            if (Weekly.WeekNumber != weekNumber)
+            {
+                Weekly = Weekly.Generate(Presets);
+                WeeklyIO.StoreWeekly(Weekly);
+            }
+
+            if (!Presets.ContainsKey(Weekly.PresetName))
+            {
+                await ctx.RespondAsync($"{Weekly.PresetName} is not a a valid preset");
+                
+                var invalidEmoji = DiscordEmoji.FromName(ctx.Client, Display.kInvalidCommandEmoji);
+                await ctx.Message.CreateReactionAsync(invalidEmoji);
+                
+                return; 
+            }
+            
+            var preset = Presets[Weekly.PresetName];
+            await Display.Race(ctx, preset, Weekly.Seed);
+                        
+            var successEmoji = DiscordEmoji.FromName(ctx.Client, Display.kValidCommandEmoji);
+            await ctx.Message.CreateReactionAsync(successEmoji);
         }
     }
 }

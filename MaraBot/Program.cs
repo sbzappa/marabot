@@ -19,6 +19,7 @@ namespace MaraBot
         {
             var config = ConfigIO.LoadConfig();
             var presets = PresetIO.LoadPresets();
+            var weekly = WeeklyIO.LoadWeekly();
             
             var discord = new DiscordShardedClient(new DiscordConfiguration()
             {
@@ -28,19 +29,20 @@ namespace MaraBot
             });
            
             var services = new ServiceCollection()
-                .AddSingleton<IWeeklyConfig>(_ => config)
                 .AddSingleton<IReadOnlyDictionary<string, Preset>>(_ => presets)
+                .AddSingleton(weekly)
                 .BuildServiceProvider();
             
             var commands = await discord.UseCommandsNextAsync(new CommandsNextConfiguration()
             {
-                StringPrefixes = new[] { "!" },
+                StringPrefixes = new[] { config.Prefix },
                 Services = services
             });
 
             commands.RegisterCommands<Commands.PresetsCommandModule>();
             commands.RegisterCommands<Commands.PresetCommandModule>();
             commands.RegisterCommands<Commands.RaceCommandModule>();
+            commands.RegisterCommands<Commands.WeeklyCommandModule>();
             
             await discord.StartAsync();
             await Task.Delay(-1);
