@@ -42,7 +42,8 @@ namespace MaraBot.Core
         {
             "$HOME/marabot/presets",
             "presets",
-            "../../../presets"
+            "../../../presets",
+            "../../../../presets"
         };
         
         public static Dictionary<string, Preset> LoadPresets()
