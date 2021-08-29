@@ -20,12 +20,8 @@ namespace MaraBot
         static async Task MainAsync()
         {
             var config = ConfigIO.LoadConfig();
-            var presets = PresetIO.LoadPresets();
-			using (StreamReader r = new StreamReader("config/options.json"))
-			{
-				var json = r.ReadToEnd();
-				Option.Options = JsonConvert.DeserializeObject<Dictionary<string, Option>>(json);
-			}
+            var options = OptionIO.LoadConfig();
+            var presets = PresetIO.LoadPresets(options);
 
             var discord = new DiscordShardedClient(new DiscordConfiguration()
             {

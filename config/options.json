@@ -1,853 +1,853 @@
 {
-	"mode": {
-		"name": "Game Mode",
-		"mode": "Mode",
-		"values": {
-			"rando"      : "Rando"       ,
-			"open"       : "Open World"  ,
-			"ancientcave": "Ancient Cave",
-			"bossrush"   : "Boss Rush"   ,
-			"chaos"      : "Chaos"
-		}
-	},
+  "mode": {
+    "name": "Game Mode",
+    "mode": "Mode",
+    "values": {
+      "rando"      : "Rando"       ,
+      "open"       : "Open World"  ,
+      "ancientcave": "Ancient Cave",
+      "bossrush"   : "Boss Rush"   ,
+      "chaos"      : "Chaos"
+    }
+  },
 
 
 
-	"aggBosses": {
-		"name": "Aggressive bosses",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"aggEnemies": {
-		"name": "Aggressive enemies",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"ovrchrgFix": {
-		"name": "Overcharge fix",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"funSpeedup": {
-		"name": "Speedup improvements",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"longStatus": {
-		"name": "Status length increase",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"magicRebalance": {
-		"name": "Magic rebalance",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"mpAtLevel": {
-		"name": "MP Restore at level up",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"noBsVampires": {
-		"name": "Hittable Vampires",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"noGigasSplit": {
-		"name": "Gigases don't split",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"orbFix": {
-		"name": "Orb reward fix",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"bossDeathFix": {
-		"name": "Boss death fix",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"speciesDamage": {
-		"name": "Enemy species damage",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"elemDamage": {
-		"name": "Elemental melee damage",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"accuratePercent": {
-		"name": "Accurate damage percentages",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"whipFix": {
-		"name": "Whip coordinate corruption fix",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"offscreenTarget": {
-		"name": "Extended targetting",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"manaMagicFix": {
-		"name": "Mana Magic change",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"noSummonDespawn": {
-		"name": "Summoning Despawn Fix",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"confusionFix": {
-		"name": "Confusion Fix",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"hittableBeaks": {
-		"name": "Beak Shield Disable",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"percentPoison": {
-		"name": "Percentage Damage Poison",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"defRefactor": {
-		"name": "Defense Refactor",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"moreItems": {
-		"name": "7 items max",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"statusGlow": {
-		"name": "Status glow",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"leavePlayersBehind": {
-		"name": "Alow leaving characters behind",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"fasterMagicLevel": {
-		"name": "Faster magic levels",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"fasterWeaponLevel": {
-		"name": "Faster weapon levels",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"fasterChests": {
-		"name": "Faster chest opening",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"fasterMessages": {
-		"name": "Faster messages",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"starterGear": {
-		"name": "Starter gear",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"noStaminaRun": {
-		"name": "No stamina cost to run",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"buyMultiple": {
-		"name": "Buy multiple consumables",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"adjustEnemyPos": {
-		"name": "Enemy position adjustment",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"seReduction": {
-		"name": "Sound effects reduction",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"rainbowRabites": {
-		"name": "Random Rabite colors",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"fastTransition": {
-		"name": "Fast transitions",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"mode7Fix": {
-		"name": "Mode 7 edges fix",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"mechRiderDeathFix": {
-		"name": "Mech rider death fix",
-		"mode": "General",
-		"values": {
-			"no": "No"
-		}
-	},
-	"obscureDamage": {
-		"name": "Obscure damage",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"obscureHP": {
-		"name": "Obscure own HP",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"obscureGold": {
-		"name": "Obscure own gold",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"characterColors": {
-		"name": "Character colors",
-		"mode": "General",
-		"values": {
-			"none"  : "No change",
-			"custom": "Custom (Specify...)"
-		}
-	},
-	"ohko": {
-		"name": "One-hit KO",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"noclip": {
-		"name": "Walk through walls",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"attacksForever": {
-		"name": "Attacks don't cost stamina",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"deathByPoison": {
-		"name": "Poisoned players",
-		"mode": "General",
-		"values": {
-			"yes": "Yes"
-		}
-	},
+  "aggBosses": {
+    "name": "Aggressive bosses",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "aggEnemies": {
+    "name": "Aggressive enemies",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "ovrchrgFix": {
+    "name": "Overcharge fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "funSpeedup": {
+    "name": "Speedup improvements",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "longStatus": {
+    "name": "Status length increase",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "magicRebalance": {
+    "name": "Magic rebalance",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "mpAtLevel": {
+    "name": "MP Restore at level up",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "noBsVampires": {
+    "name": "Hittable Vampires",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "noGigasSplit": {
+    "name": "Gigases don't split",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "orbFix": {
+    "name": "Orb reward fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "bossDeathFix": {
+    "name": "Boss death fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "speciesDamage": {
+    "name": "Enemy species damage",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "elemDamage": {
+    "name": "Elemental melee damage",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "accuratePercent": {
+    "name": "Accurate damage percentages",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "whipFix": {
+    "name": "Whip coordinate corruption fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "offscreenTarget": {
+    "name": "Extended targetting",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "manaMagicFix": {
+    "name": "Mana Magic change",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "noSummonDespawn": {
+    "name": "Summoning Despawn Fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "confusionFix": {
+    "name": "Confusion Fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "hittableBeaks": {
+    "name": "Beak Shield Disable",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "percentPoison": {
+    "name": "Percentage Damage Poison",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "defRefactor": {
+    "name": "Defense Refactor",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "moreItems": {
+    "name": "7 items max",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "statusGlow": {
+    "name": "Status glow",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "leavePlayersBehind": {
+    "name": "Alow leaving characters behind",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "fasterMagicLevel": {
+    "name": "Faster magic levels",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "fasterWeaponLevel": {
+    "name": "Faster weapon levels",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "fasterChests": {
+    "name": "Faster chest opening",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "fasterMessages": {
+    "name": "Faster messages",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "starterGear": {
+    "name": "Starter gear",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "noStaminaRun": {
+    "name": "No stamina cost to run",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "buyMultiple": {
+    "name": "Buy multiple consumables",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "adjustEnemyPos": {
+    "name": "Enemy position adjustment",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "seReduction": {
+    "name": "Sound effects reduction",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "rainbowRabites": {
+    "name": "Random Rabite colors",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "fastTransition": {
+    "name": "Fast transitions",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "mode7Fix": {
+    "name": "Mode 7 edges fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "mechRiderDeathFix": {
+    "name": "Mech rider death fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "obscureDamage": {
+    "name": "Obscure damage",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "obscureHP": {
+    "name": "Obscure own HP",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "obscureGold": {
+    "name": "Obscure own gold",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "characterColors": {
+    "name": "Character colors",
+    "mode": "General",
+    "values": {
+      "none"  : "No change",
+      "custom": "Custom (Specify...)"
+    }
+  },
+  "ohko": {
+    "name": "One-hit KO",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "noclip": {
+    "name": "Walk through walls",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "attacksForever": {
+    "name": "Attacks don't cost stamina",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "deathByPoison": {
+    "name": "Poisoned players",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
 
 
 
-	"rBosses": {
-		"name": "Randomize bosses",
-		"mode": "Rando",
-		"values": {
-			"no": "No"
-		}
-	},
-	"rEnemies": {
-		"name": "Randomize non-boss enemies",
-		"mode": "Rando",
-		"values": {
-			"no": "No"
-		}
-	},
-	"rOrbs": {
-		"name": "Randomize weapon orbs",
-		"mode": "Rando",
-		"values": {
-			"no": "No"
-		}
-	},
-	"rElements": {
-		"name": "Randomize elements",
-		"mode": "Rando",
-		"values": {
-			"no": "No"
-		}
-	},
-	"rWeapons": {
-		"name": "Randomize weapons",
-		"mode": "Rando",
-		"values": {
-			"no": "No"
-		}
-	},
-	"rMusic": {
-		"name": "Randomize music",
-		"mode": "Rando",
-		"values": {
-			"no": "No"
-		}
-	},
-	"rDialogue": {
-		"name": "Shorter dialogue",
-		"mode": "Rando",
-		"values": {
-			"no": "No"
-		}
-	},
-	"rAutosave": {
-		"name": "Autosave",
-		"mode": "Rando",
-		"values": {
-			"no": "No"
-		}
-	},
-	"rPreserve": {
-		"name": "Preserve early bosses",
-		"mode": "Rando",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"rExp": {
-		"name": "Experience",
-		"mode": "Rando",
-		"values": {
-			"half"  : "Half",
-			"normal": "Normal",
-			"triple": "Triple"
-		}
-	},
-	"rGold": {
-		"name": "Gold",
-		"mode": "Rando",
-		"values": {
-			"half"  : "Half",
-			"normal": "Normal",
-			"triple": "Triple"
-		}
-	},
-	"rStatusAilments": {
-		"name": "Status ailments",
-		"mode": "Rando",
-		"values": {
-			"type"    : "Enemy type",
-			"easy"    : "Random (easy)",
-			"annoying": "Random (annoying)",
-			"awful"   : "Random (awful)"
-		}
-	},
-	"rHoliday": {
-		"name": "Special mode",
-		"mode": "Rando",
-		"values": {
-			"halloween": "Halloween",
-			"xmas"     : "Christmas"
-		}
-	},
-	"rDifficulty": {
-		"name": "Enemy difficulty",
-		"mode": "Rando",
-		"values": {
-			"20" : "Easiest [20%]",
-			"40" : "Easier [40%]",
-			"60" : "Easier [60%]",
-			"80" : "Easier [80%]",
-			"125": "Harder [125%]",
-			"150": "Harder [150%]",
-			"175": "Harder [175%]",
-			"200": "Hardest [200%]"
-		}
-	},
+  "rBosses": {
+    "name": "Randomize bosses",
+    "mode": "Rando",
+    "values": {
+      "no": "No"
+    }
+  },
+  "rEnemies": {
+    "name": "Randomize non-boss enemies",
+    "mode": "Rando",
+    "values": {
+      "no": "No"
+    }
+  },
+  "rOrbs": {
+    "name": "Randomize weapon orbs",
+    "mode": "Rando",
+    "values": {
+      "no": "No"
+    }
+  },
+  "rElements": {
+    "name": "Randomize elements",
+    "mode": "Rando",
+    "values": {
+      "no": "No"
+    }
+  },
+  "rWeapons": {
+    "name": "Randomize weapons",
+    "mode": "Rando",
+    "values": {
+      "no": "No"
+    }
+  },
+  "rMusic": {
+    "name": "Randomize music",
+    "mode": "Rando",
+    "values": {
+      "no": "No"
+    }
+  },
+  "rDialogue": {
+    "name": "Shorter dialogue",
+    "mode": "Rando",
+    "values": {
+      "no": "No"
+    }
+  },
+  "rAutosave": {
+    "name": "Autosave",
+    "mode": "Rando",
+    "values": {
+      "no": "No"
+    }
+  },
+  "rPreserve": {
+    "name": "Preserve early bosses",
+    "mode": "Rando",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "rExp": {
+    "name": "Experience",
+    "mode": "Rando",
+    "values": {
+      "half"  : "Half",
+      "normal": "Normal",
+      "triple": "Triple"
+    }
+  },
+  "rGold": {
+    "name": "Gold",
+    "mode": "Rando",
+    "values": {
+      "half"  : "Half",
+      "normal": "Normal",
+      "triple": "Triple"
+    }
+  },
+  "rStatusAilments": {
+    "name": "Status ailments",
+    "mode": "Rando",
+    "values": {
+      "type"    : "Enemy type",
+      "easy"    : "Random (easy)",
+      "annoying": "Random (annoying)",
+      "awful"   : "Random (awful)"
+    }
+  },
+  "rHoliday": {
+    "name": "Special mode",
+    "mode": "Rando",
+    "values": {
+      "halloween": "Halloween",
+      "xmas"     : "Christmas"
+    }
+  },
+  "rDifficulty": {
+    "name": "Enemy difficulty",
+    "mode": "Rando",
+    "values": {
+      "20" : "Easiest [20%]",
+      "40" : "Easier [40%]",
+      "60" : "Easier [60%]",
+      "80" : "Easier [80%]",
+      "125": "Harder [125%]",
+      "150": "Harder [150%]",
+      "175": "Harder [175%]",
+      "200": "Hardest [200%]"
+    }
+  },
 
 
 
-	"opWeapons": {
-		"name": "Randomize weapons",
-		"mode": "Open",
-		"values": {
-			"no": "No"
-		}
-	},
-	"opMusic": {
-		"name": "Randomize music",
-		"mode": "Open",
-		"values": {
-			"no": "No"
-		}
-	},
-	"opShop": {
-		"name": "Randomize shops",
-		"mode": "Open",
-		"values": {
-			"no": "No"
-		}
-	},
-	"opMapColors": {
-		"name": "Randomize map colors",
-		"mode": "Open",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"opStartChar": {
-		"name": "Start char",
-		"mode": "Open",
-		"values": {
-			"random": "Random",
-			"girl"  : "Girl",
-			"sprite": "Sprite"
-		}
-	},
-	"opBosses": {
-		"name": "Bosses",
-		"mode": "Open",
-		"values": {
-			"vanilla": "Vanilla",
-			"swap"   : "Swap"
-		}
-	},
-	"opEnemies": {
-		"name": "Enemies",
-		"mode": "Open",
-		"values": {
-			"vanilla": "Vanilla",
-			"random" : "Random spawns",
-			"oops"   : "Oops! All owls",
-			"none"   : "None"
-		}
-	},
-	"opGoal": {
-		"name": "Goal",
-		"mode": "Open",
-		"values": {
-			"vlong": "Vanilla long",
-			"mtr": "Mana tree revival",
-			"gift": "Gift exchange",
-			"reindeer": "Reindeer search"
-		}
-	},
-	"opLogic": {
-		"name": "Logic",
-		"mode": "Open",
-		"values": {
-			"restrictive": "Restrictive"
-		}
-	},
-	"opStatGrowth": {
-		"name": "Enemy stat growth",
-		"mode": "Open",
-		"values": {
-			"boss"  : "Increase after bosses",
-			"timed"  : "Timed",
-			"vanilla": "None (vanilla)"
-		}
-	},
-	"opDifficulty": {
-		"name": "Difficulty",
-		"mode": "Open",
-		"values": {
-			"easy"      : "Easy",
-			"sortaeasy" : "Sorta easy",
-			"kindahard" : "Kinda hard",
-			"hard"      : "Hard",
-			"impossible": "Impossible"
-		}
-	},
-	"opCharacters": {
-		"name": "Other chars",
-		"mode": "Open",
-		"values": {
-			"startboth"  : "Start with both",
-			"findbothCL" : "Find both at current level",
-			"start1find1": "Start with one, find the other",
-			"start1only" : "Start with one, other doesn't exist",
-			"find1L1"    : "Find one at level 1",
-			"find1CL"    : "Find one at current level",
-			"none"       : "They don't exist"
-		}
-	},
-	"opExp": {
-		"name": "Experience",
-		"mode": "Open",
-		"values": {
-			"half"  : "Half",
-			"normal": "Normal",
-			"triple": "Triple"
-		}
-	},
-	"opGold": {
-		"name": "Gold",
-		"mode": "Open",
-		"values": {
-			"half"  : "Half",
-			"normal": "Normal",
-			"triple": "Triple"
-		}
-	},
-	"opStatusAilments": {
-		"name": "Status ailments",
-		"mode": "Open",
-		"values": {
-			"type"    : "Enemy type",
-			"easy"    : "Random (easy)",
-			"annoying": "Random (annoying)",
-			"awful"   : "Random (awful)"
-		}
-	},
-	"opShowLevels": {
-		"name": "Show enemy level",
-		"mode": "Open",
-		"values": {
-			"no": "No"
-		}
-	},
-	"opComplexity": {
-		"name": "Complexity",
-		"mode": "Open",
-		"values": {
-			"easy": "Easy",
-			"hard": "Hard"
-		}
-	},
-	"opManaBeastScale": {
-		"name": "Mana Beast Stats",
-		"mode": "Open",
-		"values": {
-			"vanilla": "Vanilla"
-		}
-	},
-	"opAutosave": {
-		"name": "Autosave",
-		"mode": "Open",
-		"values": {
-			"no": "No"
-		}
-	},
-	"opMagicRopeRefactor": {
-		"name": "Magic Rope Refactor",
-		"mode": "Open",
-		"values": {
-			"no": "No"
-		}
-	},
-	"oopsAllThis": {
-		"name": "But why owls?",
-		"mode": "Open",
-		"values": {
-			"random": "Random",
-			"0"     : "0 - Rabite",
-			"1"     : "1 - Buzz Bee",
-			"2"     : "2 - Mushboom",
-			"3"     : "3 - Chobin Hood",
-			"4"     : "4 - Lullabud",
-			"5"     : "5 - Iffish",
-			"6"     : "6 - Kid Goblin",
-			"7"     : "7 - Eye Spy",
-			"8"     : "8 - Green Drop",
-			"9"     : "9 - Specter",
-			"10"    : "10 - Blat",
-			"11"    : "11 - Goblin",
-			"12"    : "12 - Water Thug",
-			"13"    : "13 - Polter Chair",
-			"14"    : "14 - Ma Goblin",
-			"15"    : "15 - Dark Funk",
-			"16"    : "16 - Crawler",
-			"17"    : "17 - Ice Thug",
-			"18"    : "18 - Zombie",
-			"19"    : "19 - Kimono Bird",
-			"20"    : "20 - Silktail",
-			"21"    : "21 - Nemesis Owl",
-			"22"    : "22 - Pebbler",
-			"23"    : "23 - Pumpkin Bomb",
-			"24"    : "24 - Steamed Crab",
-			"25"    : "25 - Chess Knight",
-			"26"    : "26 - Wizard Eye",
-			"27"    : "27 - Howler",
-			"28"    : "28 - Robin Foot",
-			"29"    : "29 - LA Funk",
-			"30"    : "30 - Grave Bat",
-			"31"    : "31 - Werewolf",
-			"32"    : "32 - Shadow X3",
-			"33"    : "33 - Evil Sword",
-			"34"    : "34 - Tomato Man",
-			"35"    : "35 - Mystic Book",
-			"36"    : "36 - Sand Stinger",
-			"37"    : "37 - Mad Mallard",
-			"38"    : "38 - Emberman",
-			"39"    : "39 - Red Drop",
-			"40"    : "40 - Eggatrice",
-			"41"    : "41 - Bomb Bee",
-			"42"    : "42 - Mushgloom",
-			"43"    : "43 - Trap Flower",
-			"44"    : "44 - Dinofish",
-			"45"    : "45 - Mimic Box",
-			"46"    : "46 - Shadow X1",
-			"47"    : "47 - Kimono Wizard",
-			"48"    : "48 - Ghost",
-			"49"    : "49 - Metal Crawler",
-			"50"    : "50 - Spider Legs",
-			"51"    : "51 - Weepy Eye",
-			"52"    : "52 - Shellblast",
-			"53"    : "53 - Beast Zombie",
-			"54"    : "54 - Ghoul",
-			"55"    : "55 - Imp",
-			"56"    : "56 - Blue Drop",
-			"57"    : "57 - Marmablue",
-			"58"    : "58 - Fierce Head",
-			"59"    : "59 - Griffin Hand",
-			"60"    : "60 - Needlion",
-			"61"    : "61 - Metal Crab",
-			"62"    : "62 - Armored Man",
-			"63"    : "63 - Shadow X2",
-			"64"    : "64 - Eggplant Man",
-			"65"    : "65 - Captain Duck",
-			"66"    : "66 - Nitro Pumpkin",
-			"67"    : "67 - Turtlance",
-			"68"    : "68 - Tsunami",
-			"69"    : "69 - Basilisk",
-			"70"    : "70 - Gremlin",
-			"71"    : "71 - Steelpion",
-			"72"    : "72 - Dark Ninja",
-			"73"    : "73 - Whimper",
-			"74"    : "74 - Heck Hound",
-			"75"    : "75 - Fiend Head",
-			"76"    : "76 - National Scar",
-			"77"    : "77 - Dark Stalker",
-			"78"    : "78 - Dark Knight",
-			"79"    : "79 - Shaper Shifter",
-			"80"    : "80 - Wolf Lord",
-			"81"    : "81 - Doom Sword",
-			"82"    : "82 - Terminator",
-			"83"    : "83 - Master Ninja"
-		}
-	},
-	"opStartWeapon": {
-		"name": "Force starting weapon",
-		"mode": "Open",
-		"values": {
-			"0": "0 - Glove",
-			"1": "1 - Sword",
-			"2": "2 - Axe",
-			"3": "3 - Spear",
-			"4": "4 - Whip",
-			"5": "5 - Bow",
-			"6": "6 - Boomerang",
-			"7": "7 - Javelin"
-		}
-	},
-	"opNumSeeds": {
-		"name": "Mana Tree Revival seeds required",
-		"mode": "Open",
-		"values": {
-			"random": "Random",
-			"1"     : "1",
-			"2"     : "2",
-			"3"     : "3",
-			"4"     : "4",
-			"5"     : "5",
-			"6"     : "6",
-			"7"     : "7"
-		}
-	},
-	"opMinSeeds": {
-		"name": "Minimum Mana Tree Revival seeds required",
-		"mode": "Open",
-		"values": {
-			"2": "2",
-			"3": "3",
-			"4": "4",
-			"5": "5",
-			"6": "6",
-			"7": "7",
-			"8": "8"
-		}
-	},
-	"opMaxSeeds": {
-		"name": "Maximum Mana Tree Revival seeds required",
-		"mode": "Open",
-		"values": {
-			"1": "1",
-			"2": "2",
-			"3": "3",
-			"4": "4",
-			"5": "5",
-			"6": "6",
-			"7": "7"
-		}
-	},
-	"opChestsDontRun": {
-		"name": "Chests don't run away",
-		"mode": "Open",
-		"values": {
-			"no": "No"
-		}
-	},
-	"opTraps": {
-		"name": "Chest traps",
-		"mode": "Open",
-		"values": {
-			"none": "None",
-			"many": "Many"
-		}
-	},
-	"opChestFreq": {
-		"name": "Chest drop frequency",
-		"mode": "Open",
-		"values": {
-			"none"   : "None",
-			"low"    : "Low",
-			"high"   : "High",
-			"highest": "Highest"
-		}
-	},
-	"opAiRando": {
-		"name": "Enemy AI mode",
-		"mode": "Open",
-		"values": {
-			"swap": "Swap"
-		}
-	},
-	"opPauseInMenu": {
-		"name": "Pause timer in menu",
-		"mode": "Open",
-		"values": {
-			"no": "No"
-		}
-	},
-	"opXmasMaps": {
-		"name": "Christmas theme",
-		"mode": "Open",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"opXmasItems": {
-		"name": "Random drops",
-		"mode": "Open",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"opGPEleRando": {
-		"name": "Randomize Grand Palace elements",
-		"mode": "Open",
-		"values": {
-			"no": "No"
-		}
-	},
-	"opMinLevel": {
-		"name": "Minimum enemy level",
-		"mode": "Open",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"opMaxLevel": {
-		"name": "Maximum enemy level",
-		"mode": "Open",
-		"values": {
-			"yes": "Yes"
-		}
-	},
-	"opPlatinumMode": {
-		"name": "Black out map data",
-		"mode": "Open",
-		"values": {
-			"yes": "Yes"
-		}
-	}
+  "opWeapons": {
+    "name": "Randomize weapons",
+    "mode": "Open",
+    "values": {
+      "no": "No"
+    }
+  },
+  "opMusic": {
+    "name": "Randomize music",
+    "mode": "Open",
+    "values": {
+      "no": "No"
+    }
+  },
+  "opShop": {
+    "name": "Randomize shops",
+    "mode": "Open",
+    "values": {
+      "no": "No"
+    }
+  },
+  "opMapColors": {
+    "name": "Randomize map colors",
+    "mode": "Open",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "opStartChar": {
+    "name": "Start char",
+    "mode": "Open",
+    "values": {
+      "random": "Random",
+      "girl"  : "Girl",
+      "sprite": "Sprite"
+    }
+  },
+  "opBosses": {
+    "name": "Bosses",
+    "mode": "Open",
+    "values": {
+      "vanilla": "Vanilla",
+      "swap"   : "Swap"
+    }
+  },
+  "opEnemies": {
+    "name": "Enemies",
+    "mode": "Open",
+    "values": {
+      "vanilla": "Vanilla",
+      "random" : "Random spawns",
+      "oops"   : "Oops! All owls",
+      "none"   : "None"
+    }
+  },
+  "opGoal": {
+    "name": "Goal",
+    "mode": "Open",
+    "values": {
+      "vlong": "Vanilla long",
+      "mtr": "Mana tree revival",
+      "gift": "Gift exchange",
+      "reindeer": "Reindeer search"
+    }
+  },
+  "opLogic": {
+    "name": "Logic",
+    "mode": "Open",
+    "values": {
+      "restrictive": "Restrictive"
+    }
+  },
+  "opStatGrowth": {
+    "name": "Enemy stat growth",
+    "mode": "Open",
+    "values": {
+      "boss"  : "Increase after bosses",
+      "timed"  : "Timed",
+      "vanilla": "None (vanilla)"
+    }
+  },
+  "opDifficulty": {
+    "name": "Difficulty",
+    "mode": "Open",
+    "values": {
+      "easy"      : "Easy",
+      "sortaeasy" : "Sorta easy",
+      "kindahard" : "Kinda hard",
+      "hard"      : "Hard",
+      "impossible": "Impossible"
+    }
+  },
+  "opCharacters": {
+    "name": "Other chars",
+    "mode": "Open",
+    "values": {
+      "startboth"  : "Start with both",
+      "findbothCL" : "Find both at current level",
+      "start1find1": "Start with one, find the other",
+      "start1only" : "Start with one, other doesn't exist",
+      "find1L1"    : "Find one at level 1",
+      "find1CL"    : "Find one at current level",
+      "none"       : "They don't exist"
+    }
+  },
+  "opExp": {
+    "name": "Experience",
+    "mode": "Open",
+    "values": {
+      "half"  : "Half",
+      "normal": "Normal",
+      "triple": "Triple"
+    }
+  },
+  "opGold": {
+    "name": "Gold",
+    "mode": "Open",
+    "values": {
+      "half"  : "Half",
+      "normal": "Normal",
+      "triple": "Triple"
+    }
+  },
+  "opStatusAilments": {
+    "name": "Status ailments",
+    "mode": "Open",
+    "values": {
+      "type"    : "Enemy type",
+      "easy"    : "Random (easy)",
+      "annoying": "Random (annoying)",
+      "awful"   : "Random (awful)"
+    }
+  },
+  "opShowLevels": {
+    "name": "Show enemy level",
+    "mode": "Open",
+    "values": {
+      "no": "No"
+    }
+  },
+  "opComplexity": {
+    "name": "Complexity",
+    "mode": "Open",
+    "values": {
+      "easy": "Easy",
+      "hard": "Hard"
+    }
+  },
+  "opManaBeastScale": {
+    "name": "Mana Beast Stats",
+    "mode": "Open",
+    "values": {
+      "vanilla": "Vanilla"
+    }
+  },
+  "opAutosave": {
+    "name": "Autosave",
+    "mode": "Open",
+    "values": {
+      "no": "No"
+    }
+  },
+  "opMagicRopeRefactor": {
+    "name": "Magic Rope Refactor",
+    "mode": "Open",
+    "values": {
+      "no": "No"
+    }
+  },
+  "oopsAllThis": {
+    "name": "But why owls?",
+    "mode": "Open",
+    "values": {
+      "random": "Random",
+      "0"     : "0 - Rabite",
+      "1"     : "1 - Buzz Bee",
+      "2"     : "2 - Mushboom",
+      "3"     : "3 - Chobin Hood",
+      "4"     : "4 - Lullabud",
+      "5"     : "5 - Iffish",
+      "6"     : "6 - Kid Goblin",
+      "7"     : "7 - Eye Spy",
+      "8"     : "8 - Green Drop",
+      "9"     : "9 - Specter",
+      "10"    : "10 - Blat",
+      "11"    : "11 - Goblin",
+      "12"    : "12 - Water Thug",
+      "13"    : "13 - Polter Chair",
+      "14"    : "14 - Ma Goblin",
+      "15"    : "15 - Dark Funk",
+      "16"    : "16 - Crawler",
+      "17"    : "17 - Ice Thug",
+      "18"    : "18 - Zombie",
+      "19"    : "19 - Kimono Bird",
+      "20"    : "20 - Silktail",
+      "21"    : "21 - Nemesis Owl",
+      "22"    : "22 - Pebbler",
+      "23"    : "23 - Pumpkin Bomb",
+      "24"    : "24 - Steamed Crab",
+      "25"    : "25 - Chess Knight",
+      "26"    : "26 - Wizard Eye",
+      "27"    : "27 - Howler",
+      "28"    : "28 - Robin Foot",
+      "29"    : "29 - LA Funk",
+      "30"    : "30 - Grave Bat",
+      "31"    : "31 - Werewolf",
+      "32"    : "32 - Shadow X3",
+      "33"    : "33 - Evil Sword",
+      "34"    : "34 - Tomato Man",
+      "35"    : "35 - Mystic Book",
+      "36"    : "36 - Sand Stinger",
+      "37"    : "37 - Mad Mallard",
+      "38"    : "38 - Emberman",
+      "39"    : "39 - Red Drop",
+      "40"    : "40 - Eggatrice",
+      "41"    : "41 - Bomb Bee",
+      "42"    : "42 - Mushgloom",
+      "43"    : "43 - Trap Flower",
+      "44"    : "44 - Dinofish",
+      "45"    : "45 - Mimic Box",
+      "46"    : "46 - Shadow X1",
+      "47"    : "47 - Kimono Wizard",
+      "48"    : "48 - Ghost",
+      "49"    : "49 - Metal Crawler",
+      "50"    : "50 - Spider Legs",
+      "51"    : "51 - Weepy Eye",
+      "52"    : "52 - Shellblast",
+      "53"    : "53 - Beast Zombie",
+      "54"    : "54 - Ghoul",
+      "55"    : "55 - Imp",
+      "56"    : "56 - Blue Drop",
+      "57"    : "57 - Marmablue",
+      "58"    : "58 - Fierce Head",
+      "59"    : "59 - Griffin Hand",
+      "60"    : "60 - Needlion",
+      "61"    : "61 - Metal Crab",
+      "62"    : "62 - Armored Man",
+      "63"    : "63 - Shadow X2",
+      "64"    : "64 - Eggplant Man",
+      "65"    : "65 - Captain Duck",
+      "66"    : "66 - Nitro Pumpkin",
+      "67"    : "67 - Turtlance",
+      "68"    : "68 - Tsunami",
+      "69"    : "69 - Basilisk",
+      "70"    : "70 - Gremlin",
+      "71"    : "71 - Steelpion",
+      "72"    : "72 - Dark Ninja",
+      "73"    : "73 - Whimper",
+      "74"    : "74 - Heck Hound",
+      "75"    : "75 - Fiend Head",
+      "76"    : "76 - National Scar",
+      "77"    : "77 - Dark Stalker",
+      "78"    : "78 - Dark Knight",
+      "79"    : "79 - Shaper Shifter",
+      "80"    : "80 - Wolf Lord",
+      "81"    : "81 - Doom Sword",
+      "82"    : "82 - Terminator",
+      "83"    : "83 - Master Ninja"
+    }
+  },
+  "opStartWeapon": {
+    "name": "Force starting weapon",
+    "mode": "Open",
+    "values": {
+      "0": "0 - Glove",
+      "1": "1 - Sword",
+      "2": "2 - Axe",
+      "3": "3 - Spear",
+      "4": "4 - Whip",
+      "5": "5 - Bow",
+      "6": "6 - Boomerang",
+      "7": "7 - Javelin"
+    }
+  },
+  "opNumSeeds": {
+    "name": "Mana Tree Revival seeds required",
+    "mode": "Open",
+    "values": {
+      "random": "Random",
+      "1"     : "1",
+      "2"     : "2",
+      "3"     : "3",
+      "4"     : "4",
+      "5"     : "5",
+      "6"     : "6",
+      "7"     : "7"
+    }
+  },
+  "opMinSeeds": {
+    "name": "Minimum Mana Tree Revival seeds required",
+    "mode": "Open",
+    "values": {
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8"
+    }
+  },
+  "opMaxSeeds": {
+    "name": "Maximum Mana Tree Revival seeds required",
+    "mode": "Open",
+    "values": {
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7"
+    }
+  },
+  "opChestsDontRun": {
+    "name": "Chests don't run away",
+    "mode": "Open",
+    "values": {
+      "no": "No"
+    }
+  },
+  "opTraps": {
+    "name": "Chest traps",
+    "mode": "Open",
+    "values": {
+      "none": "None",
+      "many": "Many"
+    }
+  },
+  "opChestFreq": {
+    "name": "Chest drop frequency",
+    "mode": "Open",
+    "values": {
+      "none"   : "None",
+      "low"    : "Low",
+      "high"   : "High",
+      "highest": "Highest"
+    }
+  },
+  "opAiRando": {
+    "name": "Enemy AI mode",
+    "mode": "Open",
+    "values": {
+      "swap": "Swap"
+    }
+  },
+  "opPauseInMenu": {
+    "name": "Pause timer in menu",
+    "mode": "Open",
+    "values": {
+      "no": "No"
+    }
+  },
+  "opXmasMaps": {
+    "name": "Christmas theme",
+    "mode": "Open",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "opXmasItems": {
+    "name": "Random drops",
+    "mode": "Open",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "opGPEleRando": {
+    "name": "Randomize Grand Palace elements",
+    "mode": "Open",
+    "values": {
+      "no": "No"
+    }
+  },
+  "opMinLevel": {
+    "name": "Minimum enemy level",
+    "mode": "Open",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "opMaxLevel": {
+    "name": "Maximum enemy level",
+    "mode": "Open",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "opPlatinumMode": {
+    "name": "Black out map data",
+    "mode": "Open",
+    "values": {
+      "yes": "Yes"
+    }
+  }
 }
