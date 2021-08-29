@@ -1,6 +1,8 @@
 {
-  "name": "Menblock's Insanity %",
+  "name": "Insanity%",
+  "description": ":owl:",
   "version": "1.21",
+  "author": "Menblock",
   "options": [
     {
       "aggBosses": "yes",
@@ -15,7 +17,5 @@
       "opEnemies": "oops",
       "opLogic": "restrictive"
     }
-  ],
-  "author": "Moppleton",
-  "description": "Open mode - Just how Menblock likes it"
+  ]
 }

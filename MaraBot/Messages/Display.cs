@@ -37,8 +37,8 @@ namespace MaraBot.Messages
 
             embed
                 .AddField(preset.Name, preset.Description)
-                .AddField("Seed", seed)
                 .AddOptionsToEmbed(preset)
+                .AddField("Seed", Formatter.BlockCode(seed))
                 .AddField("Raw Options", Formatter.BlockCode(rawOptionsString));
 
             var mainBuilder = new DiscordMessageBuilder()
@@ -61,7 +61,7 @@ namespace MaraBot.Messages
 
             foreach (var preset in presets)
             {
-                presetKeys += $"**{preset.Key}**:\n";
+                presetKeys += $"**{preset.Key}**\n";
                 presetNames += $"{preset.Value.Name}\n";
                 presetDescriptions += $"{preset.Value.Description}\n";
             }
@@ -85,15 +85,17 @@ namespace MaraBot.Messages
             embed
                 .AddField("Week", preset.Name)
                 .AddField("Description", preset.Description)
+                .AddField("Version", preset.Version)
+                .AddField("Author", preset.Author)
                 .AddOptionsToEmbed(preset);
 
             await ctx.RespondAsync(embed);
         }
 
-        private static DiscordEmbedBuilder AddOptionsToEmbed(this DiscordEmbedBuilder embed, Preset preset)
+        private static DiscordEmbedBuilder AddOptionDictionaryToEmbed(this DiscordEmbedBuilder embed, string title, Dictionary<string, string> options)
         {
-            int numberOfColumns = Math.Min((int)Math.Ceiling(preset.Options.Count / (float) kMinNumberOfElementsPerColumn), kMaxNumberOfColumns);
-            int numberOfElementsPerColumn = (int)Math.Ceiling(preset.Options.Count / (float) numberOfColumns);
+            int numberOfColumns = Math.Min((int)Math.Ceiling(options.Count / (float) kMinNumberOfElementsPerColumn), kMaxNumberOfColumns);
+            int numberOfElementsPerColumn = (int)Math.Ceiling(options.Count / (float) numberOfColumns);
 
             var optionStrings = new string[numberOfColumns];
             for (int i = 0; i < numberOfColumns; ++i)
@@ -101,25 +103,35 @@ namespace MaraBot.Messages
 
             int index = 0;
             int columnIndex = 0;
-            foreach (var option in preset.Options)
+            foreach (var option in options)
             {
-                optionStrings[columnIndex] += $"**{option.Key}**: {option.Value}";
+                optionStrings[columnIndex] += $"{option.Key}: _{option.Value}_";
 
                 if ((++index % numberOfElementsPerColumn == 0))
-                {
                     ++columnIndex;
-                }
                 else
-                {
                     optionStrings[columnIndex] += "\n";
-                }
             }
 
-            embed.AddField("Options", optionStrings[0], true);
+            embed.AddField(title, optionStrings[0], optionStrings.Length > 1);
             for (int i = 1; i < optionStrings.Length; ++i)
-            {
                 embed.AddField("\u200B", optionStrings[i], true);
-            }
+
+            return embed;
+        }
+
+        private static DiscordEmbedBuilder AddOptionsToEmbed(this DiscordEmbedBuilder embed, Preset preset)
+        {
+            Mode mode = Option.OptionValueToMode(preset.Options["mode"]);
+
+            embed.AddField(Option.ModeToPrettyString(Mode.Mode), Option.ModeToPrettyString(mode));
+
+            if(preset.GeneralOptions.Count > 0)
+                embed.AddOptionDictionaryToEmbed($"{Option.ModeToPrettyString(Mode.General)} Options", preset.GeneralOptions);
+            if(preset.ModeOptions.Count > 0)
+                embed.AddOptionDictionaryToEmbed($"{Option.ModeToPrettyString(mode)} Options", preset.ModeOptions);
+            if(preset.OtherOptions.Count > 0)
+                embed.AddOptionDictionaryToEmbed($"{Option.ModeToPrettyString(Mode.Other)} Options", preset.OtherOptions);
 
             return embed;
         }

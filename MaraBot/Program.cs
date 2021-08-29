@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.IO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
@@ -18,7 +20,8 @@ namespace MaraBot
         static async Task MainAsync()
         {
             var config = ConfigIO.LoadConfig();
-            var presets = PresetIO.LoadPresets();
+            var options = OptionsIO.LoadOptions();
+            var presets = PresetIO.LoadPresets(options);
             var weekly = WeeklyIO.LoadWeekly();
 
             var discord = new DiscordShardedClient(new DiscordConfiguration()
@@ -42,6 +45,7 @@ namespace MaraBot
             commands.RegisterCommands<Commands.PresetsCommandModule>();
             commands.RegisterCommands<Commands.PresetCommandModule>();
             commands.RegisterCommands<Commands.RaceCommandModule>();
+            commands.RegisterCommands<Commands.CreatePresetCommandModule>();
             commands.RegisterCommands<Commands.WeeklyCommandModule>();
             commands.RegisterCommands<Commands.CompletedCommandModule>();
             commands.RegisterCommands<Commands.LeaderboardCommandModule>();

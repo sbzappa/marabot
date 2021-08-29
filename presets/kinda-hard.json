@@ -1,6 +1,9 @@
 {
   "name": "Kinda hard",
+  "description": "It's kinda hard",
   "version": "1.21",
+  "author": "CrashTestGenius",
+  "weight": 2,
   "options": [
     {
       "mode": "open",
@@ -14,8 +17,5 @@
       "opStartChar": "random",
       "opMusic": "no"
     }
-  ],
-  "author": "CrashTestGenius",
-  "description": "Open mode - Kinda hard",
-  "weight": 2
+  ]
 }

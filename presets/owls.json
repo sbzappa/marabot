@@ -1,6 +1,8 @@
 {
-  "name": "Oops! All owls!",
+  "name": "Oops! All ~~owls~~ metal crawlers!",
+  "description": "They crawl everywhere!",
   "version": "1.21",
+  "author": "Cyb3R",
   "options": [
     {
       "opComplexity": "hard",
@@ -17,7 +19,5 @@
       "opLogic": "restrictive",
       "opStartChar": "random"
     }
-  ],
-  "author": "Cyb3R",
-  "description": "Open mode - owls everywhere!"
+  ]
 }

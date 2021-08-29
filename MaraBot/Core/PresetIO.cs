@@ -46,7 +46,7 @@ namespace MaraBot.Core
             "../../../../presets"
         };
         
-        public static Dictionary<string, Preset> LoadPresets()
+        public static Dictionary<string, Preset> LoadPresets(Dictionary<string, Option> options)
         {
             var homeFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||
@@ -78,6 +78,7 @@ namespace MaraBot.Core
                 {
                     var json = r.ReadToEnd();
                     var preset = JsonConvert.DeserializeObject<Preset>(json);
+                    preset.MakeDisplayable(options);
                     presets[Path.GetFileNameWithoutExtension(presetPath)] = preset;
                 }
             }
