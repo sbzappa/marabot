@@ -9,12 +9,12 @@ namespace MaraBot.Commands
 {
     using Core;
     using Messages;
-    
+
     public class WeeklyCommandModule : BaseCommandModule
     {
         public Weekly Weekly { private get; set; }
         public IReadOnlyDictionary<string, Preset> Presets { private get; set; }
-        
+
         [Command("weekly")]
         [Cooldown(2, 900, CooldownBucketType.Channel)]
         [RequireGuild]
@@ -29,19 +29,21 @@ namespace MaraBot.Commands
                 WeeklyIO.StoreWeekly(Weekly);
             }
 
-            if (!Presets.ContainsKey(Weekly.PresetName))
+            if (!Presets.ContainsKey(Weekly.PresetName) || Weekly.WeekNumber < 0)
             {
-                await ctx.RespondAsync($"{Weekly.PresetName} is not a a valid preset");
-                
+                await ctx.RespondAsync(
+                    $"Weekly preset '{Weekly.PresetName}' is not a a valid preset\n" +
+                    "This shouldn't happen! Please contact your friendly neighbourhood developers!");
+
                 var invalidEmoji = DiscordEmoji.FromName(ctx.Client, Display.kInvalidCommandEmoji);
                 await ctx.Message.CreateReactionAsync(invalidEmoji);
-                
-                return; 
+
+                return;
             }
-            
+
             var preset = Presets[Weekly.PresetName];
             await Display.Race(ctx, preset, Weekly.Seed);
-                        
+
             var successEmoji = DiscordEmoji.FromName(ctx.Client, Display.kValidCommandEmoji);
             await ctx.Message.CreateReactionAsync(successEmoji);
         }
