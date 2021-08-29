@@ -20,7 +20,7 @@ namespace MaraBot
         static async Task MainAsync()
         {
             var config = ConfigIO.LoadConfig();
-            var options = OptionIO.LoadConfig();
+            var options = OptionsIO.LoadOptions();
             var presets = PresetIO.LoadPresets(options);
             var weekly = WeeklyIO.LoadWeekly();
 
