@@ -9,7 +9,7 @@ A Secret of Mana Randomizer bot for Discord.
 - `!presets`: Display all available presets. All presets are in the `presets` folder.
 - `!newpreset [rawOptions]`: Generate a json preset for specified options. 
 - `!weekly`: Generate or return the current weekly race. 
-- `!completed HH:MM:SS`: Add your name to the leaderboard for the weekly race.
+- `!completed HH:MM:SS`: Add your name to the leaderboard for the weekly race or override your time in the leaderboard with a new one.
 - `!leaderboard`: Display the weekly leaderboard.
 
 ## Requirements
@@ -23,7 +23,8 @@ First, follow these guidelines to set up a discord bot account:
 https://dsharpplus.github.io/articles/basics/bot_account.html
 
 You'll then need to create a `config.json` file with the OAuth token
-required for the bot to authenticate itself with Discord.
+required for the bot to authenticate itself with Discord. Look for
+`confing/config_template.json` in the repository for an example.  
 
 ```
 {
@@ -33,5 +34,5 @@ required for the bot to authenticate itself with Discord.
 ```
 
 You can copy your `config.json` in either: 
-- `marabot/config/`
+- `config/`
 - `$HOME/marabot/config/`
