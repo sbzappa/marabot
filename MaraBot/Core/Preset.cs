@@ -75,6 +75,9 @@ namespace MaraBot.Core
             }
 
             Mode mode = Option.OptionValueToMode(Options["mode"]);
+            GeneralOptions = new Dictionary<string, string>();
+            ModeOptions    = new Dictionary<string, string>();
+            OtherOptions   = new Dictionary<string, string>();
 
             foreach(var option in list)
             {
