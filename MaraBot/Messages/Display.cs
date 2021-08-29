@@ -94,8 +94,8 @@ namespace MaraBot.Messages
 
         private static DiscordEmbedBuilder AddOptionDictionaryToEmbed(this DiscordEmbedBuilder embed, string title, Dictionary<string, string> options)
         {
-            int numberOfColumns = Math.Min((int)Math.Ceiling(preset.Options.Count / (float) kMinNumberOfElementsPerColumn), kMaxNumberOfColumns);
-            int numberOfElementsPerColumn = (int)Math.Ceiling(preset.Options.Count / (float) numberOfColumns);
+            int numberOfColumns = Math.Min((int)Math.Ceiling(options.Count / (float) kMinNumberOfElementsPerColumn), kMaxNumberOfColumns);
+            int numberOfElementsPerColumn = (int)Math.Ceiling(options.Count / (float) numberOfColumns);
 
             var optionStrings = new string[numberOfColumns];
             for (int i = 0; i < numberOfColumns; ++i)
