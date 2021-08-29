@@ -6,25 +6,26 @@ A Secret of Mana Randomizer bot for Discord.
 
 - `!race presetName`: Generate a race using the specified preset.
 - `!preset presetName`: Display information for the specified preset.
-- `!presets`: Display all available presets. All presets are in the `presets` folder.
-- `!newpreset [rawOptions]`: Generate a json preset for specified options. 
+- `!presets`: Display all available presets. All presets are in the `presets/` folder.
+- `!newpreset [rawOptions]`: Generate a JSON preset (with options filled in, if given). Only available in DMs to reduce spam.
 - `!weekly`: Generate or return the current weekly race. 
 - `!completed HH:MM:SS`: Add your name to the leaderboard for the weekly race or override your time in the leaderboard with a new one.
 - `!leaderboard`: Display the weekly leaderboard.
 
-## Requirements
+## Running a bot instance
+### Requirements
 
 - .Net Core: https://dotnet.microsoft.com/download
 - DSharpPlus: https://github.com/DSharpPlus/DSharpPlus
 
-## Configuration
+### Configuration
 
 First, follow these guidelines to set up a discord bot account:
 https://dsharpplus.github.io/articles/basics/bot_account.html
 
 You'll then need to create a `config.json` file with the OAuth token
 required for the bot to authenticate itself with Discord. Look for
-`confing/config_template.json` in the repository for an example.  
+`config/config_template.json` in the repository for an example, or see below:
 
 ```
 {
