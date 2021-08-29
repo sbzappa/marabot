@@ -9,14 +9,16 @@ namespace MaraBot.Core
         public int WeekNumber;
         public string PresetName;
         public string Seed;
+        public Dictionary<string, TimeSpan> Leaderboard;
 
         public static Weekly Invalid => new Weekly
         {
             WeekNumber = -1,
             PresetName = String.Empty,
-            Seed = String.Empty
+            Seed = String.Empty,
+            Leaderboard = null
         };
-        
+
         public static Weekly Generate(IReadOnlyDictionary<string, Preset> presets)
         {
             var weekNumber = RandomUtils.GetWeekNumber();
@@ -27,11 +29,11 @@ namespace MaraBot.Core
 
             if (totalWeight == 0)
                 return Weekly.Invalid;
-            
+
             var index = RandomUtils.GetRandomIndex(0, totalWeight - 1);
 
             var presetName = String.Empty;
-            
+
             var sum = 0;
             foreach (var preset in weeklyPresets)
             {
@@ -47,7 +49,8 @@ namespace MaraBot.Core
             {
                 WeekNumber = weekNumber,
                 PresetName = presetName,
-                Seed = seed
+                Seed = seed,
+                Leaderboard = new Dictionary<string, TimeSpan>()
             };
         }
     }
