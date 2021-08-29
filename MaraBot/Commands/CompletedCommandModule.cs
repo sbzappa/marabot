@@ -13,7 +13,7 @@ namespace MaraBot.Commands
     {
         public Weekly Weekly { private get; set; }
 
-        [Command("completed")]
+        [Command("done")]
         [Cooldown(2, 900, CooldownBucketType.User)]
         [RequireGuild]
         public async Task Execute(CommandContext ctx, TimeSpan time)
