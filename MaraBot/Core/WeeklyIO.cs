@@ -20,9 +20,9 @@ namespace MaraBot.Core
             var weeklyFolder = k_WeeklyFolder.Replace("$HOME", homeFolder);
             if (!Directory.Exists(weeklyFolder))
                 Directory.CreateDirectory(weeklyFolder);
-            
+
             var weeklyPath = weeklyFolder + "/weekly.json";
-           
+
             // TODO do this async...
             using (StreamWriter w = new StreamWriter(weeklyPath))
             {
@@ -30,7 +30,7 @@ namespace MaraBot.Core
                 w.Write(json);
             }
         }
-        
+
         public static Weekly LoadWeekly()
         {
             var homeFolder =
@@ -38,22 +38,22 @@ namespace MaraBot.Core
                  Environment.OSVersion.Platform == PlatformID.MacOSX)
                     ? Environment.GetEnvironmentVariable("HOME")
                     : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
-            
+
             var weeklyPath = k_WeeklyFolder.Replace("$HOME", homeFolder) + "/weekly.json";
 
             var weekly = Weekly.Invalid;
-            if (String.IsNullOrEmpty(weeklyPath))
+            if (!File.Exists(weeklyPath))
             {
                 return weekly;
             }
-            
+
             using (StreamReader r = new StreamReader(weeklyPath))
             {
                 var json = r.ReadToEnd();
                 weekly = JsonConvert.DeserializeObject<Weekly>(json);
             }
-           
-            return weekly; 
+
+            return weekly;
         }
     }
 }
