@@ -10,14 +10,13 @@ namespace MaraBot.Commands
 {
     using Core;
     using Messages;
-    
+
     public class CreatePresetCommandModule : BaseCommandModule
     {
         public IReadOnlyDictionary<string, Preset> Presets { private get; set; }
 
         [Command("newpreset")]
         [Cooldown(15, 900, CooldownBucketType.User)]
-        [RequireGuild]
         [RequireDirectMessage]
         public async Task Execute(CommandContext ctx, [RemainingText] string optionString)
         {
@@ -47,17 +46,17 @@ namespace MaraBot.Commands
             //     if (err != "")
             //     {
             //         await ctx.RespondAsync(err);
-            //         
+            //
             //         var invalidEmoji = DiscordEmoji.FromName(ctx.Client, Display.kInvalidCommandEmoji);
             //         await ctx.Message.CreateReactionAsync(invalidEmoji);
-            //         
-            //         return; 
+            //
+            //         return;
             //     }
             // }
 
             string json = JsonConvert.SerializeObject(preset, Formatting.Indented);
             await ctx.RespondAsync(Formatter.BlockCode(json));
-            
+
             var successEmoji = DiscordEmoji.FromName(ctx.Client, Display.kValidCommandEmoji);
             await ctx.Message.CreateReactionAsync(successEmoji);
         }
