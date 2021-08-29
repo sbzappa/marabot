@@ -7,18 +7,29 @@ namespace MaraBot.Core
     {
         static Random s_TimeBasedRandom = new Random(DateTime.Now.GetHashCode());
         static DateTime s_FirstWeek = new DateTime(2021, 08, 19, 20, 0, 0);
+
+        public static int GetRandomIndex(int minIndex, int maxIndex)
+        {
+            return s_TimeBasedRandom.Next(minIndex, maxIndex);
+        }
         
         public static string GetRandomSeed()
         {
             return GetSeed(s_TimeBasedRandom);
         }
 
-        public static string GetWeeklySeed(int seedMultiplier)
+        public static int GetWeekNumber()
         {
             var elapsed = DateTime.Now.Subtract(s_FirstWeek);
             var elapsedWeeks = elapsed.Days / 7;
 
-            var seed = elapsedWeeks * seedMultiplier;
+            return elapsedWeeks;
+        }
+
+        public static string GetWeeklySeed(int seedMultiplier)
+        {
+            var weekNumber = GetWeekNumber();
+            var seed = weekNumber * seedMultiplier;
             
             var random = new Random(seed);
             return GetSeed(random);

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
@@ -9,14 +7,14 @@ using MaraBot.Messages;
 
 namespace MaraBot.Commands
 {
-    public class CompletedCommandModule : BaseCommandModule
+    public class LeaderboardCommandModule : BaseCommandModule
     {
         public Weekly Weekly { private get; set; }
 
-        [Command("completed")]
-        [Cooldown(2, 900, CooldownBucketType.User)]
+        [Command("leaderboard")]
+        [Cooldown(5, 900, CooldownBucketType.User)]
         [RequireGuild]
-        public async Task Execute(CommandContext ctx, TimeSpan time)
+        public async Task Execute(CommandContext ctx)
         {
             var weekNumber = RandomUtils.GetWeekNumber();
             if (Weekly.WeekNumber != weekNumber)
@@ -27,17 +25,6 @@ namespace MaraBot.Commands
                 await ctx.Message.CreateReactionAsync(invalidEmoji);
             }
 
-            var username = ctx.User.Username;
-
-            if (Weekly.Leaderboard == null)
-                Weekly.Leaderboard = new Dictionary<string, TimeSpan>();
-
-            if (Weekly.Leaderboard.ContainsKey(username))
-                Weekly.Leaderboard[username] = time;
-            else
-                Weekly.Leaderboard.Add(username, time);
-
-            WeeklyIO.StoreWeekly(Weekly);
             await Display.Leaderboard(ctx, Weekly);
 
             var validEmoji = DiscordEmoji.FromName(ctx.Client, Display.kValidCommandEmoji);

@@ -16,5 +16,6 @@
     }
   ],
   "author": "CrashTestGenius",
-  "description": "Open mode - Kinda hard"
+  "description": "Open mode - Kinda hard",
+  "weight": 2
 }
