@@ -3,6 +3,7 @@
   "description": "Mana Beast is buff",
   "version": "1.21",
   "author": "Menblock",
+  "weight": 2,
   "options": [
     {
       "opManaBeastScale": "vanilla",

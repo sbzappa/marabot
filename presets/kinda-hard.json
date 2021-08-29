@@ -3,6 +3,7 @@
   "description": "It's kinda hard",
   "version": "1.21",
   "author": "CrashTestGenius",
+  "weight": 2,
   "options": [
     {
       "mode": "open",

@@ -1,16 +1,9 @@
 
 namespace MaraBot.Core
 {
-    public interface IWeeklyConfig
+    public struct Config
     {
-        int Seed { get; }
-    }
-
-    public struct Config : IWeeklyConfig
-    {
+        public string Prefix;
         public string Token;
-        public int WeeklySeed;
-
-        int IWeeklyConfig.Seed => WeeklySeed;
     }
 }

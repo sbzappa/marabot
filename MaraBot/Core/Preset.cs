@@ -91,5 +91,7 @@ namespace MaraBot.Core
                     OtherOptions.Add(option.Item2, option.Item3);
             }
         }
+
+        public int Weight;
     }
 }

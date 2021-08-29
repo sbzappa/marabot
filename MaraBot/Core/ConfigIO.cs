@@ -11,10 +11,11 @@ namespace MaraBot.Core
     {
         static readonly string[] k_ConfigFolders = new []
         {
-            "$HOME/marabot/config",
             "config",
             "../../../config",
-            "../../../../config"
+            "../../../../config",
+            "$HOME/marabot/config",
+            "$HOME/marabot"
         };
         
         public static Config LoadConfig()
@@ -25,20 +26,13 @@ namespace MaraBot.Core
                     ? Environment.GetEnvironmentVariable("HOME")
                     : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
             
-            var configFolder = k_ConfigFolders
-                .Select(path => path.Replace("$HOME", homeFolder))
-                .FirstOrDefault(path => Directory.Exists(path));
+            var configPath = k_ConfigFolders
+                .Select(path => path.Replace("$HOME", homeFolder) + "/config.json")
+                .FirstOrDefault(path => File.Exists(path));
 
-            if (String.IsNullOrEmpty(configFolder))
+            if (String.IsNullOrEmpty(configPath))
             {
-                throw new InvalidOperationException("Could not find a config folder.");
-            }
-
-            var configPath = $"{configFolder}/config.json"; 
-
-            if (!File.Exists(configPath))
-            {
-                throw new InvalidOperationException($"No config found in config folder {configFolder}");
+                throw new InvalidOperationException($"No config found");
             }
 
             Config config = default;

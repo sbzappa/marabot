@@ -14,10 +14,10 @@ namespace MaraBot.Messages
     {
         const int kMinNumberOfElementsPerColumn = 4;
         const int kMaxNumberOfColumns = 3;
-       
+
         public const string kValidCommandEmoji = ":white_check_mark:";
         public const string kInvalidCommandEmoji = ":no_entry_sign:";
-        
+
         public static async Task Race(CommandContext ctx, Preset preset, string seed)
         {
             var embed = new DiscordEmbedBuilder
@@ -26,21 +26,21 @@ namespace MaraBot.Messages
                 Color = DiscordColor.Red,
                 Footer = new DiscordEmbedBuilder.EmbedFooter
                 {
-                    Text = "Generated" 
+                    Text = "Generated"
                 },
                 Timestamp = DateTime.Now
             };
 
-            var rawOptionsString = string.Join(" ", 
+            var rawOptionsString = string.Join(" ",
                 preset.Options.Select(kvp => $"{kvp.Key}={kvp.Value}")
             );
-            
+
             embed
                 .AddField(preset.Name, preset.Description)
                 .AddOptionsToEmbed(preset)
                 .AddField("Seed", Formatter.BlockCode(seed))
                 .AddField("Raw Options", Formatter.BlockCode(rawOptionsString));
-            
+
             var mainBuilder = new DiscordMessageBuilder()
                .AddEmbed(embed);
 
@@ -58,20 +58,20 @@ namespace MaraBot.Messages
             string presetKeys = String.Empty;
             string presetNames = String.Empty;
             string presetDescriptions = String.Empty;
-            
+
             foreach (var preset in presets)
             {
                 presetKeys += $"**{preset.Key}**\n";
                 presetNames += $"{preset.Value.Name}\n";
-                presetDescriptions += $"{preset.Value.Description}\n"; 
+                presetDescriptions += $"{preset.Value.Description}\n";
             }
-                
+
             embed
                 .AddField("Key", presetKeys, true)
                 .AddField("Name", presetNames, true)
                 .AddField("Description", presetDescriptions, true);
 
-            await ctx.RespondAsync(embed); 
+            await ctx.RespondAsync(embed);
         }
 
         public static async Task Preset(CommandContext ctx, Preset preset)
@@ -83,24 +83,24 @@ namespace MaraBot.Messages
             };
 
             embed
-                .AddField("Name", preset.Name)
+                .AddField("Week", preset.Name)
                 .AddField("Description", preset.Description)
                 .AddField("Version", preset.Version)
                 .AddField("Author", preset.Author)
                 .AddOptionsToEmbed(preset);
-            
-            await ctx.RespondAsync(embed); 
+
+            await ctx.RespondAsync(embed);
         }
 
         private static DiscordEmbedBuilder AddOptionDictionaryToEmbed(this DiscordEmbedBuilder embed, string title, Dictionary<string, string> options)
         {
-            int numberOfColumns = Math.Min((int)Math.Ceiling(options.Count / (float) kMinNumberOfElementsPerColumn), kMaxNumberOfColumns);
-            int numberOfElementsPerColumn = (int)Math.Ceiling(options.Count / (float) numberOfColumns);
-            
+            int numberOfColumns = Math.Min((int)Math.Ceiling(preset.Options.Count / (float) kMinNumberOfElementsPerColumn), kMaxNumberOfColumns);
+            int numberOfElementsPerColumn = (int)Math.Ceiling(preset.Options.Count / (float) numberOfColumns);
+
             var optionStrings = new string[numberOfColumns];
             for (int i = 0; i < numberOfColumns; ++i)
                 optionStrings[i] = String.Empty;
-            
+
             int index = 0;
             int columnIndex = 0;
             foreach (var option in options)
@@ -134,6 +134,35 @@ namespace MaraBot.Messages
                 embed.AddOptionDictionaryToEmbed($"{Option.ModeToPrettyString(Mode.Other)} Options", preset.OtherOptions);
 
             return embed;
+        }
+
+        public static async Task Leaderboard(CommandContext ctx, Weekly weekly)
+        {
+            var embed = new DiscordEmbedBuilder
+            {
+                Title = "Leaderboard",
+                Color = DiscordColor.Yellow
+            };
+
+            embed
+                .AddField("Weekly Seed", $"week #{weekly.WeekNumber}");
+
+            var sortedLeaderboard = weekly.Leaderboard
+                .OrderBy(kvp => kvp.Value);
+
+            var userStrings = String.Empty;
+            var timeStrings = String.Empty;
+
+            foreach (var entry in sortedLeaderboard)
+            {
+                userStrings += $"{entry.Key}\n";
+                timeStrings += $"{entry.Value}\n";
+            }
+
+            embed.AddField("User", userStrings, true);
+            embed.AddField("Time", timeStrings, true);
+
+            await ctx.RespondAsync(embed);
         }
     }
 }
