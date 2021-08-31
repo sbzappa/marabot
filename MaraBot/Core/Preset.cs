@@ -58,15 +58,28 @@ namespace MaraBot.Core
             var list = new List<Tuple<Mode, string, string>>();
 
             foreach(var pair in Options) {
-                if(options.ContainsKey(pair.Key))
-                    list.Add(new Tuple<Mode, string, string>(
-                        options[pair.Key].Mode,
-                        options[pair.Key].Name,
-                        options[pair.Key].Values.ContainsKey(pair.Value)
-                                ? options[pair.Key].Values[pair.Value]
-                                : pair.Value
-                    ));
-                else
+                if(options.ContainsKey(pair.Key)) { // Found key
+                    var o = options[pair.Key];
+                    if(o.Type == OptionType.List) // List type
+                        list.Add(new Tuple<Mode, string, string>(
+                            o.Mode,
+                            o.Name,
+                            String.Join(", ", Option.ParseList(pair.Value).ConvertAll(
+                                v => o.Values.ContainsKey(v)
+                                        ? o.Values[v] // Value found
+                                        : v // No value found, use raw value
+                            ))
+                        ));
+                    else // Enum type
+                        list.Add(new Tuple<Mode, string, string>(
+                            o.Mode,
+                            o.Name,
+                            o.Values.ContainsKey(pair.Value)
+                                    ? o.Values[pair.Value] // Value found
+                                    : pair.Value // No value found, use raw value
+                        ));
+                }
+                else // No key found, use raw values
                     list.Add(new Tuple<Mode, string, string>(
                         Mode.Other,
                         pair.Key,

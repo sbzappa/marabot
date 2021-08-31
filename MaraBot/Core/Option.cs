@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace MaraBot.Core
 {
@@ -18,6 +19,15 @@ namespace MaraBot.Core
     }
 
     /// <summary>
+    /// Type of value an Option has.
+    /// </summary>
+    public enum OptionType
+    {
+        Enum, // Select one value from Values
+        List  // Select multiple values from Values, separated by a comma
+    }
+
+    /// <summary>
     /// Information about a randomizer option.
     /// </summary>
     public struct Option
@@ -33,6 +43,12 @@ namespace MaraBot.Core
         public readonly Mode Mode;
 
         /// <summary>
+        /// Type of value it supports.
+        /// </summary>
+        [DefaultValue(OptionType.Enum)]
+        public readonly OptionType Type;
+
+        /// <summary>
         /// Possible values the option can have in the options JSON/string,
         /// together with the display name as seen in the randomizer.
         /// Default values will not be in this dictionary,
@@ -43,11 +59,12 @@ namespace MaraBot.Core
         /// <summary>
         /// Create an Option with specified properties.
         /// </summary>
-        public Option( string name, Mode mode, IDictionary<string, string> values )
+        public Option(string name, Mode mode, OptionType type, IDictionary<string, string> values)
         {
             Name   = name  ;
             Mode   = mode  ;
             Values = values;
+            Type   = type  ;
         }
 
         /// <summary>
@@ -81,6 +98,15 @@ namespace MaraBot.Core
                 case "chaos"      : return Mode.Chaos      ;
                 default           : return Mode.Other      ;
             }
+        }
+
+        /// <summary>
+        /// Transform a string list of values (OptionType.List) into a List.
+        /// </summary>
+        public static List<string> ParseList(string values) {
+            var list = new List<string>(values.Split(','));
+            list.RemoveAll(s => s == "");
+            return list;
         }
     }
 }
