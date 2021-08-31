@@ -849,5 +849,196 @@
     "values": {
       "yes": "Yes"
     }
+  },
+
+
+
+  "acDifficulty": {
+    "name": "Difficulty",
+    "mode": "AncientCave",
+    "values": {
+      "hard"      : "Hard",
+      "reallyhard": "Really hard",
+      "custom"    : "Custom"
+    }
+  },
+  "acDialogue": {
+    "name": "NPC Dialogue",
+    "mode": "AncientCave",
+    "values": {
+      "demetri": "Demetri Martin"
+    }
+  },
+  "acFilter": {
+    "name": "Dialogue language filter",
+    "mode": "AncientCave",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "acMusic": {
+    "name": "Random music",
+    "mode": "AncientCave",
+    "values": {
+      "no": "No"
+    }
+  },
+  "acBoy": {
+    "name": "Boy",
+    "mode": "AncientCave",
+    "values": {
+      "no": "No"
+    }
+  },
+  "acGirl": {
+    "name": "Girl",
+    "mode": "AncientCave",
+    "values": {
+      "no": "No"
+    }
+  },
+  "acSprite": {
+    "name": "Sprite",
+    "mode": "AncientCave",
+    "values": {
+      "no": "No"
+    }
+  },
+  "acLength": {
+    "name": "Length",
+    "mode": "AncientCave",
+    "values": {
+      "short": "Short (8 Floors)",
+      "long" : "Long (24 Floors)"
+    }
+  },
+  "acBosses": {
+    "name": "Bosses",
+    "mode": "AncientCave",
+    "values": {
+      "every": "Every floor",
+      "final": "Final only"
+    }
+  },
+  "acBiomeTypes": {
+    "name": "Floor Types",
+    "mode": "AncientCave",
+    "type": "List",
+    "values": {
+      "forest"          : "Forest",
+      "island"          : "Island",
+      "ruins"           : "Ruins",
+      "cave"            : "Cave",
+      "manafortinterior": "Manafort Interior"
+    }
+  },
+
+
+
+  "brDifficulty": {
+    "name": "Difficulty",
+    "mode": "BossRush",
+    "values": {
+      "hard"      : "Hard",
+      "reallyhard": "Really hard",
+      "custom"    : "Custom"
+    }
+  },
+  "brBoy": {
+    "name": "Boy",
+    "mode": "BossRush",
+    "values": {
+      "no": "No"
+    }
+  },
+  "brGirl": {
+    "name": "Girl",
+    "mode": "BossRush",
+    "values": {
+      "no": "No"
+    }
+  },
+  "brSprite": {
+    "name": "Sprite",
+    "mode": "BossRush",
+    "values": {
+      "no": "No"
+    }
+  },
+  "brLimitMpAbsorb": {
+    "name": "Limit MP Absorb",
+    "mode": "BossRush",
+    "values": {
+      "no": "No"
+    }
+  },
+
+
+
+  "chDifficulty": {
+    "name": "Difficulty",
+    "mode": "Chaos",
+    "values": {
+      "hard"      : "Hard",
+      "reallyhard": "Really hard",
+      "custom"    : "Custom"
+    }
+  },
+  "chBoy": {
+    "name": "Boy",
+    "mode": "Chaos",
+    "values": {
+      "no": "No"
+    }
+  },
+  "chGirl": {
+    "name": "Girl",
+    "mode": "Chaos",
+    "values": {
+      "no": "No"
+    }
+  },
+  "chSprite": {
+    "name": "Sprite",
+    "mode": "Chaos",
+    "values": {
+      "no": "No"
+    }
+  },
+  "chTODO1": {
+    "name": "Length",
+    "mode": "Chaos",
+    "values": {
+      "todo": "TODO"
+    }
+  },
+  "chTODO2": {
+    "name": "Bosses",
+    "mode": "Chaos",
+    "values": {
+      "todo": "TODO"
+    }
+  },
+  "chMapColors": {
+    "name": "Color randomization",
+    "mode": "Chaos",
+    "values": {
+      "none"      : "None",
+      "ridiculous": "Ridiculous"
+    }
+  },
+  "chHealSpellsFirst": {
+    "name": "Prioritize heal spells",
+    "mode": "Chaos",
+    "values": {
+      "no": "No"
+    }
+  },
+  "chEasyEarlyFloors": {
+    "name": "Safer early floors",
+    "mode": "Chaos",
+    "values": {
+      "no": "No"
+    }
   }
 }
