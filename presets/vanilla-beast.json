@@ -4,15 +4,13 @@
   "version": "1.21",
   "author": "Menblock",
   "weight": 2,
-  "options": [
-    {
-      "opManaBeastScale": "vanilla",
-      "mode": "open",
-      "opStatGrowth": "boss",
-      "opExp": "triple",
-      "opCharacters": "findbothCL",
-      "opLogic": "restrictive",
-      "opStartChar": "random"
-    }
-  ]
+  "options": {
+    "opManaBeastScale": "vanilla",
+    "mode": "open",
+    "opStatGrowth": "boss",
+    "opExp": "triple",
+    "opCharacters": "findbothCL",
+    "opLogic": "restrictive",
+    "opStartChar": "random"
+  }
 }
