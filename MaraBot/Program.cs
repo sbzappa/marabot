@@ -19,10 +19,12 @@ namespace MaraBot
 
         static async Task MainAsync()
         {
-            var config = ConfigIO.LoadConfig();
-            var options = OptionsIO.LoadOptions();
-            var presets = PresetIO.LoadPresets(options);
-            var weekly = WeeklyIO.LoadWeekly();
+            var configTask = ConfigIO.LoadConfig();
+            var weeklyTask = WeeklyIO.LoadWeekly();
+            var options = await OptionsIO.LoadOptions();
+            var presetsTask = PresetIO.LoadPresets(options);
+
+            var config = await configTask;
 
             var discord = new DiscordShardedClient(new DiscordConfiguration()
             {
@@ -31,8 +33,12 @@ namespace MaraBot
                 Intents = DiscordIntents.AllUnprivileged
             });
 
+            var presets = await presetsTask;
+            var weekly = await weeklyTask;
+
             var services = new ServiceCollection()
                 .AddSingleton<IReadOnlyDictionary<string, Preset>>(_ => presets)
+                .AddSingleton<IReadOnlyDictionary<string, Option>>(_ => options)
                 .AddSingleton(weekly)
                 .BuildServiceProvider();
 

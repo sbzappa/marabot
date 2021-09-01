@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace MaraBot.Core
@@ -15,7 +16,7 @@ namespace MaraBot.Core
             "../../../../config",
         };
 
-        public static Dictionary<string, Option> LoadOptions()
+        public static async Task<Dictionary<string, Option>> LoadOptions()
         {
             var optionsPath = k_ConfigFolders
                 .Select(path => $"{path}/options.json")
@@ -28,7 +29,7 @@ namespace MaraBot.Core
 
             using (StreamReader r = new StreamReader(optionsPath))
             {
-                var json = r.ReadToEnd();
+                var json = await r.ReadToEndAsync();
                 return JsonConvert.DeserializeObject<Dictionary<string, Option>>(json);
             }
         }

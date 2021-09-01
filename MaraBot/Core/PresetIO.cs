@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -29,13 +30,13 @@ namespace MaraBot.Core
         }
 
         public override bool CanWrite => false;
-        
+
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(Dictionary<string, string>);
         }
     }
-    
+
     public static class PresetIO
     {
         static readonly string[] k_PresetFolders = new []
@@ -45,15 +46,15 @@ namespace MaraBot.Core
             "../../../presets",
             "../../../../presets"
         };
-        
-        public static Dictionary<string, Preset> LoadPresets(Dictionary<string, Option> options)
+
+        public static async Task<Dictionary<string, Preset>> LoadPresets(IReadOnlyDictionary<string, Option> options)
         {
             var homeFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||
                  Environment.OSVersion.Platform == PlatformID.MacOSX)
                     ? Environment.GetEnvironmentVariable("HOME")
                     : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
-            
+
             var presetFolder = k_PresetFolders
                 .Select(path => path.Replace("$HOME", homeFolder))
                 .FirstOrDefault(path => Directory.Exists(path));
@@ -71,19 +72,25 @@ namespace MaraBot.Core
             }
 
             var presets = new Dictionary<string, Preset>();
-            
+
             foreach (var presetPath in presetPaths)
             {
                 using (StreamReader r = new StreamReader(presetPath))
                 {
-                    var json = r.ReadToEnd();
-                    var preset = JsonConvert.DeserializeObject<Preset>(json);
-                    preset.MakeDisplayable(options);
-                    presets[Path.GetFileNameWithoutExtension(presetPath)] = preset;
+                    var jsonContent = await r.ReadToEndAsync();
+                    presets[Path.GetFileNameWithoutExtension(presetPath)] = LoadPreset(jsonContent, options);
                 }
             }
 
             return presets;
+        }
+
+        public static Preset LoadPreset(string jsonContent, IReadOnlyDictionary<string, Option> options)
+        {
+            var preset = JsonConvert.DeserializeObject<Preset>(jsonContent);
+            preset?.MakeDisplayable(options);
+
+            return preset;
         }
     }
 }
