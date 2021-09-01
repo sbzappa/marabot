@@ -10,7 +10,7 @@ namespace MaraBot.Core
         public string PresetName;
         public string Seed;
         public Dictionary<string, TimeSpan> Leaderboard;
-        public DateTime GeneratedAt;
+        public DateTime Timestamp;
 
         public static Weekly Invalid => new Weekly
         {
@@ -18,7 +18,7 @@ namespace MaraBot.Core
             PresetName = String.Empty,
             Seed = String.Empty,
             Leaderboard = null,
-            GeneratedAt = DateTime.MinValue
+            Timestamp = DateTime.MinValue
         };
 
         public static Weekly Generate(IReadOnlyDictionary<string, Preset> presets)
@@ -53,7 +53,7 @@ namespace MaraBot.Core
                 PresetName = presetName,
                 Seed = seed,
                 Leaderboard = new Dictionary<string, TimeSpan>(),
-                GeneratedAt = DateTime.Now
+                Timestamp = DateTime.Now
             };
         }
     }

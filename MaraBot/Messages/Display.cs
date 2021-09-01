@@ -22,7 +22,7 @@ namespace MaraBot.Messages
         {
             await Race(ctx, preset, seed, DateTime.Now);
         }
-        public static async Task Race(CommandContext ctx, Preset preset, string seed, DateTime generatedAt)
+        public static async Task Race(CommandContext ctx, Preset preset, string seed, DateTime timestamp)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -32,7 +32,7 @@ namespace MaraBot.Messages
                 {
                     Text = "Generated"
                 },
-                Timestamp = generatedAt
+                Timestamp = timestamp
             };
 
             var rawOptionsString = string.Join(" ",
