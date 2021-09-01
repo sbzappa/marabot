@@ -3,19 +3,17 @@
   "description": ":owl:",
   "version": "1.21",
   "author": "Menblock",
-  "options": [
-    {
-      "aggBosses": "yes",
-      "confusionFix": "no",
-      "moreItems": "no",
-      "ohko": "yes",
-      "opManaBeastScale": "vanilla",
-      "opGPEleRando": "no",
-      "mode": "open",
-      "opDifficulty": "hard",
-      "opGoal": "vlong",
-      "opEnemies": "oops",
-      "opLogic": "restrictive"
-    }
-  ]
+  "options": {
+    "aggBosses": "yes",
+    "confusionFix": "no",
+    "moreItems": "no",
+    "ohko": "yes",
+    "opManaBeastScale": "vanilla",
+    "opGPEleRando": "no",
+    "mode": "open",
+    "opDifficulty": "hard",
+    "opGoal": "vlong",
+    "opEnemies": "oops",
+    "opLogic": "restrictive"
+  }
 }
