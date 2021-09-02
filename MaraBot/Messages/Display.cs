@@ -20,9 +20,10 @@ namespace MaraBot.Messages
 
         public static Task Race(CommandContext ctx, Preset preset, string seed)
         {
-            await Race(ctx, preset, seed, DateTime.Now);
+            return Race(ctx, preset, seed, DateTime.Now);
         }
-        public static async Task Race(CommandContext ctx, Preset preset, string seed, DateTime timestamp)
+
+        public static Task Race(CommandContext ctx, Preset preset, string seed, DateTime timestamp)
         {
             var embed = new DiscordEmbedBuilder
             {
