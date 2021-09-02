@@ -51,6 +51,7 @@ namespace MaraBot
             commands.RegisterCommands<Commands.PresetsCommandModule>();
             commands.RegisterCommands<Commands.PresetCommandModule>();
             commands.RegisterCommands<Commands.RaceCommandModule>();
+            commands.RegisterCommands<Commands.CustomRaceCommandModule>();
             commands.RegisterCommands<Commands.CreatePresetCommandModule>();
             commands.RegisterCommands<Commands.WeeklyCommandModule>();
             commands.RegisterCommands<Commands.CompletedCommandModule>();
