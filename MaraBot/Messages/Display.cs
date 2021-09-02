@@ -87,7 +87,7 @@ namespace MaraBot.Messages
             };
 
             embed
-                .AddField("Week", preset.Name)
+                .AddField("Preset", preset.Name)
                 .AddField("Description", preset.Description)
                 .AddField("Version", preset.Version)
                 .AddField("Author", preset.Author)
