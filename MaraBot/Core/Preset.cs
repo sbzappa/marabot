@@ -32,7 +32,7 @@ namespace MaraBot.Core
         /// <summary>
         /// List of option flags as used in the randomizer options string.
         /// </summary>
-        [JsonConverter(typeof(OptionsConverter))] public Dictionary<string, string> Options;
+        public Dictionary<string, string> Options;
 
         /// <summary>
         /// List of prettified general options contained in Options.

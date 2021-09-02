@@ -42,7 +42,7 @@ namespace MaraBot.Commands
             }
 
             var preset = Presets[Weekly.PresetName];
-            await Display.Race(ctx, preset, Weekly.Seed);
+            await Display.Race(ctx, preset, Weekly.Seed, Weekly.Timestamp);
 
             var successEmoji = DiscordEmoji.FromName(ctx.Client, Display.kValidCommandEmoji);
             await ctx.Message.CreateReactionAsync(successEmoji);

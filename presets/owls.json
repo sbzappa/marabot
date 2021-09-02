@@ -3,21 +3,19 @@
   "description": "They crawl everywhere!",
   "version": "1.21",
   "author": "Cyb3R",
-  "options": [
-    {
-      "opComplexity": "hard",
-      "oopsAllThis": "49",
-      "opNumSeeds": "random",
-      "opMinSeeds": "5",
-      "opMaxSeeds": "7",
-      "mode": "open",
-      "opDifficulty": "kindahard",
-      "opCharacters": "find1L1",
-      "opStatusAilments": "annoying",
-      "opGoal": "mtr",
-      "opEnemies": "oops",
-      "opLogic": "restrictive",
-      "opStartChar": "random"
-    }
-  ]
+  "options": {
+    "opComplexity": "hard",
+    "oopsAllThis": "49",
+    "opNumSeeds": "random",
+    "opMinSeeds": "5",
+    "opMaxSeeds": "7",
+    "mode": "open",
+    "opDifficulty": "kindahard",
+    "opCharacters": "find1L1",
+    "opStatusAilments": "annoying",
+    "opGoal": "mtr",
+    "opEnemies": "oops",
+    "opLogic": "restrictive",
+    "opStartChar": "random"
+  }
 }

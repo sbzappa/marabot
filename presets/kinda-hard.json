@@ -4,18 +4,16 @@
   "version": "1.21",
   "author": "CrashTestGenius",
   "weight": 2,
-  "options": [
-    {
-      "mode": "open",
-      "opDifficulty": "kindahard",
-      "opCharacters": "findbothCL",
-      "opStatusAilments": "annoying",
-      "opGoal": "mtr",
-      "opEnemies": "random",
-      "opBosses": "swap",
-      "opLogic": "restrictive",
-      "opStartChar": "random",
-      "opMusic": "no"
-    }
-  ]
+  "options": {
+    "mode": "open",
+    "opDifficulty": "kindahard",
+    "opCharacters": "findbothCL",
+    "opStatusAilments": "annoying",
+    "opGoal": "mtr",
+    "opEnemies": "random",
+    "opBosses": "swap",
+    "opLogic": "restrictive",
+    "opStartChar": "random",
+    "opMusic": "no"
+  }
 }
