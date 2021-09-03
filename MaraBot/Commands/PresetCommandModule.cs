@@ -14,6 +14,7 @@ namespace MaraBot.Commands
         public IReadOnlyDictionary<string, Preset> Presets { private get; set; }
 
         [Command("preset")]
+        [Description("Get the info on a given preset.")]
         [Cooldown(10, 600, CooldownBucketType.User)]
         [RequireGuild]
         public async Task Execute(CommandContext ctx, string presetName)

@@ -12,6 +12,7 @@ namespace MaraBot.Commands
         public Weekly Weekly { private get; set; }
 
         [Command("leaderboard")]
+        [Description("Get the weekly leaderboard.")]
         [Aliases("lb")]
         [Cooldown(2, 900, CooldownBucketType.Channel)]
         [RequireGuild]

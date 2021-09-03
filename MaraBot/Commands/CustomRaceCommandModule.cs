@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -19,6 +18,7 @@ namespace MaraBot.Commands
         public IConfig Config { private get; set; }
 
         [Command("custom")]
+        [Description("Start a custom race based on a .json file")]
         [Cooldown(3, 600, CooldownBucketType.User)]
         [RequireGuild]
         public async Task Execute(CommandContext ctx)

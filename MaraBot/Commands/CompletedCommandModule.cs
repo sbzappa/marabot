@@ -16,6 +16,7 @@ namespace MaraBot.Commands
 
         [Command("completed")]
         [Aliases("done")]
+        [Description("Add your time to the leaderboard.")]
         [Cooldown(2, 900, CooldownBucketType.User)]
         [RequireGuild]
         public async Task Execute(CommandContext ctx, TimeSpan time)
