@@ -25,11 +25,12 @@ namespace MaraBot.Messages
             ":third_place:"
         };
 
-        public static async Task Race(CommandContext ctx, Preset preset, string seed)
+        public static Task Race(CommandContext ctx, Preset preset, string seed)
         {
-            await Race(ctx, preset, seed, DateTime.Now);
+            return Race(ctx, preset, seed, DateTime.Now);
         }
-        public static async Task Race(CommandContext ctx, Preset preset, string seed, DateTime timestamp)
+
+        public static Task Race(CommandContext ctx, Preset preset, string seed, DateTime timestamp)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -55,10 +56,10 @@ namespace MaraBot.Messages
             var mainBuilder = new DiscordMessageBuilder()
                .AddEmbed(embed);
 
-            await ctx.RespondAsync(mainBuilder);
+            return ctx.RespondAsync(mainBuilder);
         }
 
-        public static async Task Presets(CommandContext ctx, IReadOnlyDictionary<string, Preset> presets)
+        public static Task Presets(CommandContext ctx, IReadOnlyDictionary<string, Preset> presets)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -82,10 +83,10 @@ namespace MaraBot.Messages
                 .AddField("Name", presetNames, true)
                 .AddField("Description", presetDescriptions, true);
 
-            await ctx.RespondAsync(embed);
+            return ctx.RespondAsync(embed);
         }
 
-        public static async Task Preset(CommandContext ctx, Preset preset)
+        public static Task Preset(CommandContext ctx, Preset preset)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -100,7 +101,7 @@ namespace MaraBot.Messages
                 .AddField("Author", preset.Author)
                 .AddOptionsToEmbed(preset);
 
-            await ctx.RespondAsync(embed);
+            return ctx.RespondAsync(embed);
         }
 
         private static DiscordEmbedBuilder AddOptionDictionaryToEmbed(this DiscordEmbedBuilder embed, string title, Dictionary<string, string> options)
@@ -147,7 +148,8 @@ namespace MaraBot.Messages
             return embed;
         }
 
-        public static async Task Leaderboard(CommandContext ctx, Weekly weekly, bool preventSpoilers)
+
+        public static Task Leaderboard(CommandContext ctx, Weekly weekly, bool preventSpoilers)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -190,7 +192,7 @@ namespace MaraBot.Messages
             embed.AddField("User", userStrings, true);
             embed.AddField("Time", timeStrings, true);
 
-            await ctx.RespondAsync(embed);
+            return ctx.RespondAsync(embed);
         }
     }
 }

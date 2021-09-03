@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -18,7 +19,7 @@ namespace MaraBot.Core
             "../../../../presets"
         };
 
-        public static Dictionary<string, Preset> LoadPresets(Dictionary<string, Option> options)
+        public static async Task<Dictionary<string, Preset>> LoadPresets(IReadOnlyDictionary<string, Option> options)
         {
             var homeFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||
@@ -48,14 +49,20 @@ namespace MaraBot.Core
             {
                 using (StreamReader r = new StreamReader(presetPath))
                 {
-                    var json = r.ReadToEnd();
-                    var preset = JsonConvert.DeserializeObject<Preset>(json);
-                    preset.MakeDisplayable(options);
-                    presets[Path.GetFileNameWithoutExtension(presetPath)] = preset;
+                    var jsonContent = await r.ReadToEndAsync();
+                    presets[Path.GetFileNameWithoutExtension(presetPath)] = LoadPreset(jsonContent, options);
                 }
             }
 
             return presets;
+        }
+
+        public static Preset LoadPreset(string jsonContent, IReadOnlyDictionary<string, Option> options)
+        {
+            var preset = JsonConvert.DeserializeObject<Preset>(jsonContent);
+            preset?.MakeDisplayable(options);
+
+            return preset;
         }
     }
 }

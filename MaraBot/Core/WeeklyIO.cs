@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using DSharpPlus;
 using Newtonsoft.Json;
 
@@ -10,7 +11,7 @@ namespace MaraBot.Core
     {
         private static readonly string k_WeeklyFolder = "$HOME/marabot";
 
-        public static void StoreWeekly(Weekly weekly, string weeklyFilename = "weekly.json")
+        public static async void StoreWeekly(Weekly weekly, string weeklyFilename = "weekly.json")
         {
             var homeFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||
@@ -24,15 +25,14 @@ namespace MaraBot.Core
 
             var weeklyPath = weeklyFolder + "/" + weeklyFilename;
 
-            // TODO do this async...
             using (StreamWriter w = new StreamWriter(weeklyPath))
             {
                 var json = JsonConvert.SerializeObject(weekly, Formatting.Indented);
-                w.Write(json);
+                await w.WriteAsync(json);
             }
         }
 
-        public static Weekly LoadWeekly(string weeklyFilename = "weekly.json")
+        public static async Task<Weekly> LoadWeekly(string weeklyFilename = "weekly.json")
         {
             var homeFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||
@@ -50,11 +50,9 @@ namespace MaraBot.Core
 
             using (StreamReader r = new StreamReader(weeklyPath))
             {
-                var json = r.ReadToEnd();
-                weekly = JsonConvert.DeserializeObject<Weekly>(json);
+                var json = await r.ReadToEndAsync();
+                return JsonConvert.DeserializeObject<Weekly>(json);
             }
-
-            return weekly;
         }
     }
 }

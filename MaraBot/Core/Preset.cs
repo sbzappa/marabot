@@ -53,7 +53,7 @@ namespace MaraBot.Core
         /// Parses the set of flags in Options, based on the options given,
         /// to populate the list of general, mode-specific and other options.
         /// </summary>
-        public void MakeDisplayable(Dictionary<string, Option> options)
+        public void MakeDisplayable(IReadOnlyDictionary<string, Option> options)
         {
             var list = new List<Tuple<Mode, string, string>>();
 

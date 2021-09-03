@@ -8,7 +8,7 @@ namespace MaraBot.Commands
 {
     using Core;
     using Messages;
-    
+
     public class RaceCommandModule : BaseCommandModule
     {
         public IReadOnlyDictionary<string, Preset> Presets { private get; set; }
@@ -18,23 +18,25 @@ namespace MaraBot.Commands
         [RequireGuild]
         public async Task Execute(CommandContext ctx, string presetName)
         {
+            var success = LaunchPresetRace(ctx, presetName);
+
+            var emoji = DiscordEmoji.FromName(ctx.Client, await success ? Display.kValidCommandEmoji : Display.kInvalidCommandEmoji);
+            await ctx.Message.CreateReactionAsync(emoji);
+        }
+
+        public async Task<bool> LaunchPresetRace(CommandContext ctx, string presetName)
+        {
             if (!Presets.ContainsKey(presetName))
             {
                 await ctx.RespondAsync($"{presetName} is not a a valid preset");
-                
-                var invalidEmoji = DiscordEmoji.FromName(ctx.Client, Display.kInvalidCommandEmoji);
-                await ctx.Message.CreateReactionAsync(invalidEmoji);
-                
-                return; 
+                return false;
             }
 
-            var preset = Presets[presetName];
             var seed = RandomUtils.GetRandomSeed();
+            var preset = Presets[presetName];
 
             await Display.Race(ctx, preset, seed);
-            
-            var successEmoji = DiscordEmoji.FromName(ctx.Client, Display.kValidCommandEmoji);
-            await ctx.Message.CreateReactionAsync(successEmoji);
+            return true;
         }
     }
 }

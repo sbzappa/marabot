@@ -22,7 +22,7 @@ namespace MaraBot.Commands
             var weekly = Weekly;
             if (weekNumber != currentWeek)
             {
-                weekly = WeeklyIO.LoadWeekly($"weekly.{weekNumber}.json");
+                weekly = await WeeklyIO.LoadWeekly($"weekly.{weekNumber}.json");
             }
 
             if (weekly.Leaderboard == null || weekly.Leaderboard.Count == 0)
