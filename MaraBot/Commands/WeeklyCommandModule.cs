@@ -20,15 +20,6 @@ namespace MaraBot.Commands
         [RequireGuild]
         public async Task Execute(CommandContext ctx)
         {
-            var weekNumber = RandomUtils.GetWeekNumber();
-
-            // Generate a new weekly seed
-            if (Weekly.WeekNumber != weekNumber)
-            {
-                Weekly = Weekly.Generate(Presets);
-                WeeklyIO.StoreWeekly(Weekly);
-            }
-
             if (!Presets.ContainsKey(Weekly.PresetName) || Weekly.WeekNumber < 0)
             {
                 await ctx.RespondAsync(

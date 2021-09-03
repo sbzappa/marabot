@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -16,16 +17,14 @@ namespace MaraBot.Commands
         [Command("done")]
         [Cooldown(2, 900, CooldownBucketType.User)]
         [RequireGuild]
+        [RequireBotPermissions(Permissions.ManageMessages)]
         public async Task Execute(CommandContext ctx, TimeSpan time)
         {
-            var weekNumber = RandomUtils.GetWeekNumber();
-            if (Weekly.WeekNumber != weekNumber)
-            {
-                await ctx.RespondAsync("No weekly seed generated for this week. Generate one using the weekly command first.");
+            // Delete user message to avoid spoilers.
+            // This requires access to ManagerMessages permissions.
+            await ctx.Message.DeleteAsync();
 
-                var invalidEmoji = DiscordEmoji.FromName(ctx.Client, Display.kInvalidCommandEmoji);
-                await ctx.Message.CreateReactionAsync(invalidEmoji);
-            }
+            await ctx.RespondAsync($"Adding {ctx.User.Mention} to the leaderboard!");
 
             var username = ctx.User.Username;
 
@@ -38,10 +37,7 @@ namespace MaraBot.Commands
                 Weekly.Leaderboard.Add(username, time);
 
             WeeklyIO.StoreWeekly(Weekly);
-            await Display.Leaderboard(ctx, Weekly);
-
-            var validEmoji = DiscordEmoji.FromName(ctx.Client, Display.kValidCommandEmoji);
-            await ctx.Message.CreateReactionAsync(validEmoji);
+            await Display.Leaderboard(ctx, Weekly, true);
         }
     }
 }

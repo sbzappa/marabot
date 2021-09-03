@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using DSharpPlus;
 using Newtonsoft.Json;
 
 namespace MaraBot.Core
@@ -9,7 +10,7 @@ namespace MaraBot.Core
     {
         private static readonly string k_WeeklyFolder = "$HOME/marabot";
 
-        public static void StoreWeekly(Weekly weekly)
+        public static void StoreWeekly(Weekly weekly, string weeklyFilename = "weekly.json")
         {
             var homeFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||
@@ -21,17 +22,17 @@ namespace MaraBot.Core
             if (!Directory.Exists(weeklyFolder))
                 Directory.CreateDirectory(weeklyFolder);
 
-            var weeklyPath = weeklyFolder + "/weekly.json";
+            var weeklyPath = weeklyFolder + "/" + weeklyFilename;
 
             // TODO do this async...
             using (StreamWriter w = new StreamWriter(weeklyPath))
             {
-                var json = JsonConvert.SerializeObject(weekly);
+                var json = JsonConvert.SerializeObject(weekly, Formatting.Indented);
                 w.Write(json);
             }
         }
 
-        public static Weekly LoadWeekly()
+        public static Weekly LoadWeekly(string weeklyFilename = "weekly.json")
         {
             var homeFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||
@@ -39,7 +40,7 @@ namespace MaraBot.Core
                     ? Environment.GetEnvironmentVariable("HOME")
                     : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
 
-            var weeklyPath = k_WeeklyFolder.Replace("$HOME", homeFolder) + "/weekly.json";
+            var weeklyPath = k_WeeklyFolder.Replace("$HOME", homeFolder) + "/" + weeklyFilename;
 
             var weekly = Weekly.Invalid;
             if (!File.Exists(weeklyPath))
