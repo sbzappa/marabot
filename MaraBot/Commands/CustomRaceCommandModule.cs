@@ -19,17 +19,9 @@ namespace MaraBot.Commands
         public IConfig Config { private get; set; }
 
         [Command("custom")]
-        [Cooldown(15, 900, CooldownBucketType.User)]
+        [Cooldown(3, 600, CooldownBucketType.User)]
         [RequireGuild]
         public async Task Execute(CommandContext ctx)
-        {
-            var success = LaunchCustomRace(ctx);
-
-            var emoji = DiscordEmoji.FromName(ctx.Client, await success ? Display.kValidCommandEmoji : Display.kInvalidCommandEmoji);
-            await ctx.Message.CreateReactionAsync(emoji);
-        }
-
-        private async Task<bool> LaunchCustomRace(CommandContext ctx)
         {
             // Safety measure to avoid potential misuses of this command. May be revisited in the future.
             if (!ctx.Member.Roles.Any(role => (Config.OrganizerRoles?.Contains(role.Name)).GetValueOrDefault()))
@@ -40,17 +32,20 @@ namespace MaraBot.Commands
                 await ctx.RespondAsync(
                     "Insufficient privileges to create a custom race.\n" +
                     "This command is only available to the following roles:\n" +
-                    String.Join(", ",guildRoles
-                        .Select(role => Formatter.Bold(role.Value.Name))
-                        ));
-
-                return false;
+                    String.Join(
+                        ", ",
+                        await CommandUtils.MentionRoleWithoutPing(ctx, guildRoles.Select(r => r.Value).ToArray())
+                    )
+                );
+                await CommandUtils.SendFailReaction(ctx);
+                return;
             }
 
             if (ctx.Message.Attachments == null || ctx.Message.Attachments.Count != 1)
             {
                 await ctx.RespondAsync("No attachment for custom race. You must supply a valid json file.");
-                return false;
+                await CommandUtils.SendFailReaction(ctx);
+                return;
             }
 
             var attachment = ctx.Message.Attachments[0];
@@ -62,7 +57,8 @@ namespace MaraBot.Commands
             if (Path.GetExtension(attachment.FileName).ToLower() != ".json")
             {
                 await ctx.RespondAsync("Expected file extension to be .json.");
-                return false;
+                await CommandUtils.SendFailReaction(ctx);
+                return;
             }
 
             var response = await responseTask;
@@ -75,15 +71,15 @@ namespace MaraBot.Commands
                 if (preset == null)
                 {
                     await ctx.RespondAsync($"Could not parse custom json preset. Please supply a valid json file.");
-                    return false;
+                    await CommandUtils.SendFailReaction(ctx);
+                    return;
                 }
 
                 var seed = RandomUtils.GetRandomSeed();
                 await Display.Race(ctx, preset, seed);
             }
 
-            return true;
+            await CommandUtils.SendSuccessReaction(ctx);
         }
-
     }
 }

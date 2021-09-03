@@ -12,7 +12,8 @@ namespace MaraBot.Commands
         public Weekly Weekly { private get; set; }
 
         [Command("leaderboard")]
-        [Cooldown(5, 900, CooldownBucketType.User)]
+        [Aliases("lb")]
+        [Cooldown(2, 900, CooldownBucketType.Channel)]
         [RequireGuild]
         public async Task Execute(CommandContext ctx, int weekNumber = -1)
         {
@@ -28,17 +29,12 @@ namespace MaraBot.Commands
             if (weekly.Leaderboard == null || weekly.Leaderboard.Count == 0)
             {
                 await ctx.RespondAsync($"No leaderboard available for week {weekNumber}.");
-
-                var invalidEmoji = DiscordEmoji.FromName(ctx.Client, Display.kInvalidCommandEmoji);
-                await ctx.Message.CreateReactionAsync(invalidEmoji);
-
+                await CommandUtils.SendFailReaction(ctx);
                 return;
             }
 
             await Display.Leaderboard(ctx, weekly, weekNumber == currentWeek);
-
-            var validEmoji = DiscordEmoji.FromName(ctx.Client, Display.kValidCommandEmoji);
-            await ctx.Message.CreateReactionAsync(validEmoji);
+            await CommandUtils.SendSuccessReaction(ctx);
         }
     }
 }

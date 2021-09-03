@@ -16,7 +16,7 @@ namespace MaraBot.Commands
         public IReadOnlyDictionary<string, Preset> Presets { private get; set; }
 
         [Command("newpreset")]
-        [Cooldown(15, 900, CooldownBucketType.User)]
+        [Cooldown(5, 600, CooldownBucketType.User)]
         [RequireDirectMessage]
         public async Task Execute(CommandContext ctx, [RemainingText] string optionString)
         {
@@ -27,7 +27,11 @@ namespace MaraBot.Commands
             foreach(string option in optionValues)
             {
                 if(!option.Contains('='))
+                {
                     await ctx.RespondAsync($"'{option}' is not formatted correctly. Format must be 'key=value'.");
+                    await CommandUtils.SendFailReaction(ctx);
+                    return;
+                }
                 string[] values = option.Split('=');
                 options.Add(values[0], values[1]);
             }
@@ -56,9 +60,7 @@ namespace MaraBot.Commands
 
             string json = JsonConvert.SerializeObject(preset, Formatting.Indented);
             await ctx.RespondAsync(Formatter.BlockCode(json));
-
-            var successEmoji = DiscordEmoji.FromName(ctx.Client, Display.kValidCommandEmoji);
-            await ctx.Message.CreateReactionAsync(successEmoji);
+            await CommandUtils.SendSuccessReaction(ctx);
         }
     }
 }

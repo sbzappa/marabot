@@ -14,15 +14,15 @@ namespace MaraBot.Commands
     {
         public Weekly Weekly { private get; set; }
 
-        [Command("done")]
+        [Command("completed")]
+        [Aliases("done")]
         [Cooldown(2, 900, CooldownBucketType.User)]
         [RequireGuild]
-        [RequireBotPermissions(Permissions.ManageMessages)]
         public async Task Execute(CommandContext ctx, TimeSpan time)
         {
-            // Delete user message to avoid spoilers.
-            // This requires access to ManagerMessages permissions.
-            await ctx.Message.DeleteAsync();
+            // Delete user message to avoid spoilers, if we can delete the message
+            if(await CommandUtils.HasBotPermissions(ctx, Permissions.ManageMessages))
+                await ctx.Message.DeleteAsync();
 
             await ctx.RespondAsync($"Adding {ctx.User.Mention} to the leaderboard!");
 
