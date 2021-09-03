@@ -18,6 +18,13 @@ namespace MaraBot.Messages
         public const string kValidCommandEmoji = ":white_check_mark:";
         public const string kInvalidCommandEmoji = ":no_entry_sign:";
 
+        public static readonly string[] kRankingEmoijs = new []
+        {
+            ":first_place:",
+            ":second_place:",
+            ":third_place:"
+        };
+
         public static Task Race(CommandContext ctx, Preset preset, string seed)
         {
             return Race(ctx, preset, seed, DateTime.Now);
@@ -141,7 +148,8 @@ namespace MaraBot.Messages
             return embed;
         }
 
-        public static Task Leaderboard(CommandContext ctx, Weekly weekly)
+
+        public static Task Leaderboard(CommandContext ctx, Weekly weekly, bool preventSpoilers)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -152,17 +160,34 @@ namespace MaraBot.Messages
             embed
                 .AddField("Weekly Seed", $"week #{weekly.WeekNumber}");
 
-            var sortedLeaderboard = weekly.Leaderboard
-                .OrderBy(kvp => kvp.Value);
+            IEnumerable<KeyValuePair<string, TimeSpan>> leaderboard = weekly.Leaderboard;
 
+            // To avoid giving away any ranking, avoid sorting the leaderboard when preventing spoilers.
+            if (!preventSpoilers)
+            {
+                leaderboard = leaderboard
+                    .OrderBy(kvp => kvp.Value);
+            }
+
+            var emojis = String.Join("\n",
+                kRankingEmoijs.Take(Math.Min(kRankingEmoijs.Length, leaderboard.Count()))
+            );
             var userStrings = String.Empty;
             var timeStrings = String.Empty;
 
-            foreach (var entry in sortedLeaderboard)
+            foreach (var entry in leaderboard)
             {
                 userStrings += $"{entry.Key}\n";
                 timeStrings += $"{entry.Value}\n";
             }
+
+            if (preventSpoilers)
+            {
+                timeStrings = Formatter.Spoiler(timeStrings);
+            }
+
+            if (!preventSpoilers)
+                embed.AddField("\u200B", emojis, true);
 
             embed.AddField("User", userStrings, true);
             embed.AddField("Time", timeStrings, true);
