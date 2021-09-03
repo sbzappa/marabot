@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
@@ -13,10 +15,10 @@ namespace MaraBot.Commands
     public class CustomRaceCommandModule : BaseCommandModule
     {
         public IReadOnlyDictionary<string, Option> Options { private get; set; }
+        public IConfig Config { private get; set; }
 
         [Command("custom")]
         [Cooldown(15, 900, CooldownBucketType.User)]
-        [RequireRoles(RoleCheckMode.Any, new [] {"bot overlord", "organizes races"})]
         [RequireGuild]
         public async Task Execute(CommandContext ctx)
         {
@@ -28,6 +30,22 @@ namespace MaraBot.Commands
 
         private async Task<bool> LaunchCustomRace(CommandContext ctx)
         {
+            // Safety measure to avoid potential misuses of this command. May be revisited in the future.
+            if (!ctx.Member.Roles.Any(role => (Config.OrganizerRoles?.Contains(role.Name)).GetValueOrDefault()))
+            {
+                var guildRoles = ctx.Guild.Roles
+                    .Where(role => (Config.OrganizerRoles?.Contains(role.Value.Name)).GetValueOrDefault());
+
+                await ctx.RespondAsync(
+                    "Insufficient privileges to create a custom race.\n" +
+                    "This command is only available to the following roles:\n" +
+                    String.Join(", ",guildRoles
+                        .Select(role => role.Value.Mention)
+                        ));
+
+                return false;
+            }
+
             if (ctx.Message.Attachments == null || ctx.Message.Attachments.Count != 1)
             {
                 await ctx.RespondAsync("No attachment for custom race. You must supply a valid json file.");
@@ -42,7 +60,7 @@ namespace MaraBot.Commands
 
             if (Path.GetExtension(attachment.FileName).ToLower() != ".json")
             {
-                await ctx.RespondAsync("Invalid json file.");
+                await ctx.RespondAsync("Expected file extension to be .json.");
                 return false;
             }
 

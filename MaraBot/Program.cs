@@ -39,6 +39,7 @@ namespace MaraBot
             var services = new ServiceCollection()
                 .AddSingleton<IReadOnlyDictionary<string, Preset>>(_ => presets)
                 .AddSingleton<IReadOnlyDictionary<string, Option>>(_ => options)
+                .AddSingleton<IConfig>(_ => config)
                 .AddSingleton(weekly)
                 .BuildServiceProvider();
 
