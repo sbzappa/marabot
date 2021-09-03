@@ -1,4 +1,7 @@
 {
   "prefix": "!",
-  "token": "my-token-goes-here"
+  "token": "my-token-goes-here",
+  "organizerRoles": [
+    "organizes races"
+  ]
 }
