@@ -25,18 +25,13 @@ namespace MaraBot.Commands
                 await ctx.RespondAsync(
                     $"Weekly preset '{Weekly.PresetName}' is not a a valid preset\n" +
                     "This shouldn't happen! Please contact your friendly neighbourhood developers!");
-
-                var invalidEmoji = DiscordEmoji.FromName(ctx.Client, Display.kInvalidCommandEmoji);
-                await ctx.Message.CreateReactionAsync(invalidEmoji);
-
+                await CommandUtils.SendFailReaction(ctx, false);
                 return;
             }
 
             var preset = Presets[Weekly.PresetName];
             await Display.Race(ctx, preset, Weekly.Seed, Weekly.Timestamp);
-
-            var successEmoji = DiscordEmoji.FromName(ctx.Client, Display.kValidCommandEmoji);
-            await ctx.Message.CreateReactionAsync(successEmoji);
+            await CommandUtils.SendSuccessReaction(ctx);
         }
     }
 }
