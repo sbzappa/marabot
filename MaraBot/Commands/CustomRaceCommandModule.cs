@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
@@ -40,7 +41,7 @@ namespace MaraBot.Commands
                     "Insufficient privileges to create a custom race.\n" +
                     "This command is only available to the following roles:\n" +
                     String.Join(", ",guildRoles
-                        .Select(role => role.Value.Mention)
+                        .Select(role => Formatter.Bold(role.Value.Name))
                         ));
 
                 return false;
