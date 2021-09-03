@@ -16,6 +16,7 @@ namespace MaraBot.Commands
         public IReadOnlyDictionary<string, Preset> Presets { private get; set; }
 
         [Command("newpreset")]
+        [Description("Create a dummy preset file, with options if given.")]
         [Cooldown(5, 600, CooldownBucketType.User)]
         [RequireDirectMessage]
         public async Task Execute(CommandContext ctx, [RemainingText] string optionString)

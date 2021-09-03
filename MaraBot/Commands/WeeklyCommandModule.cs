@@ -16,6 +16,7 @@ namespace MaraBot.Commands
         public IReadOnlyDictionary<string, Preset> Presets { private get; set; }
 
         [Command("weekly")]
+        [Description("Get the weekly race.")]
         [Cooldown(2, 900, CooldownBucketType.Channel)]
         [RequireGuild]
         public async Task Execute(CommandContext ctx)
