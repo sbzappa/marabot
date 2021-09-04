@@ -1,0 +1,19 @@
+{
+  "name": "Solo Girl MTR",
+  "description": "Primm's a tree hugger!",
+  "version": "1.21",
+  "author": "sbz",
+  "weight": 1,
+  "options": {
+    "opStartWeapon": "0",
+    "opNumSeeds": "random",
+    "opMinSeeds": "6",
+    "mode": "open",
+    "opDifficulty": "kindahard",
+    "opGold": "triple",
+    "opCharacters": "none",
+    "opGoal": "mtr",
+    "opLogic": "restrictive",
+    "opStartChar": "girl"
+  }
+}
