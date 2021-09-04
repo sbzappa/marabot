@@ -1,10 +1,9 @@
-using Newtonsoft.Json;
-using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.NetworkInformation;
 
 namespace MaraBot
 {
@@ -42,6 +41,20 @@ namespace MaraBot
                 .AddSingleton<IConfig>(_ => config)
                 .AddSingleton(weekly)
                 .BuildServiceProvider();
+
+            // Test for internet connection before launching the bot.
+            using (var ping = new Ping())
+            {
+                var maxNumberOfTries = 100;
+                var count = 0;
+
+                while (++count < maxNumberOfTries)
+                {
+                    var reply = ping.Send("www.google.com");
+                    if (reply != null && reply.Status == IPStatus.Success)
+                        break;
+                }
+            }
 
             var commands = await discord.UseCommandsNextAsync(new CommandsNextConfiguration()
             {
