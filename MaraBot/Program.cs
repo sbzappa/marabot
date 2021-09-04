@@ -55,7 +55,7 @@ namespace MaraBot
                     {
                         reply = ping.Send("www.google.com");
                     }
-                    catch (PingException _)
+                    catch (PingException)
                     {
                         await Task.Delay(1000);
                     }
