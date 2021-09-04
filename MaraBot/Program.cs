@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace MaraBot
 {
@@ -57,6 +58,11 @@ namespace MaraBot
             commands.RegisterCommands<Commands.WeeklyCommandModule>();
             commands.RegisterCommands<Commands.CompletedCommandModule>();
             commands.RegisterCommands<Commands.LeaderboardCommandModule>();
+
+            foreach(var c in commands) {
+                c.Value.CommandExecuted += Events.OnCommandExecuted;
+                c.Value.CommandErrored += Events.OnCommandErrored;
+            }
 
             await discord.StartAsync();
             await Task.Delay(-1);
