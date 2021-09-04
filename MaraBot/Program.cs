@@ -50,7 +50,16 @@ namespace MaraBot
 
                 while (++count < maxNumberOfTries)
                 {
-                    var reply = ping.Send("www.google.com");
+                    PingReply reply = null;
+                    try
+                    {
+                        reply = ping.Send("www.google.com");
+                    }
+                    catch (PingException _)
+                    {
+                        await Task.Delay(1000);
+                    }
+
                     if (reply != null && reply.Status == IPStatus.Success)
                         break;
                 }
