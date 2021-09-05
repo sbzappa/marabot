@@ -1,10 +1,9 @@
-using Newtonsoft.Json;
-using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.NetworkInformation;
 using Microsoft.Extensions.Logging;
 
 namespace MaraBot
@@ -43,6 +42,22 @@ namespace MaraBot
                 .AddSingleton<IConfig>(_ => config)
                 .AddSingleton(weekly)
                 .BuildServiceProvider();
+
+            // Test for network before connecting to discord.
+            var numberOfTries = 50;
+            while (numberOfTries-- > 0)
+            {
+                if (NetworkInterface.GetIsNetworkAvailable())
+                    break;
+
+                await Task.Delay(1000);
+            }
+
+            if (!NetworkInterface.GetIsNetworkAvailable())
+            {
+                discord.Logger.LogCritical("No network available! Please check your connection.");
+                return;
+            }
 
             var commands = await discord.UseCommandsNextAsync(new CommandsNextConfiguration()
             {
