@@ -42,27 +42,14 @@ namespace MaraBot
                 .AddSingleton(weekly)
                 .BuildServiceProvider();
 
-            // Test for internet connection before launching the bot.
-            using (var ping = new Ping())
+            // Test for network before connecting to discord.
+            var numberOfTries = 5;
+            while (numberOfTries-- > 0)
             {
-                var maxNumberOfTries = 100;
-                var count = 0;
+                if (NetworkInterface.GetIsNetworkAvailable())
+                    break;
 
-                while (++count < maxNumberOfTries)
-                {
-                    PingReply reply = null;
-                    try
-                    {
-                        reply = ping.Send("www.google.com");
-                    }
-                    catch (PingException)
-                    {
-                        await Task.Delay(1000);
-                    }
-
-                    if (reply != null && reply.Status == IPStatus.Success)
-                        break;
-                }
+                await Task.Delay(1000);
             }
 
             var commands = await discord.UseCommandsNextAsync(new CommandsNextConfiguration()
