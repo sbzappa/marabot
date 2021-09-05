@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MaraBot.Core
 {
-    public static class Events
+    public static class CommandEvents
     {
         public static Task OnCommandExecuted(CommandsNextExtension cne, CommandExecutionEventArgs e)
         {

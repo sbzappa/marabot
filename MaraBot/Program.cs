@@ -60,8 +60,8 @@ namespace MaraBot
             commands.RegisterCommands<Commands.LeaderboardCommandModule>();
 
             foreach(var c in commands) {
-                c.Value.CommandExecuted += Events.OnCommandExecuted;
-                c.Value.CommandErrored += Events.OnCommandErrored;
+                c.Value.CommandExecuted += CommandEvents.OnCommandExecuted;
+                c.Value.CommandErrored += CommandEvents.OnCommandErrored;
             }
 
             await discord.StartAsync();
