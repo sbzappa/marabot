@@ -4,16 +4,30 @@ using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
-using MaraBot.Core;
-using MaraBot.Messages;
 
 namespace MaraBot.Commands
 {
+    using Core;
+    using IO;
+    using Messages;
+
+    /// <summary>
+    /// Implements the completed command.
+    /// This command is used to add your time to the leaderboard.
+    /// </summary>
     public class CompletedCommandModule : BaseCommandModule
     {
+        /// <summary>
+        /// Weekly settings.
+        /// </summary>
         public Weekly Weekly { private get; set; }
 
+        /// <summary>
+        /// Executes the completed command.
+        /// </summary>
+        /// <param name="ctx">Command Context.</param>
+        /// <param name="time">Elapsed time. Expecting HH:MM:SS format.</param>
+        /// <returns>Returns an asynchronous task.</returns>
         [Command("completed")]
         [Aliases("done")]
         [Description("Add your time to the leaderboard.")]
@@ -37,8 +51,8 @@ namespace MaraBot.Commands
             else
                 Weekly.Leaderboard.Add(username, time);
 
-            WeeklyIO.StoreWeekly(Weekly);
-            await Display.Leaderboard(ctx, Weekly, true);
+            WeeklyIO.StoreWeeklyAsync(Weekly);
+            await Display.LeaderboardAsync(ctx, Weekly, true);
         }
     }
 }

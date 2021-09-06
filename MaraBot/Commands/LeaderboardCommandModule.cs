@@ -1,16 +1,32 @@
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
-using MaraBot.Core;
-using MaraBot.Messages;
 
 namespace MaraBot.Commands
 {
+    using Core;
+    using IO;
+    using Messages;
+
+    /// <summary>
+    /// Implements the leaderboard command.
+    /// This command is used to display the leaderboard for the weekly race.
+    /// Optionally a leaderboard for previous weekly can be displayed by
+    /// specifying the week number.
+    /// </summary>
     public class LeaderboardCommandModule : BaseCommandModule
     {
+        /// <summary>
+        /// Weekly settings.
+        /// </summary>
         public Weekly Weekly { private get; set; }
 
+        /// <summary>
+        /// Executes the leaderboard command.
+        /// </summary>
+        /// <param name="ctx">Command Context.</param>
+        /// <param name="weekNumber"></param>
+        /// <returns>Returns an asynchronous task.</returns>
         [Command("leaderboard")]
         [Description("Get the weekly leaderboard.")]
         [Aliases("lb")]
@@ -24,7 +40,7 @@ namespace MaraBot.Commands
             var weekly = Weekly;
             if (weekNumber != currentWeek)
             {
-                weekly = await WeeklyIO.LoadWeekly($"weekly.{weekNumber}.json");
+                weekly = await WeeklyIO.LoadWeeklyAsync($"weekly.{weekNumber}.json");
             }
 
             if (weekly.Leaderboard == null || weekly.Leaderboard.Count == 0)
@@ -34,7 +50,7 @@ namespace MaraBot.Commands
                 return;
             }
 
-            await Display.Leaderboard(ctx, weekly, weekNumber == currentWeek);
+            await Display.LeaderboardAsync(ctx, weekly, weekNumber == currentWeek);
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }

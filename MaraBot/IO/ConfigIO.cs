@@ -1,13 +1,17 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace MaraBot.Core
+namespace MaraBot.IO
 {
+    using Core;
+
+    /// <summary>
+    /// Config file IO.
+    /// </summary>
+    /// <seealso cref="Config"/>
     public static class ConfigIO
     {
         static readonly string[] k_ConfigFolders = new []
@@ -19,7 +23,12 @@ namespace MaraBot.Core
             "$HOME/marabot"
         };
 
-        public static async Task<Config> LoadConfig()
+        /// <summary>
+        /// Reads the bot configuration from file.
+        /// </summary>
+        /// <returns>The bot configuration.</returns>
+        /// <exception cref="InvalidOperationException">No config file has been found.</exception>
+        public static async Task<Config> LoadConfigAsync()
         {
             var homeFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||

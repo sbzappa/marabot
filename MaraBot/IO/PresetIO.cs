@@ -2,13 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
-namespace MaraBot.Core
+namespace MaraBot.IO
 {
+    using Core;
+
+    /// <summary>
+    /// Preset File IO.
+    /// </summary>
+    /// <seealso cref="Preset"/>
     public static class PresetIO
     {
         static readonly string[] k_PresetFolders = new []
@@ -19,7 +23,13 @@ namespace MaraBot.Core
             "../../../../presets"
         };
 
-        public static async Task<Dictionary<string, Preset>> LoadPresets(IReadOnlyDictionary<string, Option> options)
+        /// <summary>
+        /// Reads the presets from file.
+        /// </summary>
+        /// <param name="options">Randomizer options.</param>
+        /// <returns>Returns a list of available presets.</returns>
+        /// <exception cref="InvalidOperationException">No preset folder could be found.</exception>
+        public static async Task<Dictionary<string, Preset>> LoadPresetsAsync(IReadOnlyDictionary<string, Option> options)
         {
             var homeFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||
@@ -57,6 +67,12 @@ namespace MaraBot.Core
             return presets;
         }
 
+        /// <summary>
+        /// Load a single preset from a JSON buffer.
+        /// </summary>
+        /// <param name="jsonContent">JSON content buffer.</param>
+        /// <param name="options">Randomizer options.</param>
+        /// <returns>Returns the loaded preset.</returns>
         public static Preset LoadPreset(string jsonContent, IReadOnlyDictionary<string, Option> options)
         {
             var preset = JsonConvert.DeserializeObject<Preset>(jsonContent);

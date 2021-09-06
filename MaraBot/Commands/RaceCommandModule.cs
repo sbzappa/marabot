@@ -8,10 +8,23 @@ namespace MaraBot.Commands
     using Core;
     using Messages;
 
+    /// <summary>
+    /// Implements the race command.
+    /// This command is used to create a new create with a specified preset.
+    /// </summary>
     public class RaceCommandModule : BaseCommandModule
     {
+        /// <summary>
+        /// List of presets available.
+        /// </summary>
         public IReadOnlyDictionary<string, Preset> Presets { private get; set; }
 
+        /// <summary>
+        /// Executes the race command.
+        /// </summary>
+        /// <param name="ctx">Command Context.</param>
+        /// <param name="presetName">Preset name to create the race with.</param>
+        /// <returns>Returns an asynchronous task.</returns>
         [Command("race")]
         [Description("Generate a race based on the preset given.")]
         [Cooldown(3, 600, CooldownBucketType.User)]
@@ -28,7 +41,7 @@ namespace MaraBot.Commands
             var seed = RandomUtils.GetRandomSeed();
             var preset = Presets[presetName];
 
-            await Display.Race(ctx, preset, seed);
+            await Display.RaceAsync(ctx, preset, seed);
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }

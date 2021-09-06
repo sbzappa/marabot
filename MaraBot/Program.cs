@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace MaraBot
 {
     using Core;
+    using IO;
 
     internal class Program
     {
@@ -19,10 +20,10 @@ namespace MaraBot
 
         static async Task MainAsync()
         {
-            var configTask = ConfigIO.LoadConfig();
-            var weeklyTask = WeeklyIO.LoadWeekly();
-            var options = await OptionsIO.LoadOptions();
-            var presetsTask = PresetIO.LoadPresets(options);
+            var configTask = ConfigIO.LoadConfigAsync();
+            var weeklyTask = WeeklyIO.LoadWeeklyAsync();
+            var options = await OptionsIO.LoadOptionsAsync();
+            var presetsTask = PresetIO.LoadPresetsAsync(options);
 
             var config = await configTask;
 
