@@ -75,6 +75,7 @@ namespace MaraBot.Core
             switch(mode)
             {
                 case Mode.Mode       : return "Game Mode"   ;
+                case Mode.General    : return "General"     ;
                 case Mode.Rando      : return "Rando"       ;
                 case Mode.Open       : return "Open World"  ;
                 case Mode.AncientCave: return "Ancient Cave";
