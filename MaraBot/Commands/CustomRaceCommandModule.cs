@@ -6,17 +6,33 @@ using System.Net;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
 using MaraBot.Core;
 using MaraBot.Messages;
 
 namespace MaraBot.Commands
 {
+    using IO;
+
+    /// <summary>
+    /// Implements the custom command.
+    /// This command is used to create a race using a custom .json preset file.
+    /// </summary>
     public class CustomRaceCommandModule : BaseCommandModule
     {
+        /// <summary>
+        /// Randomizer Options.
+        /// </summary>
         public IReadOnlyDictionary<string, Option> Options { private get; set; }
+        /// <summary>
+        /// Bot configuration.
+        /// </summary>
         public IConfig Config { private get; set; }
 
+        /// <summary>
+        /// Executes the custom command.
+        /// </summary>
+        /// <param name="ctx">Command Context.</param>
+        /// <returns>Returns an asynchronous task.</returns>
         [Command("custom")]
         [Description("Start a custom race based on a .json file")]
         [Cooldown(3, 600, CooldownBucketType.User)]
@@ -76,7 +92,7 @@ namespace MaraBot.Commands
                 }
 
                 var seed = RandomUtils.GetRandomSeed();
-                await Display.Race(ctx, preset, seed);
+                await Display.RaceAsync(ctx, preset, seed);
             }
 
             await CommandUtils.SendSuccessReaction(ctx);

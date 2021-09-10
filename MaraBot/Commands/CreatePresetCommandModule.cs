@@ -2,19 +2,25 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
 using DSharpPlus;
 using Newtonsoft.Json;
 
 namespace MaraBot.Commands
 {
     using Core;
-    using Messages;
 
+    /// <summary>
+    /// Implements the newpreset command.
+    /// This command is used to create a dummy preset file with specified options.
+    /// </summary>
     public class CreatePresetCommandModule : BaseCommandModule
     {
-        public IReadOnlyDictionary<string, Preset> Presets { private get; set; }
-
+        /// <summary>
+        /// Executes the newpreset command.
+        /// </summary>
+        /// <param name="ctx">Command Context.</param>
+        /// <param name="optionString">Raw options string.</param>
+        /// <returns>Returns an asynchronous task.</returns>
         [Command("newpreset")]
         [Description("Create a dummy preset file, with options if given.")]
         [Cooldown(5, 600, CooldownBucketType.User)]

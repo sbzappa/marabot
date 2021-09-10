@@ -4,14 +4,25 @@ using System.Linq;
 
 namespace MaraBot.Core
 {
+    /// <summary>
+    /// Holds information on the weekly race settings.
+    /// </summary>
     public class Weekly
     {
+        /// <summary>Week number.</summary>
         public int WeekNumber;
+        /// <summary>Preset name.</summary>
         public string PresetName;
+        /// <summary>Seed used in weekly. This is a string of 16 hexadecimal values.</summary>
         public string Seed;
+        /// <summary>Leaderboard for the weekly race.</summary>
         public Dictionary<string, TimeSpan> Leaderboard;
+        /// <summary>Timestamp at which weekly seed has been created.</summary>
         public DateTime Timestamp;
 
+        /// <summary>
+        /// Retrieves invalid weekly settings.
+        /// </summary>
         public static Weekly Invalid => new Weekly
         {
             WeekNumber = -1,
@@ -21,6 +32,13 @@ namespace MaraBot.Core
             Timestamp = DateTime.MinValue
         };
 
+        /// <summary>
+        /// Generates a random weekly race using specified presets.
+        /// Each preset has a weight, and so a random preset will be chosen
+        /// based on accumulated weights.
+        /// </summary>
+        /// <param name="presets">List of available presets.</param>
+        /// <returns>Returns new weekly settings.</returns>
         public static Weekly Generate(IReadOnlyDictionary<string, Preset> presets)
         {
             var weekNumber = RandomUtils.GetWeekNumber();
