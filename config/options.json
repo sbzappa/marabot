@@ -286,7 +286,7 @@
       "yes": "Yes"
     }
   },
-  "obscureHP": {
+  "obscureHp": {
     "name": "Obscure own HP",
     "mode": "General",
     "values": {
