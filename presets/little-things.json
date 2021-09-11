@@ -1,0 +1,29 @@
+{
+  "name": "It's the little things...",
+  "description": "...that make you go mad",
+  "version": "1.21",
+  "author": "Menblock",
+  "options": {
+    "mpAtLevel": "no",
+    "noBsVampires": "no",
+    "noGigasSplit": "no",
+    "offscreenTarget": "no",
+    "moreItems": "no",
+    "fasterChests": "no",
+    "deathByPoison": "yes",
+    "oopsAllThis": "14",
+    "opNumSeeds": "7",
+    "opChestsDontRun": "no",
+    "opTraps": "many",
+    "opChestFreq": "high",
+    "opXmasItems": "yes",
+    "mode": "open",
+    "opStatGrowth": "timed",
+    "opDifficulty": "sortaeasy",
+    "opCharacters": "start1only",
+    "opGoal": "mtr",
+    "opEnemies": "oops",
+    "opBosses": "swap",
+    "opLogic": "restrictive"
+  }
+}
