@@ -13,10 +13,10 @@ namespace MaraBot.Commands
     using Messages;
 
     /// <summary>
-    /// Implements the completed command.
+    /// Implements the forfeit command.
     /// This command is used to add your time to the leaderboard.
     /// </summary>
-    public class CompletedCommandModule : BaseCommandModule
+    public class ForfeitCommandModule : BaseCommandModule
     {
         /// <summary>
         /// Weekly settings.
@@ -28,14 +28,14 @@ namespace MaraBot.Commands
         public IConfig Config { private get; set; }
 
         /// <summary>
-        /// Executes the completed command.
+        /// Executes the forfeit command.
         /// </summary>
         /// <param name="ctx">Command Context.</param>
         /// <param name="time">Elapsed time. Expecting HH:MM:SS format.</param>
         /// <returns>Returns an asynchronous task.</returns>
-        [Command("completed")]
-        [Aliases("done")]
-        [Description("Add your time to the leaderboard.")]
+        [Command("forfeit")]
+        [Aliases("forfeited")]
+        [Description("Forfeit the weekly.")]
         [Cooldown(2, 900, CooldownBucketType.User)]
         [RequireGuild]
         [RequirePermissions(
@@ -43,11 +43,10 @@ namespace MaraBot.Commands
             Permissions.ManageMessages |
             Permissions.ManageRoles |
             Permissions.AccessChannels)]
-        public async Task Execute(CommandContext ctx, TimeSpan time)
+        public async Task Execute(CommandContext ctx)
         {
             // Delete user message to avoid spoilers, if we can delete the message.
-            if (await CommandUtils.HasBotPermissions(ctx, Permissions.ManageMessages))
-                await ctx.Message.DeleteAsync();
+            await ctx.Message.DeleteAsync();
 
             // Add user to leaderboard.
             var username = ctx.User.Username;
@@ -56,17 +55,17 @@ namespace MaraBot.Commands
                 Weekly.Leaderboard = new Dictionary<string, TimeSpan>();
 
             if (Weekly.Leaderboard.ContainsKey(username))
-                Weekly.Leaderboard[username] = time;
+                Weekly.Leaderboard[username] = TimeSpan.MaxValue;
             else
-                Weekly.Leaderboard.Add(username, time);
+                Weekly.Leaderboard.Add(username, TimeSpan.MaxValue);
 
             WeeklyIO.StoreWeeklyAsync(Weekly);
 
-            await ctx.RespondAsync($"Adding {ctx.User.Mention} to the leaderboard!");
+            await ctx.RespondAsync($"{ctx.User.Mention} forfeited the weekly!");
 
             // Grant user their new role.
             var newRole = ctx.Guild.Roles
-                .FirstOrDefault(role => Config.WeeklyCompletedRole.Equals(role.Value.Name));
+                .FirstOrDefault(role => Config.WeeklyForfeitedRole.Equals(role.Value.Name));
 
             if (newRole.Value == null)
             {

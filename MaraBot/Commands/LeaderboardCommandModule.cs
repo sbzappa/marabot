@@ -1,4 +1,6 @@
+using System.Linq;
 using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 
@@ -20,6 +22,10 @@ namespace MaraBot.Commands
         /// Weekly settings.
         /// </summary>
         public Weekly Weekly { private get; set; }
+        /// <summary>
+        /// Bot configuration.
+        /// </summary>
+        public IConfig Config { private get; set; }
 
         /// <summary>
         /// Executes the leaderboard command.
@@ -32,6 +38,10 @@ namespace MaraBot.Commands
         [Aliases("lb")]
         [Cooldown(2, 900, CooldownBucketType.Channel)]
         [RequireGuild]
+        [RequirePermissions(
+            Permissions.SendMessages |
+            Permissions.AddReactions |
+            Permissions.AccessChannels)]
         public async Task Execute(CommandContext ctx, int weekNumber = -1)
         {
             var currentWeek = RandomUtils.GetWeekNumber();
@@ -50,8 +60,33 @@ namespace MaraBot.Commands
                 return;
             }
 
-            await Display.LeaderboardAsync(ctx, weekly, weekNumber == currentWeek);
-            await CommandUtils.SendSuccessReaction(ctx);
+            if (weekNumber == currentWeek)
+            {
+                var spoilerChannel = ctx.Guild.Channels
+                    .FirstOrDefault(channel => Config.WeeklySpoilerChannel.Equals(channel.Value.Name));
+
+                if (spoilerChannel.Value == null)
+                {
+                    await ctx.RespondAsync(
+                        "No spoiler channel set.\n" +
+                        "This shouldn't happen! Please contact your friendly neighbourhood developers!");
+                }
+                else if (ctx.Channel.Equals(spoilerChannel.Value))
+                {
+                    await ctx.RespondAsync(Display.LeaderboardEmbed(ctx, weekly, false));
+                    await CommandUtils.SendSuccessReaction(ctx);
+                }
+                else
+                {
+                    await ctx.RespondAsync("This week's leaderboard can only be displayed on the spoiler channel!");
+                    await CommandUtils.SendFailReaction(ctx);
+                }
+            }
+            else
+            {
+                await ctx.RespondAsync(Display.LeaderboardEmbed(ctx, weekly, false));
+                await CommandUtils.SendSuccessReaction(ctx);
+            }
         }
     }
 }

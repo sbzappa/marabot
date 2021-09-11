@@ -18,6 +18,16 @@ A Secret of Mana Randomizer bot for Discord.
 - .Net Core: https://dotnet.microsoft.com/download
 - DSharpPlus: https://github.com/DSharpPlus/DSharpPlus
 
+### Permissions
+
+For all commands to work, the following permissions must be given to the bot on discord
+
+- Send Messages
+- Manage Messages
+- Manage Roles
+- Access Channels
+- Add Reactions
+
 ### Configuration
 
 First, follow these guidelines to set up a discord bot account:
@@ -28,9 +38,14 @@ required for the bot to authenticate itself with Discord. Look for
 `config/config_template.json` in the repository for an example, or see below:
 
 ```
-{
   "prefix": "!",
-  "token": "my-token-goes-here"
+  "token": "my-token-goes-here",
+  "organizerRoles": [
+    "organizes races"
+  ],
+  "weeklyCompletedRole": "did the weekly",
+  "weeklyForfeitedRole": "forfeited the weekly",
+  "weeklySpoilerChannel": "spoilers"
 }
 ```
 

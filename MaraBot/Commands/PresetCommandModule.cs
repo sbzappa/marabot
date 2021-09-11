@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 
@@ -29,6 +30,9 @@ namespace MaraBot.Commands
         [Description("Get the info on a given preset.")]
         [Cooldown(10, 600, CooldownBucketType.User)]
         [RequireGuild]
+        [RequirePermissions(
+            Permissions.SendMessages |
+            Permissions.AddReactions)]
         public async Task Execute(CommandContext ctx, string presetName)
         {
             if (!Presets.ContainsKey(presetName))
@@ -38,7 +42,7 @@ namespace MaraBot.Commands
                 return;
             }
 
-            await Display.PresetAsync(ctx, Presets[presetName]);
+            await ctx.RespondAsync(Display.PresetEmbed(ctx, Presets[presetName]));
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }
