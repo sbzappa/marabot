@@ -65,6 +65,9 @@ namespace MaraBot.Messages
                 preset.Options.Select(kvp => $"{kvp.Key}={kvp.Value}")
             );
 
+            if (String.IsNullOrEmpty(rawOptionsString))
+                rawOptionsString = "\u200B";
+
             embed
                 .AddField(preset.Name, preset.Description)
                 .AddOptions(preset)
@@ -161,7 +164,7 @@ namespace MaraBot.Messages
 
         private static DiscordEmbedBuilder AddOptions(this DiscordEmbedBuilder embed, Preset preset)
         {
-            Mode mode = Option.OptionValueToMode(preset.Options["mode"]);
+            Mode mode = preset.Options.ContainsKey("mode") ? Option.OptionValueToMode(preset.Options["mode"]) : Mode.Rando;
 
             embed.AddField(Option.ModeToPrettyString(Mode.Mode), Option.ModeToPrettyString(mode));
 

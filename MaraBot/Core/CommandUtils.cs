@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
@@ -25,7 +26,7 @@ namespace MaraBot.Core
         /// </summary>
         public static async Task<bool> HasBotPermissions(CommandContext ctx, Permissions permissions, bool ignoreDms = true)
         {
-            if(ctx.Guild == null)
+            if (ctx.Guild == null)
                 return ignoreDms;
 
             var bot = await ctx.Guild.GetMemberAsync(ctx.Client.CurrentUser.Id).ConfigureAwait(false);
@@ -50,10 +51,10 @@ namespace MaraBot.Core
         /// </summary>
         public static async Task SendSuccessReaction(CommandContext ctx, bool success = true)
         {
-            if(IsDirectMessage(ctx))
+            if (IsDirectMessage(ctx))
                 return;
 
-            if(!(await HasBotPermissions(ctx, Permissions.AddReactions)))
+            if (!(await HasBotPermissions(ctx, Permissions.AddReactions)))
                 return;
 
             var emoji = DiscordEmoji.FromName(ctx.Client, success ? Display.kValidCommandEmoji : Display.kInvalidCommandEmoji);
@@ -73,16 +74,40 @@ namespace MaraBot.Core
         /// </summary>
         public static async Task<string> MentionRoleWithoutPing(CommandContext ctx, DiscordRole role)
         {
-            return (await MentionRoleWithoutPing(ctx, new [] { role }))[ 0 ];
+            return (await MentionRoleWithoutPing(ctx, new[] {role}))[0];
         }
 
         /// <summary>
         /// Make mentions without fear of making pinging mentions.
         /// </summary>
-        public static async Task<string[]> MentionRoleWithoutPing(CommandContext ctx, DiscordRole[] roles)
+        public static async Task<string[]> MentionRoleWithoutPing(CommandContext ctx, IEnumerable<DiscordRole> roles)
         {
             var hasPerms = await HasBotPermissions(ctx, Permissions.MentionEveryone);
             return roles.Select(r => r.IsMentionable || hasPerms ? $"@({r.Name})" : r.Mention).ToArray();
+        }
+
+        /// <summary>
+        /// Revoke all spoiler roles.
+        /// </summary>
+        public static async Task RevokeSpoilerRoles(CommandContext ctx, IEnumerable<DiscordRole> roles)
+        {
+            var revokeTasks = new List<Task>();
+            foreach (var role in roles)
+            {
+                var tasks = ctx.Guild.Members
+                    .Where(member => member.Value.Roles.Contains(role))
+                    .Select(member => member.Value.RevokeRoleAsync(role))
+                    .ToList();
+
+                revokeTasks.AddRange(tasks);
+            }
+
+            while (revokeTasks.Any())
+            {
+                var finishedTask = await Task.WhenAny(revokeTasks);
+                revokeTasks.Remove(finishedTask);
+                await finishedTask;
+            }
         }
     }
 }

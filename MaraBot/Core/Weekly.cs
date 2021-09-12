@@ -21,6 +21,19 @@ namespace MaraBot.Core
         public DateTime Timestamp;
 
         /// <summary>
+        /// Load new weekly parameters into weely.
+        /// </summary>
+        /// <param name="weekly">Weekly instance.</param>
+        public void Load(Weekly weekly)
+        {
+            WeekNumber = weekly.WeekNumber;
+            PresetName = weekly.PresetName;
+            Seed = weekly.Seed;
+            Leaderboard = weekly.Leaderboard;
+            Timestamp = weekly.Timestamp;
+        }
+
+        /// <summary>
         /// Retrieves invalid weekly settings.
         /// </summary>
         public static Weekly Invalid => new Weekly
@@ -30,6 +43,15 @@ namespace MaraBot.Core
             Seed = String.Empty,
             Leaderboard = null,
             Timestamp = DateTime.MinValue
+        };
+
+        public static Weekly NotSet => new Weekly
+        {
+            WeekNumber = RandomUtils.GetWeekNumber(),
+            PresetName = "not-set",
+            Seed = "0",
+            Leaderboard = null,
+            Timestamp = DateTime.Now
         };
 
         /// <summary>

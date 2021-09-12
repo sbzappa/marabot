@@ -87,7 +87,7 @@ namespace MaraBot.Core
                     ));
             }
 
-            Mode mode = Option.OptionValueToMode(Options["mode"]);
+            Mode mode = Options.ContainsKey("mode") ? Option.OptionValueToMode(Options["mode"]) : Mode.Rando;
             GeneralOptions = new Dictionary<string, string>();
             ModeOptions    = new Dictionary<string, string>();
             OtherOptions   = new Dictionary<string, string>();
