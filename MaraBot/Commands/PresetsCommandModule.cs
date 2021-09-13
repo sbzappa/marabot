@@ -34,7 +34,7 @@ namespace MaraBot.Commands
             Permissions.AddReactions)]
         public async Task Execute(CommandContext ctx)
         {
-            await ctx.RespondAsync(Display.PresetsEmbed(ctx, Presets));
+            await ctx.RespondAsync(Display.PresetsEmbed(Presets));
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }

@@ -20,6 +20,17 @@ namespace MaraBot.Core
         /// <summary>Timestamp at which weekly seed has been created.</summary>
         public DateTime Timestamp;
 
+        public void AddToLeaderboard(string username, TimeSpan time)
+        {
+            if (Leaderboard == null)
+                Leaderboard = new Dictionary<string, TimeSpan>();
+
+            if (Leaderboard.ContainsKey(username))
+                Leaderboard[username] = time;
+            else
+                Leaderboard.Add(username, time);
+        }
+
         /// <summary>
         /// Retrieves invalid weekly settings.
         /// </summary>

@@ -62,16 +62,8 @@ namespace MaraBot.Commands
 
             if (weekNumber == currentWeek)
             {
-                var spoilerChannel = ctx.Guild.Channels
-                    .FirstOrDefault(channel => Config.WeeklySpoilerChannel.Equals(channel.Value.Name));
-
-                if (spoilerChannel.Value == null)
-                {
-                    await ctx.RespondAsync(
-                        "No spoiler channel set.\n" +
-                        "This shouldn't happen! Please contact your friendly neighbourhood developers!");
-                }
-                if (!ctx.Channel.Equals(spoilerChannel.Value))
+                var success = await CommandUtils.VerifyChannel(ctx, Config.WeeklySpoilerChannel);
+                if (!success)
                 {
                     await ctx.RespondAsync("This week's leaderboard can only be displayed on the spoiler channel!");
                     await CommandUtils.SendFailReaction(ctx);
@@ -79,7 +71,7 @@ namespace MaraBot.Commands
                 }
             }
 
-            await ctx.RespondAsync(Display.LeaderboardEmbed(ctx, weekly, false));
+            await ctx.RespondAsync(Display.LeaderboardEmbed(weekly, false));
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }
