@@ -46,55 +46,19 @@ namespace MaraBot.Commands
         public async Task Execute(CommandContext ctx, TimeSpan time)
         {
             // Delete user message to avoid spoilers, if we can delete the message.
-            if (await CommandUtils.HasBotPermissions(ctx, Permissions.ManageMessages))
-                await ctx.Message.DeleteAsync();
+            await ctx.Message.DeleteAsync();
 
             // Add user to leaderboard.
-            var username = ctx.User.Username;
-
-            if (Weekly.Leaderboard == null)
-                Weekly.Leaderboard = new Dictionary<string, TimeSpan>();
-
-            if (Weekly.Leaderboard.ContainsKey(username))
-                Weekly.Leaderboard[username] = time;
-            else
-                Weekly.Leaderboard.Add(username, time);
-
+            Weekly.AddToLeaderboard(ctx.User.Username, time);
             WeeklyIO.StoreWeeklyAsync(Weekly);
 
             await ctx.RespondAsync($"Adding {ctx.User.Mention} to the leaderboard!");
 
             // Grant user their new role.
-            var newRole = ctx.Guild.Roles
-                .FirstOrDefault(role => Config.WeeklyCompletedRole.Equals(role.Value.Name));
-
-            if (newRole.Value == null)
-            {
-                await ctx.RespondAsync(
-                    "No role set for access to spoiler channel.\n" +
-                    "This shouldn't happen! Please contact your friendly neighbourhood developers!");
-                return;
-            }
-            else
-            {
-                await ctx.Member.GrantRoleAsync(newRole.Value);
-            }
+            await CommandUtils.GrantRoleAsync(ctx, Config.WeeklyCompletedRole);
 
             // Display leaderboard in the spoiler channel.
-            var spoilerChannel = ctx.Guild.Channels
-                .FirstOrDefault(channel => Config.WeeklySpoilerChannel.Equals(channel.Value.Name));
-
-            if (spoilerChannel.Value == null)
-            {
-                await ctx.RespondAsync(
-                    "No spoiler channel set.\n" +
-                    "This shouldn't happen! Please contact your friendly neighbourhood developers!");
-                return;
-            }
-            else
-            {
-                await spoilerChannel.Value.SendMessageAsync(Display.LeaderboardEmbed(ctx, Weekly, false));
-            }
+            await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, Display.LeaderboardEmbed(Weekly, false));
         }
     }
 }

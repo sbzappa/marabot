@@ -42,7 +42,7 @@ namespace MaraBot.Commands
                 return;
             }
 
-            await ctx.RespondAsync(Display.PresetEmbed(ctx, Presets[presetName]));
+            await ctx.RespondAsync(Display.PresetEmbed(Presets[presetName]));
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }

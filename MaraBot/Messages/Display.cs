@@ -31,24 +31,22 @@ namespace MaraBot.Messages
         /// <summary>
         /// Displays race settings.
         /// </summary>
-        /// <param name="ctx">Command Context.</param>
         /// <param name="preset">Preset used in race.</param>
         /// <param name="seed">Generated seed.</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder RaceEmbed(CommandContext ctx, Preset preset, string seed)
+        public static DiscordEmbedBuilder RaceEmbed(Preset preset, string seed)
         {
-            return RaceEmbed(ctx, preset, seed, DateTime.Now);
+            return RaceEmbed(preset, seed, DateTime.Now);
         }
 
         /// <summary>
         /// Displays race settings.
         /// </summary>
-        /// <param name="ctx">Command Context.</param>
         /// <param name="preset">Preset used in race.</param>
         /// <param name="seed">Generated seed.</param>
         /// <param name="timestamp">Timestamp at which race was generated.</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder RaceEmbed(CommandContext ctx, Preset preset, string seed, DateTime timestamp)
+        public static DiscordEmbedBuilder RaceEmbed(Preset preset, string seed, DateTime timestamp)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -80,10 +78,9 @@ namespace MaraBot.Messages
         /// <summary>
         /// Displays available presets.
         /// </summary>
-        /// <param name="ctx">Command Context.</param>
         /// <param name="presets">List of available presets.</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder PresetsEmbed(CommandContext ctx, IReadOnlyDictionary<string, Preset> presets)
+        public static DiscordEmbedBuilder PresetsEmbed(IReadOnlyDictionary<string, Preset> presets)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -113,10 +110,9 @@ namespace MaraBot.Messages
         /// <summary>
         /// Displays a preset information.
         /// </summary>
-        /// <param name="ctx">Command Context.</param>
         /// <param name="preset">Preset to display.</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder PresetEmbed(CommandContext ctx, Preset preset)
+        public static DiscordEmbedBuilder PresetEmbed(Preset preset)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -181,11 +177,10 @@ namespace MaraBot.Messages
         /// <summary>
         /// Displays the leaderboard for specified weekly.
         /// </summary>
-        /// <param name="ctx">Command Context.</param>
         /// <param name="weekly">Weekly settings.</param>
         /// <param name="preventSpoilers">Hide potential spoilers.</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder LeaderboardEmbed(CommandContext ctx, Weekly weekly, bool preventSpoilers)
+        public static DiscordEmbedBuilder LeaderboardEmbed(Weekly weekly, bool preventSpoilers)
         {
             var embed = new DiscordEmbedBuilder
             {

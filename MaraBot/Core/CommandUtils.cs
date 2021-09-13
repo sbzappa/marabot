@@ -1,9 +1,11 @@
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using DSharpPlus.CommandsNext;
 using DSharpPlus;
 using DSharpPlus.Entities;
+using DSharpPlus.Exceptions;
 
 namespace MaraBot.Core
 {
@@ -64,7 +66,7 @@ namespace MaraBot.Core
         /// <summary>
         /// Calls SendSuccessReaction(ctx, false).
         /// </summary>
-        public static Task SendFailReaction(CommandContext ctx, bool success = true)
+        public static Task SendFailReaction(CommandContext ctx)
         {
             return SendSuccessReaction(ctx, false);
         }
@@ -87,6 +89,71 @@ namespace MaraBot.Core
         }
 
         /// <summary>
+        /// Grants a role to a user.
+        /// </summary>
+        public static async Task GrantRoleAsync(CommandContext ctx, string roleString)
+        {
+            // Grant user their new role.
+            var newRole = ctx.Guild.Roles
+                .FirstOrDefault(kvp => roleString.Equals(kvp.Value.Name));
+
+            if (newRole.Value == null)
+            {
+                await ctx.RespondAsync(
+                    "No role set for access to spoiler channel.\n" +
+                    "This shouldn't happen! Please contact your friendly neighbourhood developers!");
+
+                throw new InvalidOperationException($"role {newRole} has not been found in guild {ctx.Guild.Name}.");
+            }
+
+            await ctx.Member.GrantRoleAsync(newRole.Value);
+        }
+
+        /// <summary>
+        /// Sends a message to a specific channel.
+        /// </summary>
+        public static async Task SendToChannelAsync(CommandContext ctx, string channelName, DiscordEmbedBuilder embed)
+        {
+            var channel = ctx.Guild.Channels
+                .FirstOrDefault(kvp => channelName.Equals(kvp.Value.Name)).Value;
+
+            if (channel == null)
+            {
+                var errorMessage = $"Channel {channelName} has not been found in guild {ctx.Guild.Name}.";
+
+                await ctx.RespondAsync(
+                    errorMessage +
+                    "This shouldn't happen! Please contact your friendly neighbourhood developers!");
+
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            await channel.SendMessageAsync(embed);
+        }
+
+        /// <summary>
+        /// Verifies if current channel matches specified channel.
+        /// </summary>
+        public static async Task<bool> VerifyChannel(CommandContext ctx, string channelName)
+        {
+            var channel = ctx.Guild.Channels
+                .FirstOrDefault(kvp => channelName.Equals(kvp.Value.Name)).Value;
+
+            if (channel == null)
+            {
+                var errorMessage = $"Channel {channelName} has not been found in guild {ctx.Guild.Name}.";
+
+                await ctx.RespondAsync(
+                    errorMessage +
+                    "This shouldn't happen! Please contact your friendly neighbourhood developers!");
+
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            return ctx.Channel.Equals(channel);
+        }
+		
+		/// <summary>
         /// Revoke all spoiler roles.
         /// </summary>
         public static async Task RevokeSpoilerRoles(CommandContext ctx, IEnumerable<DiscordRole> roles)
@@ -109,5 +176,6 @@ namespace MaraBot.Core
                 await finishedTask;
             }
         }
+		
     }
 }

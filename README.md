@@ -5,12 +5,14 @@ A Secret of Mana Randomizer bot for Discord.
 ## Available commands
 
 - `!race presetName`: Generate a race using the specified preset.
+- `!custom`: Generate a custom race from an imported .json file (Requires file to be uploaded to Discord).
 - `!preset presetName`: Display information for the specified preset.
 - `!presets`: Display all available presets. All presets are in the `presets/` folder.
-- `!newpreset [rawOptions]`: Generate a JSON preset (with options filled in, if given). Only available in DMs to reduce spam.
-- `!weekly`: Generate or return the current weekly race. 
-- `!completed HH:MM:SS`: Add your name to the leaderboard for the weekly race or override your time in the leaderboard with a new one.
-- `!leaderboard`: Display the weekly leaderboard.
+- `!newpreset rawOptions`: Generate a JSON preset (with options filled in, if given). Only available in DMs to reduce spam.
+- `!weekly`: Display the current weekly race settings. 
+- `!completed HH:MM:SS`: Add your name to the leaderboard for the weekly race or override your time in the leaderboard with a new one. Also gain access to the spoiler channel.
+- `!forfeit`: Forfeit the weekly, but gain access to the spoiler channel.
+- `!leaderboard [weekNumber]`: Display specified week's leaderboard. Without parameters, display this week's leaderboard if in spoiler channel.
 
 ## Running a bot instance
 ### Requirements
@@ -24,7 +26,7 @@ For all commands to work, the following permissions must be given to the bot on 
 
 - Send Messages
 - Manage Messages
-- Manage Roles
+- Manage Roles (only required for roles defined in `config.json`)
 - Access Channels
 - Add Reactions
 

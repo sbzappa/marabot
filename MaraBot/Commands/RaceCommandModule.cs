@@ -45,7 +45,7 @@ namespace MaraBot.Commands
             var seed = RandomUtils.GetRandomSeed();
             var preset = Presets[presetName];
 
-            await ctx.RespondAsync(Display.RaceEmbed(ctx, preset, seed));
+            await ctx.RespondAsync(Display.RaceEmbed(preset, seed));
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }
