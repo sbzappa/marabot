@@ -71,22 +71,16 @@ namespace MaraBot.Commands
                         "No spoiler channel set.\n" +
                         "This shouldn't happen! Please contact your friendly neighbourhood developers!");
                 }
-                else if (ctx.Channel.Equals(spoilerChannel.Value))
-                {
-                    await ctx.RespondAsync(Display.LeaderboardEmbed(ctx, weekly, false));
-                    await CommandUtils.SendSuccessReaction(ctx);
-                }
-                else
+                if (!ctx.Channel.Equals(spoilerChannel.Value))
                 {
                     await ctx.RespondAsync("This week's leaderboard can only be displayed on the spoiler channel!");
                     await CommandUtils.SendFailReaction(ctx);
+                    return;
                 }
             }
-            else
-            {
-                await ctx.RespondAsync(Display.LeaderboardEmbed(ctx, weekly, false));
-                await CommandUtils.SendSuccessReaction(ctx);
-            }
+
+            await ctx.RespondAsync(Display.LeaderboardEmbed(ctx, weekly, false));
+            await CommandUtils.SendSuccessReaction(ctx);
         }
     }
 }
