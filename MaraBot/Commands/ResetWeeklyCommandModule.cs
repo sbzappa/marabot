@@ -64,7 +64,7 @@ namespace MaraBot.Commands
             if (Weekly.WeekNumber == currentWeek)
             {
                 await ctx.RespondAsync($"Weekly for week {currentWeek} already exists.");
-                await CommandUtils.SendFailReaction(ctx, false);
+                await CommandUtils.SendFailReaction(ctx);
                 return;
             }
 
