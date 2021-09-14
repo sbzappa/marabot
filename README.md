@@ -4,9 +4,9 @@ A Secret of Mana Randomizer bot for Discord.
 
 ## Available commands
 
-- `!race presetName`: Generate a race using the specified preset.
-- `!custom`: Generate a custom race from an imported .json file (Requires file to be uploaded to Discord).
-- `!preset presetName`: Display information for the specified preset.
+- `!race <presetName>`: Generate a race using the specified preset.
+- `!custom`: Generate a custom race using the .json preset file attached to this message (only available to people with a race organizer role for security reasons).
+- `!preset <presetName>`: Display information for the specified preset.
 - `!presets`: Display all available presets. All presets are in the `presets/` folder.
 - `!newpreset rawOptions`: Generate a JSON preset (with options filled in, if given). Only available in DMs to reduce spam.
 - `!weekly`: Display the current weekly race settings. 
