@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 
@@ -28,9 +29,10 @@ namespace MaraBot.Commands
         [Description("Get the list of presets.")]
         [Cooldown(2, 900, CooldownBucketType.Channel)]
         [RequireGuild]
+        [RequirePermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx)
         {
-            await Display.PresetsAsync(ctx, Presets);
+            await ctx.RespondAsync(Display.PresetsEmbed(Presets));
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }

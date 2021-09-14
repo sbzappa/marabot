@@ -20,6 +20,18 @@ namespace MaraBot.Core
         /// Roles with race organization privileges.
         /// </summary>
         public IReadOnlyCollection<string> OrganizerRoles { get; }
+        /// <summary>
+        /// Role to give a user whenever they completed a weekly.
+        /// </summary>
+        public string WeeklyCompletedRole { get; }
+        /// <summary>
+        /// Role to give a user whenever they forfeited a weekly.
+        /// </summary>
+        public string WeeklyForfeitedRole { get; }
+        /// <summary>
+        /// Channel with weekly spoilers.
+        /// </summary>
+        public string WeeklySpoilerChannel { get; }
     }
 
     /// <summary>
@@ -33,6 +45,12 @@ namespace MaraBot.Core
         public string Token;
         /// <inheritdoc cref="IConfig.OrganizerRoles"/>
         public string[] OrganizerRoles;
+        /// <inheritdoc cref="IConfig.WeeklyCompletedRole"/>
+        public string WeeklyCompletedRole;
+        /// <inheritdoc cref="IConfig.WeeklyForfeitedRole"/>
+        public string WeeklyForfeitedRole;
+        /// <inheritdoc cref="IConfig.WeeklySpoilerChannel"/>
+        public string WeeklySpoilerChannel;
 
         /// <inheritdoc cref="IConfig.Prefix"/>
         string IConfig.Prefix => Prefix;
@@ -40,5 +58,11 @@ namespace MaraBot.Core
         string IConfig.Token => Token;
         /// <inheritdoc cref="IConfig.OrganizerRoles"/>
         IReadOnlyCollection<string> IConfig.OrganizerRoles => OrganizerRoles;
+        /// <inheritdoc cref="IConfig.WeeklyCompletedRole"/>
+        string IConfig.WeeklyCompletedRole => WeeklyCompletedRole;
+        /// <inheritdoc cref="IConfig.WeeklyForfeitedRole"/>
+        string IConfig.WeeklyForfeitedRole => WeeklyForfeitedRole;
+        /// <inheritdoc cref="IConfig.WeeklySpoilerChannel"/>
+        string IConfig.WeeklySpoilerChannel => WeeklySpoilerChannel;
     }
 }

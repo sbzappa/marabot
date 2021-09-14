@@ -92,7 +92,7 @@ namespace MaraBot.Commands
                 }
 
                 var seed = RandomUtils.GetRandomSeed();
-                await Display.RaceAsync(ctx, preset, seed);
+                await ctx.RespondAsync(Display.RaceEmbed(preset, seed));
             }
 
             await CommandUtils.SendSuccessReaction(ctx);

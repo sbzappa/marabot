@@ -73,6 +73,7 @@ namespace MaraBot
             commands.RegisterCommands<Commands.CreatePresetCommandModule>();
             commands.RegisterCommands<Commands.WeeklyCommandModule>();
             commands.RegisterCommands<Commands.CompletedCommandModule>();
+            commands.RegisterCommands<Commands.ForfeitCommandModule>();
             commands.RegisterCommands<Commands.LeaderboardCommandModule>();
 
             foreach(var c in commands) {

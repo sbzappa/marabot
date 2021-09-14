@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 
@@ -29,6 +30,7 @@ namespace MaraBot.Commands
         [Description("Generate a race based on the preset given.")]
         [Cooldown(3, 600, CooldownBucketType.User)]
         [RequireGuild]
+        [RequirePermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx, string presetName)
         {
             if (!Presets.ContainsKey(presetName))
@@ -41,7 +43,7 @@ namespace MaraBot.Commands
             var seed = RandomUtils.GetRandomSeed();
             var preset = Presets[presetName];
 
-            await Display.RaceAsync(ctx, preset, seed);
+            await ctx.RespondAsync(Display.RaceEmbed(preset, seed));
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }
