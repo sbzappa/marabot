@@ -104,7 +104,7 @@ namespace MaraBot.Core
                     errorMessage + "\n" +
                     "This shouldn't happen! Please contact your friendly neighbourhood developers!");
 
-                throw new InvalidOperationException($"Role {newRole} has not been found in guild {ctx.Guild.Name}.");
+                throw new InvalidOperationException(errorMessage);
             }
 
             await ctx.Member.GrantRoleAsync(newRole.Value);
