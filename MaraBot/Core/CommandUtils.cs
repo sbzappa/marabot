@@ -98,11 +98,13 @@ namespace MaraBot.Core
 
             if (newRole.Value == null)
             {
+                var errorMessage = $"Role {newRole} has not been found in guild {ctx.Guild.Name}.";
+
                 await ctx.RespondAsync(
-                    "No role set for access to spoiler channel.\n" +
+                    errorMessage + "\n" +
                     "This shouldn't happen! Please contact your friendly neighbourhood developers!");
 
-                throw new InvalidOperationException($"role {newRole} has not been found in guild {ctx.Guild.Name}.");
+                throw new InvalidOperationException($"Role {newRole} has not been found in guild {ctx.Guild.Name}.");
             }
 
             await ctx.Member.GrantRoleAsync(newRole.Value);
@@ -121,7 +123,7 @@ namespace MaraBot.Core
                 var errorMessage = $"Channel {channelName} has not been found in guild {ctx.Guild.Name}.";
 
                 await ctx.RespondAsync(
-                    errorMessage +
+                    errorMessage + "\n" +
                     "This shouldn't happen! Please contact your friendly neighbourhood developers!");
 
                 throw new InvalidOperationException(errorMessage);
@@ -143,7 +145,7 @@ namespace MaraBot.Core
                 var errorMessage = $"Channel {channelName} has not been found in guild {ctx.Guild.Name}.";
 
                 await ctx.RespondAsync(
-                    errorMessage +
+                    errorMessage + "\n" +
                     "This shouldn't happen! Please contact your friendly neighbourhood developers!");
 
                 throw new InvalidOperationException(errorMessage);

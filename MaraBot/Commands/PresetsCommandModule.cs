@@ -29,9 +29,7 @@ namespace MaraBot.Commands
         [Description("Get the list of presets.")]
         [Cooldown(2, 900, CooldownBucketType.Channel)]
         [RequireGuild]
-        [RequirePermissions(
-            Permissions.SendMessages |
-            Permissions.AddReactions)]
+        [RequirePermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx)
         {
             await ctx.RespondAsync(Display.PresetsEmbed(Presets));

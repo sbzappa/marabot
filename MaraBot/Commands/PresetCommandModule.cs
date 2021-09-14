@@ -30,9 +30,7 @@ namespace MaraBot.Commands
         [Description("Get the info on a given preset.")]
         [Cooldown(10, 600, CooldownBucketType.User)]
         [RequireGuild]
-        [RequirePermissions(
-            Permissions.SendMessages |
-            Permissions.AddReactions)]
+        [RequirePermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx, string presetName)
         {
             if (!Presets.ContainsKey(presetName))
