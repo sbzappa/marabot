@@ -112,6 +112,34 @@ namespace MaraBot.Core
         }
 
         /// <summary>
+        /// Revoke all spoiler roles.
+        /// </summary>
+        public static async Task RevokeSpoilerRoles(CommandContext ctx, string[] roleStrings)
+        {
+            var roles = ctx.Guild.Roles
+                .Where(role => roleStrings.Contains(role.Value.Name))
+                .Select(role => role.Value);
+
+            var revokeTasks = new List<Task>();
+            foreach (var role in roles)
+            {
+                var tasks = ctx.Guild.Members
+                    .Where(member => member.Value.Roles.Contains(role))
+                    .Select(member => member.Value.RevokeRoleAsync(role))
+                    .ToList();
+
+                revokeTasks.AddRange(tasks);
+            }
+
+            while (revokeTasks.Any())
+            {
+                var finishedTask = await Task.WhenAny(revokeTasks);
+                revokeTasks.Remove(finishedTask);
+                await finishedTask;
+            }
+        }
+
+        /// <summary>
         /// Sends a message to a specific channel.
         /// </summary>
         public static async Task SendToChannelAsync(CommandContext ctx, string channelName, DiscordEmbedBuilder embed)
@@ -136,7 +164,7 @@ namespace MaraBot.Core
         /// <summary>
         /// Verifies if current channel matches specified channel.
         /// </summary>
-        public static async Task<bool> VerifyChannel(CommandContext ctx, string channelName)
+        public static async Task<bool> ChannelExistsInGuild(CommandContext ctx, string channelName)
         {
             var channel = ctx.Guild.Channels
                 .FirstOrDefault(kvp => channelName.Equals(kvp.Value.Name)).Value;
@@ -154,30 +182,34 @@ namespace MaraBot.Core
 
             return ctx.Channel.Equals(channel);
         }
-		
-		/// <summary>
-        /// Revoke all spoiler roles.
+
+        /// <summary>
+        /// Verifies whether member has a role that is among permitted roles for this command.
         /// </summary>
-        public static async Task RevokeSpoilerRoles(CommandContext ctx, IEnumerable<DiscordRole> roles)
+        public static async Task<bool> MemberHasPermittedRole(CommandContext ctx, string[] permittedRoles)
         {
-            var revokeTasks = new List<Task>();
-            foreach (var role in roles)
-            {
-                var tasks = ctx.Guild.Members
-                    .Where(member => member.Value.Roles.Contains(role))
-                    .Select(member => member.Value.RevokeRoleAsync(role))
-                    .ToList();
+            if (permittedRoles == null)
+                return true;
 
-                revokeTasks.AddRange(tasks);
+            // Safety measure to avoid potential misuses of this command. May be revisited in the future.
+            if (!ctx.Member.Roles.Any(role => permittedRoles.Contains(role.Name)))
+            {
+                var guildRoles = ctx.Guild.Roles
+                    .Where(role => permittedRoles.Contains(role.Value.Name));
+
+                await ctx.RespondAsync(
+                    "Insufficient privileges to execute this command.\n" +
+                    "This command is only available to the following roles:\n" +
+                    String.Join(
+                        ", ",
+                        await MentionRoleWithoutPing(ctx, guildRoles.Select(r => r.Value).ToArray())
+                    )
+                );
+
+                return false;
             }
 
-            while (revokeTasks.Any())
-            {
-                var finishedTask = await Task.WhenAny(revokeTasks);
-                revokeTasks.Remove(finishedTask);
-                await finishedTask;
-            }
+            return true;
         }
-		
     }
 }

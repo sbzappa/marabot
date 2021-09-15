@@ -35,26 +35,15 @@ namespace MaraBot.Commands
         [Description("Resets the weekly race.")]
         [Cooldown(2, 900, CooldownBucketType.Channel)]
         [RequireGuild]
-        [RequirePermissions(
+        [RequireBotPermissions(
             Permissions.SendMessages |
             Permissions.AddReactions |
             Permissions.ManageRoles)]
         public async Task Execute(CommandContext ctx)
         {
             // Safety measure to avoid potential misuses of this command.
-            if (!ctx.Member.Roles.Any(role => (Config.OrganizerRoles?.Contains(role.Name)).GetValueOrDefault()))
+            if (!await CommandUtils.MemberHasPermittedRole(ctx, Config.OrganizerRoles.ToArray()))
             {
-                var guildRoles = ctx.Guild.Roles
-                    .Where(role => (Config.OrganizerRoles?.Contains(role.Value.Name)).GetValueOrDefault());
-
-                await ctx.RespondAsync(
-                    "Insufficient privileges to reset the weekly.\n" +
-                    "This command is only available to the following roles:\n" +
-                    String.Join(
-                        ", ",
-                        CommandUtils.MentionRoleWithoutPing(ctx, guildRoles.Select(r => r.Value).ToArray())
-                    )
-                );
                 await CommandUtils.SendFailReaction(ctx);
                 return;
             }
@@ -75,17 +64,11 @@ namespace MaraBot.Commands
             Weekly.Load(Weekly.NotSet);
             WeeklyIO.StoreWeeklyAsync(Weekly);
 
-            string[] spoilerRolenames =
+            await CommandUtils.RevokeSpoilerRoles(ctx, new []
             {
                 Config.WeeklyCompletedRole,
                 Config.WeeklyForfeitedRole
-            };
-
-            var spoilerRoles = ctx.Guild.Roles
-                .Where(role => spoilerRolenames.Contains(role.Value.Name))
-                .Select(role => role.Value);
-
-            await CommandUtils.RevokeSpoilerRoles(ctx, spoilerRoles);
+            });
 
             await ctx.RespondAsync("Weekly has been successfully reset!");
             await CommandUtils.SendSuccessReaction(ctx);
