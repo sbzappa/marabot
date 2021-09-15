@@ -13,6 +13,7 @@ A Secret of Mana Randomizer bot for Discord.
 - `!completed <HH:MM:SS>`: Add your name to the leaderboard for the weekly race or override your time in the leaderboard with a new one. Also gain access to the spoiler channel.
 - `!forfeit`: Forfeit the weekly, but gain access to the spoiler channel. WIll add you to the leaderboard as DNF.
 - `!leaderboard [weekNumber]`: Display specified week's leaderboard. Without parameters, display this week's leaderboard (only if in spoiler channel).
+- `!reset`: Reset the current weekly when the week is over.
 
 ## Running a bot instance
 ### Requirements
