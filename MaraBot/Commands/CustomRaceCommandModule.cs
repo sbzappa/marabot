@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using MaraBot.Core;
@@ -37,6 +38,7 @@ namespace MaraBot.Commands
         [Description("Start a custom race based on a .json file")]
         [Cooldown(3, 600, CooldownBucketType.User)]
         [RequireGuild]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx)
         {
             // Safety measure to avoid potential misuses of this command. May be revisited in the future.
