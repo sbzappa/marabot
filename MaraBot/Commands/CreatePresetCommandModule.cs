@@ -25,9 +25,7 @@ namespace MaraBot.Commands
         [Description("Create a dummy preset file, with options if given.")]
         [Cooldown(5, 600, CooldownBucketType.User)]
         [RequireDirectMessage]
-        [RequirePermissions(
-            Permissions.SendMessages |
-            Permissions.AddReactions)]
+        [RequirePermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx, [RemainingText] string optionString)
         {
             string[] optionValues = optionString == null ? new string[] { "key=value" } : optionString.Split(' ');

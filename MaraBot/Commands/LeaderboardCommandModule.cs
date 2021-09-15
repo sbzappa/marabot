@@ -40,7 +40,6 @@ namespace MaraBot.Commands
         [RequireGuild]
         [RequirePermissions(
             Permissions.SendMessages |
-            Permissions.AddReactions |
             Permissions.AccessChannels)]
         public async Task Execute(CommandContext ctx, int weekNumber = -1)
         {

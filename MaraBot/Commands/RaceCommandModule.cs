@@ -30,9 +30,7 @@ namespace MaraBot.Commands
         [Description("Generate a race based on the preset given.")]
         [Cooldown(3, 600, CooldownBucketType.User)]
         [RequireGuild]
-        [RequirePermissions(
-            Permissions.SendMessages |
-            Permissions.AddReactions)]
+        [RequirePermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx, string presetName)
         {
             if (!Presets.ContainsKey(presetName))
