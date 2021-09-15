@@ -40,7 +40,7 @@ namespace MaraBot.Commands
         public async Task Execute(CommandContext ctx)
         {
             // Safety measure to avoid potential misuses of this command. May be revisited in the future.
-            if (!await CommandUtils.MemberHasPermittedRole(ctx, Config.OrganizerRoles.ToArray()))
+            if (!await CommandUtils.MemberHasPermittedRole(ctx, Config.OrganizerRoles))
             {
                 await CommandUtils.SendFailReaction(ctx);
                 return;

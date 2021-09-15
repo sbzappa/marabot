@@ -114,7 +114,7 @@ namespace MaraBot.Core
         /// <summary>
         /// Revoke all spoiler roles.
         /// </summary>
-        public static async Task RevokeSpoilerRoles(CommandContext ctx, string[] roleStrings)
+        public static async Task RevokeSpoilerRoles(CommandContext ctx, IEnumerable<string> roleStrings)
         {
             var roles = ctx.Guild.Roles
                 .Where(role => roleStrings.Contains(role.Value.Name))
@@ -186,7 +186,7 @@ namespace MaraBot.Core
         /// <summary>
         /// Verifies whether member has a role that is among permitted roles for this command.
         /// </summary>
-        public static async Task<bool> MemberHasPermittedRole(CommandContext ctx, string[] permittedRoles)
+        public static async Task<bool> MemberHasPermittedRole(CommandContext ctx, IEnumerable<string> permittedRoles)
         {
             if (permittedRoles == null)
                 return true;
