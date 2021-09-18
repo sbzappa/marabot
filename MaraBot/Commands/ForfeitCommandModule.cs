@@ -37,7 +37,7 @@ namespace MaraBot.Commands
         [Description("Forfeit the weekly.")]
         [Cooldown(2, 900, CooldownBucketType.User)]
         [RequireGuild]
-        [RequirePermissions(
+        [RequireBotPermissions(
             Permissions.SendMessages |
             Permissions.ManageMessages |
             Permissions.ManageRoles |
