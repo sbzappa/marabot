@@ -38,7 +38,7 @@ namespace MaraBot.Commands
         [Aliases("lb")]
         [Cooldown(2, 900, CooldownBucketType.Channel)]
         [RequireGuild]
-        [RequirePermissions(
+        [RequireBotPermissions(
             Permissions.SendMessages |
             Permissions.AccessChannels)]
         public async Task Execute(CommandContext ctx, int weekNumber = -1)

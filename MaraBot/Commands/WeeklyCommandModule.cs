@@ -33,7 +33,7 @@ namespace MaraBot.Commands
         [Description("Get the weekly race.")]
         [Cooldown(2, 900, CooldownBucketType.Channel)]
         [RequireGuild]
-        [RequirePermissions(Permissions.SendMessages)]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx)
         {
             if (!Presets.ContainsKey(Weekly.PresetName) || Weekly.WeekNumber < 0)

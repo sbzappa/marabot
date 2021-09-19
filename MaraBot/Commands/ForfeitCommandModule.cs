@@ -37,16 +37,13 @@ namespace MaraBot.Commands
         [Description("Forfeit the weekly.")]
         [Cooldown(2, 900, CooldownBucketType.User)]
         [RequireGuild]
-        [RequirePermissions(
+        [RequireBotPermissions(
             Permissions.SendMessages |
             Permissions.ManageMessages |
             Permissions.ManageRoles |
             Permissions.AccessChannels)]
         public async Task Execute(CommandContext ctx)
         {
-            // Delete user message to avoid spoilers, if we can delete the message.
-            await ctx.Message.DeleteAsync();
-
             // Add user to leaderboard.
             Weekly.AddToLeaderboard(ctx.User.Username, TimeSpan.MaxValue);
             WeeklyIO.StoreWeeklyAsync(Weekly);
@@ -58,6 +55,8 @@ namespace MaraBot.Commands
 
             // Display leaderboard in the spoiler channel.
             await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, Display.LeaderboardEmbed(Weekly, false));
+
+            await CommandUtils.SendSuccessReaction(ctx);
         }
     }
 }
