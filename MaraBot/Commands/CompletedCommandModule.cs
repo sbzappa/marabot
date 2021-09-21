@@ -45,6 +45,9 @@ namespace MaraBot.Commands
             Permissions.AccessChannels)]
         public async Task Execute(CommandContext ctx, TimeSpan time)
         {
+            // Give a sufficient delay before deleting message
+            await Task.Delay(500);
+
             // Delete user message to avoid spoilers, if we can delete the message.
             await ctx.Message.DeleteAsync();
 
@@ -52,7 +55,10 @@ namespace MaraBot.Commands
             Weekly.AddToLeaderboard(ctx.User.Username, time);
             WeeklyIO.StoreWeeklyAsync(Weekly);
 
-            await ctx.RespondAsync($"Adding {ctx.User.Mention} to the leaderboard!");
+            // Send message in current channel and in spoiler channel.
+            var message = $"Adding {ctx.User.Mention} to the leaderboard!";
+            await ctx.RespondAsync(message);
+            await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, message);
 
             // Grant user their new role.
             await CommandUtils.GrantRoleAsync(ctx, Config.WeeklyCompletedRole);

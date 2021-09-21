@@ -139,10 +139,16 @@ namespace MaraBot.Core
             }
         }
 
+        public static Task SendToChannelAsync(CommandContext ctx, string channelName, DiscordEmbed embed) =>
+            SendToChannelAsync(ctx, channelName, new DiscordMessageBuilder().WithEmbed(embed));
+
+        public static Task SendToChannelAsync(CommandContext ctx, string channelName, string message) =>
+            SendToChannelAsync(ctx, channelName, new DiscordMessageBuilder().WithContent(message));
+
         /// <summary>
         /// Sends a message to a specific channel.
         /// </summary>
-        public static async Task SendToChannelAsync(CommandContext ctx, string channelName, DiscordEmbedBuilder embed)
+        public static async Task SendToChannelAsync(CommandContext ctx, string channelName, DiscordMessageBuilder messageBuilder)
         {
             var channel = ctx.Guild.Channels
                 .FirstOrDefault(kvp => channelName.Equals(kvp.Value.Name)).Value;
@@ -158,7 +164,7 @@ namespace MaraBot.Core
                 throw new InvalidOperationException(errorMessage);
             }
 
-            await channel.SendMessageAsync(embed);
+            await channel.SendMessageAsync(messageBuilder);
         }
 
         /// <summary>
