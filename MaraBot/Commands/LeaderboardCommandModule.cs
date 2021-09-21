@@ -61,7 +61,7 @@ namespace MaraBot.Commands
 
             if (weekNumber == currentWeek)
             {
-                var success = await CommandUtils.VerifyChannel(ctx, Config.WeeklySpoilerChannel);
+                var success = await CommandUtils.ChannelExistsInGuild(ctx, Config.WeeklySpoilerChannel);
                 if (!success)
                 {
                     await ctx.RespondAsync("This week's leaderboard can only be displayed on the spoiler channel!");
