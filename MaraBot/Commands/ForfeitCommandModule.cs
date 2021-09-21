@@ -48,7 +48,10 @@ namespace MaraBot.Commands
             Weekly.AddToLeaderboard(ctx.User.Username, TimeSpan.MaxValue);
             WeeklyIO.StoreWeeklyAsync(Weekly);
 
-            await ctx.RespondAsync($"{ctx.User.Mention} forfeited the weekly!");
+            // Send message in current channel and in spoiler channel.
+            var message = $"{ctx.User.Mention} forfeited the weekly!";
+            await ctx.RespondAsync(message);
+            await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, message);
 
             // Grant user their new role.
             await CommandUtils.GrantRoleAsync(ctx, Config.WeeklyForfeitedRole);
