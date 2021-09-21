@@ -37,7 +37,6 @@ namespace MaraBot.Commands
         [RequireGuild]
         [RequireBotPermissions(
             Permissions.SendMessages |
-            Permissions.AddReactions |
             Permissions.ManageRoles)]
         public async Task Execute(CommandContext ctx)
         {
