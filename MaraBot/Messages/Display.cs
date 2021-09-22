@@ -151,9 +151,13 @@ namespace MaraBot.Messages
                     optionStrings[columnIndex] += "\n";
             }
 
-            embed.AddField(title, optionStrings[0], optionStrings.Length > 1);
-            for (int i = 1; i < optionStrings.Length; ++i)
-                embed.AddField("\u200B", optionStrings[i], true);
+            embed.AddField(title, optionStrings[0], true);
+
+            columnIndex = 1;
+            for (; columnIndex < optionStrings.Length; ++columnIndex)
+                embed.AddField("\u200B", optionStrings[columnIndex], true);
+            for (; columnIndex < kMaxNumberOfColumns; ++columnIndex)
+                embed.AddField("\u200B", "\u200B", true);
 
             return embed;
         }
@@ -164,11 +168,11 @@ namespace MaraBot.Messages
 
             embed.AddField(Option.ModeToPrettyString(Mode.Mode), Option.ModeToPrettyString(mode));
 
-            if(preset.GeneralOptions.Count > 0)
+            if (preset.GeneralOptions.Count > 0)
                 embed.AddOptionDictionary($"{Option.ModeToPrettyString(Mode.General)} Options", preset.GeneralOptions);
-            if(preset.ModeOptions.Count > 0)
+            if (preset.ModeOptions.Count > 0)
                 embed.AddOptionDictionary($"{Option.ModeToPrettyString(mode)} Options", preset.ModeOptions);
-            if(preset.OtherOptions.Count > 0)
+            if (preset.OtherOptions.Count > 0)
                 embed.AddOptionDictionary($"{Option.ModeToPrettyString(Mode.Other)} Options", preset.OtherOptions);
 
             return embed;
