@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using DSharpPlus.CommandsNext;
 using DSharpPlus;
 using DSharpPlus.Entities;
-using DSharpPlus.Exceptions;
 
 namespace MaraBot.Core
 {
@@ -210,6 +209,31 @@ namespace MaraBot.Core
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Converts a positive integer to an ordinal number string.
+        /// </summary>
+        public static string IntegerToOrdinal(int n)
+        {
+            if (n < 1)
+                throw new ArgumentOutOfRangeException("Integer must be positive");
+
+            switch (n % 100)
+            {
+                case 11:
+                case 12:
+                case 13:
+                    return $"{n}th";
+            }
+
+            switch (n % 10)
+            {
+                case 1 : return $"{n}st";
+                case 2 : return $"{n}nd";
+                case 3 : return $"{n}rd";
+                default: return $"{n}th";
+            }
         }
     }
 }
