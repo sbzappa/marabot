@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using DSharpPlus;
-using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 
 using MaraBot.Core;
@@ -193,7 +191,7 @@ namespace MaraBot.Messages
             };
 
             embed
-                .AddField("Weekly Seed", $"week #{weekly.WeekNumber}");
+                .AddField("Weekly Seed", $"Week #{weekly.WeekNumber} - {weekly.PresetName}");
 
             IEnumerable<KeyValuePair<string, TimeSpan>> leaderboard = weekly.Leaderboard;
 
@@ -204,16 +202,23 @@ namespace MaraBot.Messages
                     .OrderBy(kvp => kvp.Value);
             }
 
-            var emojis = String.Join("\n",
-                kRankingEmoijs.Take(Math.Min(kRankingEmoijs.Length, leaderboard.Count()))
-            );
+            var rankStrings = String.Empty;
             var userStrings = String.Empty;
             var timeStrings = String.Empty;
 
+            var rank = 0;
+            var rankTreshold = TimeSpan.MinValue;
             foreach (var entry in leaderboard)
             {
+                if (entry.Value > rankTreshold)
+                {
+                    ++rank;
+                    rankTreshold = entry.Value;
+                }
+                rankStrings += $"{(rank <= 3 ? kRankingEmoijs[rank - 1] : CommandUtils.IntegerToOrdinal(rank))}\n";
+
                 userStrings += $"{entry.Key}\n";
-                timeStrings += entry.Value.Equals(TimeSpan.MaxValue) ? "DNF" : $"{entry.Value}\n";
+                timeStrings += $"{(entry.Value.Equals(TimeSpan.MaxValue) ? "DNF" : entry.Value.ToString())}\n";
             }
 
             if (preventSpoilers)
@@ -222,7 +227,7 @@ namespace MaraBot.Messages
             }
 
             if (!preventSpoilers)
-                embed.AddField("\u200B", emojis, true);
+                embed.AddField("\u200B", rankStrings, true);
 
             embed.AddField("User", userStrings, true);
             embed.AddField("Time", timeStrings, true);
