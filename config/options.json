@@ -300,6 +300,13 @@
       "yes": "Yes"
     }
   },
+  "muteMusic": {
+    "name": "Mute all music",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
   "characterColors": {
     "name": "Character colors",
     "mode": "General",
@@ -843,6 +850,27 @@
       "yes": "Yes"
     }
   },
+  "opAllowLockedItems": {
+    "name": "Allow locked items",
+    "mode": "Open",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "opDisableHints": {
+    "name": "Disable hints",
+    "mode": "Open",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "opSpoilerLog": {
+    "name": "Spoiler log",
+    "mode": "Open",
+    "values": {
+      "no": "No"
+    }
+  },
   "opPlatinumMode": {
     "name": "Black out map data",
     "mode": "Open",
@@ -1005,18 +1033,24 @@
       "no": "No"
     }
   },
-  "chTODO1": {
+  "chFloors": {
     "name": "Length",
     "mode": "Chaos",
     "values": {
-      "todo": "TODO"
+      "vfew" : "Very few",
+      "few"  : "Few",
+      "many" : "Many",
+      "vmany": "Very many"
     }
   },
-  "chTODO2": {
+  "chBosses": {
     "name": "Bosses",
     "mode": "Chaos",
     "values": {
-      "todo": "TODO"
+      "vfew" : "Very few",
+      "few"  : "Few",
+      "many" : "Many",
+      "vmany": "Very many"
     }
   },
   "chMapColors": {
