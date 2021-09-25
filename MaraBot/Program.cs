@@ -31,7 +31,7 @@ namespace MaraBot
             {
                 Token = config.Token,
                 TokenType = TokenType.Bot,
-                Intents = DiscordIntents.AllUnprivileged
+                Intents = DiscordIntents.AllUnprivileged | DiscordIntents.GuildMembers
             });
 
             var presets = await presetsTask;
@@ -76,6 +76,7 @@ namespace MaraBot
             commands.RegisterCommands<Commands.ForfeitCommandModule>();
             commands.RegisterCommands<Commands.LeaderboardCommandModule>();
             commands.RegisterCommands<Commands.ResetWeeklyCommandModule>();
+            commands.RegisterCommands<Commands.SpoilerRoleCommandModule>();
 
             foreach(var c in commands) {
                 c.Value.CommandExecuted += CommandEvents.OnCommandExecuted;

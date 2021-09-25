@@ -12,6 +12,8 @@ namespace MaraBot.Core
 
     public static class CommandUtils
     {
+        const string kFriendlyMessage = "This shouldn't happen! Please contact your friendly neighbourhood developers!";
+
         /// <summary>
         /// Check if the bot is in a direct message.
         /// Runtime-equivalent of RequireDirectMessageAttribute.
@@ -87,44 +89,136 @@ namespace MaraBot.Core
             return roles.Select(r => r.IsMentionable || hasPerms ? $"@({r.Name})" : r.Mention).ToArray();
         }
 
-        /// <summary>
-        /// Grants a role to a user.
-        /// </summary>
         public static async Task GrantRoleAsync(CommandContext ctx, string roleString)
         {
-            // Grant user their new role.
-            var newRole = ctx.Guild.Roles
-                .FirstOrDefault(kvp => roleString.Equals(kvp.Value.Name));
+            var role = ctx.Guild.Roles.Values
+                .FirstOrDefault(role => roleString.Equals(role.Name));
 
-            if (newRole.Value == null)
+            if (role == null)
             {
-                var errorMessage = $"Role {newRole} has not been found in guild {ctx.Guild.Name}.";
-
-                await ctx.RespondAsync(
-                    errorMessage + "\n" +
-                    "This shouldn't happen! Please contact your friendly neighbourhood developers!");
-
+                var errorMessage = $"Role {roleString} has not been found in guild {ctx.Guild.Name}.";
+                await ctx.RespondAsync(errorMessage);
                 throw new InvalidOperationException(errorMessage);
             }
 
-            await ctx.Member.GrantRoleAsync(newRole.Value);
+            await GrantRolesAsync(ctx, new [] {ctx.Member}, new [] {role});
+        }
+
+        public static async Task GrantRolesAsync(CommandContext ctx, IEnumerable<string> memberStrings, IEnumerable<string> roleStrings)
+        {
+            var roles = ctx.Guild.Roles.Values
+                .Where(role => roleStrings.Contains(role.Name));
+
+            if (!roles.Any())
+            {
+                var errorMessage = $"No roles matching specified search have been found in guild {ctx.Guild.Name}.";
+                await ctx.RespondAsync(errorMessage);
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            var allMembers = await ctx.Guild.GetAllMembersAsync();
+
+            var members = allMembers
+                .Where(member => memberStrings.Contains(member.Username));
+
+            if (!members.Any())
+            {
+                var errorMessage = $"No members matching specified search have been found in guild {ctx.Guild.Name}.";
+                await ctx.RespondAsync(errorMessage);
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            await GrantRolesAsync(ctx, members, roles);
         }
 
         /// <summary>
-        /// Revoke all spoiler roles.
+        /// Grants a role to a user.
         /// </summary>
-        public static async Task RevokeSpoilerRoles(CommandContext ctx, IEnumerable<string> roleStrings)
+        public static async Task GrantRolesAsync(CommandContext ctx, IEnumerable<DiscordMember> members, IEnumerable<DiscordRole> roles)
+        {
+            var grantTasks = new List<Task>();
+            foreach (var role in roles)
+            {
+                var tasks = members
+                    .Select(member => member.GrantRoleAsync(role))
+                    .ToList();
+
+                grantTasks.AddRange(tasks);
+            }
+
+            while (grantTasks.Any())
+            {
+                var finishedTask = await Task.WhenAny(grantTasks);
+                grantTasks.Remove(finishedTask);
+                await finishedTask;
+            }
+        }
+
+        public static async Task RevokeRolesAsync(CommandContext ctx, IEnumerable<string> roleStrings)
         {
             var roles = ctx.Guild.Roles
                 .Where(role => roleStrings.Contains(role.Value.Name))
                 .Select(role => role.Value);
 
+            if (!roles.Any())
+            {
+                var errorMessage = $"No roles matching specified search have been found in guild {ctx.Guild.Name}.";
+                await ctx.RespondAsync(errorMessage);
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            var allMembers = await ctx.Guild.GetAllMembersAsync();
+
+            var members = allMembers
+                .Where(member => member.Roles.Any(role => roles.Contains(role)));
+
+            if (!members.Any())
+            {
+                var errorMessage = $"No members currently have specified roles in guild {ctx.Guild.Name}.";
+                await ctx.RespondAsync(errorMessage);
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            await RevokeRolesAsync(ctx, members, roles);
+        }
+
+        public static async Task RevokeRolesAsync(CommandContext ctx, IEnumerable<string> memberStrings, IEnumerable<string> roleStrings)
+        {
+            var roles = ctx.Guild.Roles.Values
+                .Where(role => roleStrings.Contains(role.Name));
+
+            if (!roles.Any())
+            {
+                var errorMessage = $"No roles matching specified search have been found in guild {ctx.Guild.Name}.";
+                await ctx.RespondAsync(errorMessage);
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            var allMembers = await ctx.Guild.GetAllMembersAsync();
+
+            var members = allMembers
+                .Where(member => memberStrings.Contains(member.Username));
+
+            if (!members.Any())
+            {
+                var errorMessage = $"No members matching specified search have been found in guild {ctx.Guild.Name}.";
+                await ctx.RespondAsync(errorMessage);
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            await RevokeRolesAsync(ctx, members, roles);
+        }
+
+        /// <summary>
+        /// Revoke all spoiler roles.
+        /// </summary>
+        public static async Task RevokeRolesAsync(CommandContext ctx, IEnumerable<DiscordMember> members, IEnumerable<DiscordRole> roles)
+        {
             var revokeTasks = new List<Task>();
             foreach (var role in roles)
             {
-                var tasks = ctx.Guild.Members
-                    .Where(member => member.Value.Roles.Contains(role))
-                    .Select(member => member.Value.RevokeRoleAsync(role))
+                var tasks = members
+                    .Select(member => member.RevokeRoleAsync(role))
                     .ToList();
 
                 revokeTasks.AddRange(tasks);
@@ -158,7 +252,7 @@ namespace MaraBot.Core
 
                 await ctx.RespondAsync(
                     errorMessage + "\n" +
-                    "This shouldn't happen! Please contact your friendly neighbourhood developers!");
+                    kFriendlyMessage);
 
                 throw new InvalidOperationException(errorMessage);
             }
@@ -180,7 +274,7 @@ namespace MaraBot.Core
 
                 await ctx.RespondAsync(
                     errorMessage + "\n" +
-                    "This shouldn't happen! Please contact your friendly neighbourhood developers!");
+                    kFriendlyMessage);
 
                 throw new InvalidOperationException(errorMessage);
             }
