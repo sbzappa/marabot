@@ -50,6 +50,11 @@ namespace MaraBot.Core
         [JsonIgnoreAttribute] public Dictionary<string, string> OtherOptions;
 
         /// <summary>
+        /// Priority of the preset in determining the next weekly preset.
+        /// </summary>
+        public int Weight;
+
+        /// <summary>
         /// Parses the set of flags in Options, based on the options given,
         /// to populate the list of general, mode-specific and other options.
         /// </summary>
@@ -104,7 +109,5 @@ namespace MaraBot.Core
                     OtherOptions.Add(option.Item2, option.Item3);
             }
         }
-
-        public int Weight;
     }
 }

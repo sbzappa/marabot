@@ -82,6 +82,20 @@ namespace MaraBot.Commands
                     return;
                 }
 
+                string validationMessage = "";
+                if (preset.Version == PresetValidation.VERSION)
+                    validationMessage += "**Preset has been validated successfully. Result:**\n";
+                else
+                    validationMessage += $"**Preset randomizer version {preset.Version} doesn't match validator randomizer version {PresetValidation.VERSION}. Validation might be wrong in certain places. Validation Result:**\n";
+
+                List<string> errors = PresetValidation.ValidateOptions(preset.Options);
+                foreach (var e in errors)
+                    validationMessage += $"> {e}\n";
+
+                // Print validation in separate message to make sure
+                // we can pin just the race embed
+                await ctx.RespondAsync(validationMessage);
+
                 var seed = RandomUtils.GetRandomSeed();
                 await ctx.RespondAsync(Display.RaceEmbed(preset, seed));
             }
