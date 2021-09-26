@@ -63,7 +63,7 @@ namespace MaraBot.Commands
             Weekly.Load(Weekly.NotSet);
             WeeklyIO.StoreWeeklyAsync(Weekly);
 
-            await CommandUtils.RevokeSpoilerRoles(ctx, new []
+            await CommandUtils.RevokeAllRolesAsync(ctx, new []
             {
                 Config.WeeklyCompletedRole,
                 Config.WeeklyForfeitedRole

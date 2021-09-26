@@ -54,7 +54,7 @@ namespace MaraBot.Commands
             await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, message);
 
             // Grant user their new role.
-            await CommandUtils.GrantRoleAsync(ctx, Config.WeeklyForfeitedRole);
+            await CommandUtils.GrantRolesToSelfAsync(ctx, new [] {Config.WeeklyForfeitedRole});
 
             // Display leaderboard in the spoiler channel.
             await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, Display.LeaderboardEmbed(Weekly, false));
