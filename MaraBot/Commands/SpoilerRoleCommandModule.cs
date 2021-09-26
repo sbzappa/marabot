@@ -1,10 +1,8 @@
-using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using MaraBot.IO;
 
 namespace MaraBot.Commands
 {
@@ -16,24 +14,32 @@ namespace MaraBot.Commands
     /// </summary>
     public class SpoilerRoleCommandModule : BaseCommandModule
     {
+        private const string kArgsDescription = "\n```" +
+                                                "  --done member      Grants WeeklyCompletedRole.\n" +
+                                                "  --completed member Grants WeeklyCompletedRole.\n" +
+                                                "  --forfeit member   Grants WeeklyForfeitedRole.\n" +
+                                                "  --revoke member    Revokes WeelyForfeitedRole & WeeklyCompletedRole.\n" +
+                                                "```";
+
         /// <summary>
         /// Bot configuration.
         /// </summary>
         public IConfig Config { private get; set; }
 
         /// <summary>
-        /// Executes the weekly command.
+        /// Grant/Revoke spoiler roles manually.
         /// </summary>
         /// <param name="ctx">Command Context.</param>
+        /// <param name="rawArgs">Command line arguments</param>
         /// <returns>Returns an asynchronous task.</returns>
         [Command("spoiler")]
         [Description("Grant or revoke the spoiler roles.")]
-        [Cooldown(30, 900, CooldownBucketType.Channel)]
+        [Cooldown(15, 900, CooldownBucketType.Channel)]
         [RequireGuild]
         [RequireBotPermissions(
             Permissions.SendMessages |
             Permissions.ManageRoles)]
-        public async Task Execute(CommandContext ctx, string optionString, string memberString)
+        public async Task Execute(CommandContext ctx, [RemainingText][Description(kArgsDescription)]string rawArgs)
         {
             // Safety measure to avoid potential misuses of this command.
             if (!await CommandUtils.MemberHasPermittedRole(ctx, Config.OrganizerRoles))
@@ -42,30 +48,57 @@ namespace MaraBot.Commands
                 return;
             }
 
-            if (optionString == "done")
+            var args = rawArgs.Split(' ');
+
+            var membersToGrantDoneRole = new List<string>();
+            var membersToGrantForfeitRole = new List<string>();
+            var membersToRevokeRoles = new List<string>();
+
+            var index = 0;
+            while (index + 1 < args.Length)
             {
-                await CommandUtils.GrantRolesAsync(ctx, new[] {memberString}, new[] {Config.WeeklyCompletedRole});
+                switch (args[index])
+                {
+                   case "--done":
+                   case "--completed":
+                       membersToGrantDoneRole.Add(args[++index]);
+                       break;
+                   case "--forfeit":
+                       membersToGrantForfeitRole.Add(args[++index]);
+                       break;
+                   case "--revoke":
+                       membersToRevokeRoles.Add(args[++index]);
+                       break;
+                   default:
+                       await ctx.RespondAsync($"Unrecognized option '{args[index]}'");
+                       await CommandUtils.SendFailReaction(ctx);
+                       return;
+                }
+
+                ++index;
             }
-            else if (optionString == "forfeit")
+
+            if (index < args.Length)
             {
-                await CommandUtils.GrantRolesAsync(ctx, new[] {memberString}, new[] {Config.WeeklyForfeitedRole});
+                await ctx.RespondAsync($"Unrecognized option '{args[index]}'");
+                await CommandUtils.SendFailReaction(ctx);
             }
-            else if (optionString == "revoke")
+
+            if (membersToGrantDoneRole.Count > 0)
+                await CommandUtils.GrantRolesAsync(ctx, membersToGrantDoneRole, new[] {Config.WeeklyCompletedRole});
+
+            if (membersToGrantForfeitRole.Count > 0)
+                await CommandUtils.GrantRolesAsync(ctx, membersToGrantDoneRole, new[] {Config.WeeklyForfeitedRole});
+
+            if (membersToRevokeRoles.Count > 0)
             {
                 await CommandUtils.RevokeRolesAsync(ctx,
-                    new[] {memberString},
-                    new []
+                    membersToRevokeRoles,
+                    new[]
                     {
                         Config.WeeklyCompletedRole,
                         Config.WeeklyForfeitedRole
                     });
-            }
-            else
-            {
-                await ctx.RespondAsync($"Unrecognized option '{optionString}'");
-                await CommandUtils.SendFailReaction(ctx);
-
-                return;
             }
 
             await CommandUtils.SendSuccessReaction(ctx);

@@ -89,22 +89,7 @@ namespace MaraBot.Core
             return roles.Select(r => r.IsMentionable || hasPerms ? $"@({r.Name})" : r.Mention).ToArray();
         }
 
-        public static async Task GrantRoleAsync(CommandContext ctx, string roleString)
-        {
-            var role = ctx.Guild.Roles.Values
-                .FirstOrDefault(role => roleString.Equals(role.Name));
-
-            if (role == null)
-            {
-                var errorMessage = $"Role {roleString} has not been found in guild {ctx.Guild.Name}.";
-                await ctx.RespondAsync(errorMessage);
-                throw new InvalidOperationException(errorMessage);
-            }
-
-            await GrantRolesAsync(ctx, new [] {ctx.Member}, new [] {role});
-        }
-
-        public static async Task GrantRolesAsync(CommandContext ctx, IEnumerable<string> memberStrings, IEnumerable<string> roleStrings)
+        private static async Task<IEnumerable<DiscordRole>> ConvertRoleNamesToRoles(CommandContext ctx, IEnumerable<string> roleStrings)
         {
             var roles = ctx.Guild.Roles.Values
                 .Where(role => roleStrings.Contains(role.Name));
@@ -116,6 +101,11 @@ namespace MaraBot.Core
                 throw new InvalidOperationException(errorMessage);
             }
 
+            return roles;
+        }
+
+        private static async Task<IEnumerable<DiscordMember>> ConvertMemberNamesToMembers(CommandContext ctx, IEnumerable<string> memberStrings)
+        {
             var allMembers = await ctx.Guild.GetAllMembersAsync();
 
             var members = allMembers
@@ -128,12 +118,44 @@ namespace MaraBot.Core
                 throw new InvalidOperationException(errorMessage);
             }
 
-            await GrantRolesAsync(ctx, members, roles);
+            return members;
         }
 
         /// <summary>
-        /// Grants a role to a user.
+        /// Grants roles to current member.
         /// </summary>
+        /// <param name="ctx">Command Context.</param>
+        /// <param name="roleStrings">Array of role names.</param>
+        /// <returns>Returns an asynchronous task.</returns>
+        /// <exception cref="InvalidOperationException">There are no matching roles.</exception>
+        public static async Task GrantRolesToSelfAsync(CommandContext ctx, IEnumerable<string> roleStrings)
+        {
+            var rolesTask = ConvertRoleNamesToRoles(ctx, roleStrings);
+            await GrantRolesAsync(ctx, new [] {ctx.Member}, await rolesTask);
+        }
+
+        /// <summary>
+        /// Grants roles to specified members.
+        /// </summary>
+        /// <param name="ctx">Command Context.</param>
+        /// <param name="memberStrings">Array of member names.</param>
+        /// <param name="roleStrings">Array of role names.</param>
+        /// <returns>Returns an asynchronous task.</returns>
+        /// <exception cref="InvalidOperationException">There are no matching roles or no matching members.</exception>
+        public static async Task GrantRolesAsync(CommandContext ctx, IEnumerable<string> memberStrings, IEnumerable<string> roleStrings)
+        {
+            var rolesTask = ConvertRoleNamesToRoles(ctx, roleStrings);
+            var membersTask = ConvertMemberNamesToMembers(ctx, memberStrings);
+            await GrantRolesAsync(ctx, await membersTask, await rolesTask);
+        }
+
+        /// <summary>
+        /// Grants roles to specified members.
+        /// </summary>
+        /// <param name="ctx">Command Context.</param>
+        /// <param name="members">Array of members.</param>
+        /// <param name="roles">Array of roles.</param>
+        /// <returns>Returns an asynchronous task.</returns>
         public static async Task GrantRolesAsync(CommandContext ctx, IEnumerable<DiscordMember> members, IEnumerable<DiscordRole> roles)
         {
             var grantTasks = new List<Task>();
@@ -154,20 +176,19 @@ namespace MaraBot.Core
             }
         }
 
-        public static async Task RevokeRolesAsync(CommandContext ctx, IEnumerable<string> roleStrings)
+        /// <summary>
+        /// Revokes specified roles from all members that have them.
+        /// </summary>
+        /// <param name="ctx">Command Context.</param>
+        /// <param name="roleStrings">Array of role names.</param>
+        /// <returns>Returns an asynchronous task.</returns>
+        /// <exception cref="InvalidOperationException">There are no matching roles or no member are assigned with these roles.</exception>
+        public static async Task RevokeAllRolesAsync(CommandContext ctx, IEnumerable<string> roleStrings)
         {
-            var roles = ctx.Guild.Roles
-                .Where(role => roleStrings.Contains(role.Value.Name))
-                .Select(role => role.Value);
+            var allMembersTask = ctx.Guild.GetAllMembersAsync();
 
-            if (!roles.Any())
-            {
-                var errorMessage = $"No roles matching specified search have been found in guild {ctx.Guild.Name}.";
-                await ctx.RespondAsync(errorMessage);
-                throw new InvalidOperationException(errorMessage);
-            }
-
-            var allMembers = await ctx.Guild.GetAllMembersAsync();
+            var roles= await ConvertRoleNamesToRoles(ctx, roleStrings);
+            var allMembers = await allMembersTask;
 
             var members = allMembers
                 .Where(member => member.Roles.Any(role => roles.Contains(role)));
@@ -182,36 +203,28 @@ namespace MaraBot.Core
             await RevokeRolesAsync(ctx, members, roles);
         }
 
+        /// <summary>
+        /// Revokes roles from specified members.
+        /// </summary>
+        /// <param name="ctx">Command Context.</param>
+        /// <param name="memberStrings">Array of member names.</param>
+        /// <param name="roleStrings">Array of role names.</param>
+        /// <returns>Returns an asynchronous task.</returns>
+        /// <exception cref="InvalidOperationException">There are no matching roles or no matching members.</exception>
         public static async Task RevokeRolesAsync(CommandContext ctx, IEnumerable<string> memberStrings, IEnumerable<string> roleStrings)
         {
-            var roles = ctx.Guild.Roles.Values
-                .Where(role => roleStrings.Contains(role.Name));
-
-            if (!roles.Any())
-            {
-                var errorMessage = $"No roles matching specified search have been found in guild {ctx.Guild.Name}.";
-                await ctx.RespondAsync(errorMessage);
-                throw new InvalidOperationException(errorMessage);
-            }
-
-            var allMembers = await ctx.Guild.GetAllMembersAsync();
-
-            var members = allMembers
-                .Where(member => memberStrings.Contains(member.Username));
-
-            if (!members.Any())
-            {
-                var errorMessage = $"No members matching specified search have been found in guild {ctx.Guild.Name}.";
-                await ctx.RespondAsync(errorMessage);
-                throw new InvalidOperationException(errorMessage);
-            }
-
-            await RevokeRolesAsync(ctx, members, roles);
+            var roles = ConvertRoleNamesToRoles(ctx, roleStrings);
+            var members = ConvertMemberNamesToMembers(ctx, memberStrings);
+            await RevokeRolesAsync(ctx, await members, await roles);
         }
 
         /// <summary>
-        /// Revoke all spoiler roles.
+        /// Revokes roles from specified members.
         /// </summary>
+        /// <param name="ctx">Command Context.</param>
+        /// <param name="members">Array of members.</param>
+        /// <param name="roles">Array of roles.</param>
+        /// <returns>Returns an asynchronous task.</returns>
         public static async Task RevokeRolesAsync(CommandContext ctx, IEnumerable<DiscordMember> members, IEnumerable<DiscordRole> roles)
         {
             var revokeTasks = new List<Task>();
