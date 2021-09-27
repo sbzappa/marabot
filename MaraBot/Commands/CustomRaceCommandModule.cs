@@ -83,12 +83,12 @@ namespace MaraBot.Commands
                 }
 
                 string validationMessage = "";
-                if (preset.Version == PresetValidation.VERSION)
+                if (preset.Version == PresetValidation.kVersion)
                     validationMessage += "**Preset has been validated successfully. Result:**\n";
                 else
-                    validationMessage += $"**Preset randomizer version {preset.Version} doesn't match validator randomizer version {PresetValidation.VERSION}. Validation might be wrong in certain places. Validation Result:**\n";
+                    validationMessage += $"**Preset randomizer version {preset.Version} doesn't match validator randomizer version {PresetValidation.kVersion}. Validation might be wrong in certain places. Validation Result:**\n";
 
-                List<string> errors = PresetValidation.ValidateOptions(preset.Options);
+                List<string> errors = PresetValidation.ValidateOptions(preset.Options, Options);
                 foreach (var e in errors)
                     validationMessage += $"> {e}\n";
 

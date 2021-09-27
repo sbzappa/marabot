@@ -24,7 +24,6 @@ namespace MaraBot
             var weeklyTask = WeeklyIO.LoadWeeklyAsync();
             var options = await OptionsIO.LoadOptionsAsync();
             var presetsTask = PresetIO.LoadPresetsAsync(options);
-            PresetValidation.AllOptions = options;
 
             var config = await configTask;
 

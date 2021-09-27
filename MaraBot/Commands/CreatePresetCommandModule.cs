@@ -16,6 +16,11 @@ namespace MaraBot.Commands
     public class CreatePresetCommandModule : BaseCommandModule
     {
         /// <summary>
+        /// Randomizer Options.
+        /// </summary>
+        public IReadOnlyDictionary<string, Option> Options { private get; set; }
+
+        /// <summary>
         /// Executes the newpreset command.
         /// </summary>
         /// <param name="ctx">Command Context.</param>
@@ -47,16 +52,16 @@ namespace MaraBot.Commands
             Dictionary<string, object> preset = new Dictionary<string, object>();
             preset.Add("name", "Dummyname");
             preset.Add("description", "Dummydescription");
-            preset.Add("version",  PresetValidation.VERSION);
+            preset.Add("version",  PresetValidation.kVersion);
             preset.Add("author", ctx.User.Username);
             preset.Add("options", options);
 
             string message = "";
             if (optionString != null)
             {
-                message += $"**Options have been validated for randomizer version {PresetValidation.VERSION}. Result:**\n";
+                message += $"**Options have been validated for randomizer version {PresetValidation.kVersion}. Result:**\n";
 
-                List<string> errors = PresetValidation.ValidateOptions(options);
+                List<string> errors = PresetValidation.ValidateOptions(options, Options);
                 foreach (var e in errors)
                     message += $"> {e}\n";
             }
