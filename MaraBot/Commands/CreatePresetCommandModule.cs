@@ -16,6 +16,11 @@ namespace MaraBot.Commands
     public class CreatePresetCommandModule : BaseCommandModule
     {
         /// <summary>
+        /// Randomizer Options.
+        /// </summary>
+        public IReadOnlyDictionary<string, Option> Options { private get; set; }
+
+        /// <summary>
         /// Executes the newpreset command.
         /// </summary>
         /// <param name="ctx">Command Context.</param>
@@ -47,27 +52,24 @@ namespace MaraBot.Commands
             Dictionary<string, object> preset = new Dictionary<string, object>();
             preset.Add("name", "Dummyname");
             preset.Add("description", "Dummydescription");
-            preset.Add("version",  "0.00");
-            preset.Add("author", "Dummy");
+            preset.Add("version",  PresetValidation.kVersion);
+            preset.Add("author", ctx.User.Username);
             preset.Add("options", options);
 
-            // TODO: validation
-            // if(optionString != null)
-            // {
-            //     string err = Preset.ValidateOptions(options);
-            //     if (err != "")
-            //     {
-            //         await ctx.RespondAsync(err);
-            //
-            //         var invalidEmoji = DiscordEmoji.FromName(ctx.Client, Display.kInvalidCommandEmoji);
-            //         await ctx.Message.CreateReactionAsync(invalidEmoji);
-            //
-            //         return;
-            //     }
-            // }
+            string message = "";
+            if (optionString != null)
+            {
+                message += $"**Options have been validated for randomizer version {PresetValidation.kVersion}. Result:**\n";
+
+                List<string> errors = PresetValidation.ValidateOptions(options, Options);
+                foreach (var e in errors)
+                    message += $"> {e}\n";
+            }
 
             string json = JsonConvert.SerializeObject(preset, Formatting.Indented);
-            await ctx.RespondAsync(Formatter.BlockCode(json));
+            message += Formatter.BlockCode(json);
+
+            await ctx.RespondAsync(message);
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }
