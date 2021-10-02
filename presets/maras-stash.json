@@ -11,6 +11,7 @@
     "opLogic": "restrictive",
     "opStartChar": "random",
     "opDifficulty": "kindahard",
+    "opSpoilerLog": "no",
     "aggBosses": "yes"
   }
 }
