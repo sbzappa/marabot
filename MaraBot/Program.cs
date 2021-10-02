@@ -24,6 +24,7 @@ namespace MaraBot
             var weeklyTask = WeeklyIO.LoadWeeklyAsync();
             var options = await OptionsIO.LoadOptionsAsync();
             var presetsTask = PresetIO.LoadPresetsAsync(options);
+            var responsesTask = EightBallIO.LoadResponsesAsync();
 
             var config = await configTask;
 
@@ -31,16 +32,18 @@ namespace MaraBot
             {
                 Token = config.Token,
                 TokenType = TokenType.Bot,
-                Intents = DiscordIntents.AllUnprivileged
+                Intents = DiscordIntents.AllUnprivileged | DiscordIntents.GuildMembers
             });
 
             var presets = await presetsTask;
             var weekly = await weeklyTask;
+            var responses = await responsesTask;
 
             var services = new ServiceCollection()
                 .AddSingleton<IReadOnlyDictionary<string, Preset>>(_ => presets)
                 .AddSingleton<IReadOnlyDictionary<string, Option>>(_ => options)
                 .AddSingleton<IConfig>(_ => config)
+                .AddSingleton<string[]>(_ => responses)
                 .AddSingleton(weekly)
                 .BuildServiceProvider();
 
@@ -73,7 +76,11 @@ namespace MaraBot
             commands.RegisterCommands<Commands.CreatePresetCommandModule>();
             commands.RegisterCommands<Commands.WeeklyCommandModule>();
             commands.RegisterCommands<Commands.CompletedCommandModule>();
+            commands.RegisterCommands<Commands.ForfeitCommandModule>();
             commands.RegisterCommands<Commands.LeaderboardCommandModule>();
+            commands.RegisterCommands<Commands.ResetWeeklyCommandModule>();
+            commands.RegisterCommands<Commands.SpoilerRoleCommandModule>();
+            commands.RegisterCommands<Commands.EightBallCommandModule>();
 
             foreach(var c in commands) {
                 c.Value.CommandExecuted += CommandEvents.OnCommandExecuted;

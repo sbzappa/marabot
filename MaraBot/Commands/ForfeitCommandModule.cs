@@ -13,10 +13,10 @@ namespace MaraBot.Commands
     using Messages;
 
     /// <summary>
-    /// Implements the completed command.
+    /// Implements the forfeit command.
     /// This command is used to add your time to the leaderboard.
     /// </summary>
-    public class CompletedCommandModule : BaseCommandModule
+    public class ForfeitCommandModule : BaseCommandModule
     {
         /// <summary>
         /// Weekly settings.
@@ -28,14 +28,13 @@ namespace MaraBot.Commands
         public IConfig Config { private get; set; }
 
         /// <summary>
-        /// Executes the completed command.
+        /// Executes the forfeit command.
         /// </summary>
         /// <param name="ctx">Command Context.</param>
-        /// <param name="time">Elapsed time. Expecting HH:MM:SS format.</param>
         /// <returns>Returns an asynchronous task.</returns>
-        [Command("completed")]
-        [Aliases("done")]
-        [Description("Add your time to the leaderboard.")]
+        [Command("forfeit")]
+        [Aliases("forfeited")]
+        [Description("Forfeit the weekly.")]
         [Cooldown(2, 900, CooldownBucketType.User)]
         [RequireGuild]
         [RequireBotPermissions(
@@ -43,28 +42,24 @@ namespace MaraBot.Commands
             Permissions.ManageMessages |
             Permissions.ManageRoles |
             Permissions.AccessChannels)]
-        public async Task Execute(CommandContext ctx, TimeSpan time)
+        public async Task Execute(CommandContext ctx)
         {
-            // Give a sufficient delay before deleting message
-            await Task.Delay(500);
-
-            // Delete user message to avoid spoilers, if we can delete the message.
-            await ctx.Message.DeleteAsync();
-
             // Add user to leaderboard.
-            Weekly.AddToLeaderboard(ctx.User.Username, time);
+            Weekly.AddToLeaderboard(ctx.User.Username, TimeSpan.MaxValue);
             WeeklyIO.StoreWeeklyAsync(Weekly);
 
             // Send message in current channel and in spoiler channel.
-            var message = $"Adding {ctx.User.Mention} to the leaderboard!";
+            var message = $"{ctx.User.Mention} forfeited the weekly!";
             await ctx.RespondAsync(message);
             await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, message);
 
             // Grant user their new role.
-            await CommandUtils.GrantRolesToSelfAsync(ctx, new [] {Config.WeeklyCompletedRole});
+            await CommandUtils.GrantRolesToSelfAsync(ctx, new [] {Config.WeeklyForfeitedRole});
 
             // Display leaderboard in the spoiler channel.
             await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, Display.LeaderboardEmbed(Weekly, false));
+
+            await CommandUtils.SendSuccessReaction(ctx);
         }
     }
 }

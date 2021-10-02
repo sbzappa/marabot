@@ -3,5 +3,8 @@
   "token": "my-token-goes-here",
   "organizerRoles": [
     "organizes races"
-  ]
+  ],
+  "weeklyCompletedRole": "did the weekly",
+  "weeklyForfeitedRole": "forfeited the weekly",
+  "weeklySpoilerChannel": "spoilers"
 }

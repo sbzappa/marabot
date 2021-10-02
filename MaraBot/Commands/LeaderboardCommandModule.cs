@@ -1,4 +1,6 @@
+using System.Linq;
 using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 
@@ -20,6 +22,10 @@ namespace MaraBot.Commands
         /// Weekly settings.
         /// </summary>
         public Weekly Weekly { private get; set; }
+        /// <summary>
+        /// Bot configuration.
+        /// </summary>
+        public IConfig Config { private get; set; }
 
         /// <summary>
         /// Executes the leaderboard command.
@@ -32,6 +38,9 @@ namespace MaraBot.Commands
         [Aliases("lb")]
         [Cooldown(2, 900, CooldownBucketType.Channel)]
         [RequireGuild]
+        [RequireBotPermissions(
+            Permissions.SendMessages |
+            Permissions.AccessChannels)]
         public async Task Execute(CommandContext ctx, int weekNumber = -1)
         {
             var currentWeek = RandomUtils.GetWeekNumber();
@@ -50,7 +59,18 @@ namespace MaraBot.Commands
                 return;
             }
 
-            await Display.LeaderboardAsync(ctx, weekly, weekNumber == currentWeek);
+            if (weekNumber == currentWeek)
+            {
+                var success = await CommandUtils.ChannelExistsInGuild(ctx, Config.WeeklySpoilerChannel);
+                if (!success)
+                {
+                    await ctx.RespondAsync("This week's leaderboard can only be displayed on the spoiler channel!");
+                    await CommandUtils.SendFailReaction(ctx);
+                    return;
+                }
+            }
+
+            await ctx.RespondAsync(Display.LeaderboardEmbed(weekly, false));
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }

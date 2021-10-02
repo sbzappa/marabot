@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using MaraBot.Core;
@@ -37,22 +38,12 @@ namespace MaraBot.Commands
         [Description("Start a custom race based on a .json file")]
         [Cooldown(3, 600, CooldownBucketType.User)]
         [RequireGuild]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx)
         {
             // Safety measure to avoid potential misuses of this command. May be revisited in the future.
-            if (!ctx.Member.Roles.Any(role => (Config.OrganizerRoles?.Contains(role.Name)).GetValueOrDefault()))
+            if (!await CommandUtils.MemberHasPermittedRole(ctx, Config.OrganizerRoles))
             {
-                var guildRoles = ctx.Guild.Roles
-                    .Where(role => (Config.OrganizerRoles?.Contains(role.Value.Name)).GetValueOrDefault());
-
-                await ctx.RespondAsync(
-                    "Insufficient privileges to create a custom race.\n" +
-                    "This command is only available to the following roles:\n" +
-                    String.Join(
-                        ", ",
-                        await CommandUtils.MentionRoleWithoutPing(ctx, guildRoles.Select(r => r.Value).ToArray())
-                    )
-                );
                 await CommandUtils.SendFailReaction(ctx);
                 return;
             }
@@ -91,8 +82,22 @@ namespace MaraBot.Commands
                     return;
                 }
 
+                string validationMessage = "";
+                if (preset.Version == PresetValidation.kVersion)
+                    validationMessage += "**Preset has been validated successfully. Result:**\n";
+                else
+                    validationMessage += $"**Preset randomizer version {preset.Version} doesn't match validator randomizer version {PresetValidation.kVersion}. Validation might be wrong in certain places. Validation Result:**\n";
+
+                List<string> errors = PresetValidation.ValidateOptions(preset.Options, Options);
+                foreach (var e in errors)
+                    validationMessage += $"> {e}\n";
+
+                // Print validation in separate message to make sure
+                // we can pin just the race embed
+                await ctx.RespondAsync(validationMessage);
+
                 var seed = RandomUtils.GetRandomSeed();
-                await Display.RaceAsync(ctx, preset, seed);
+                await ctx.RespondAsync(Display.RaceEmbed(preset, seed));
             }
 
             await CommandUtils.SendSuccessReaction(ctx);

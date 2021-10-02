@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using DSharpPlus;
-using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 
 using MaraBot.Core;
@@ -31,24 +29,22 @@ namespace MaraBot.Messages
         /// <summary>
         /// Displays race settings.
         /// </summary>
-        /// <param name="ctx">Command Context.</param>
         /// <param name="preset">Preset used in race.</param>
         /// <param name="seed">Generated seed.</param>
-        /// <returns>Returns an asynchronous task.</returns>
-        public static Task RaceAsync(CommandContext ctx, Preset preset, string seed)
+        /// <returns>Returns an embed builder.</returns>
+        public static DiscordEmbedBuilder RaceEmbed(Preset preset, string seed)
         {
-            return RaceAsync(ctx, preset, seed, DateTime.Now);
+            return RaceEmbed(preset, seed, DateTime.Now);
         }
 
         /// <summary>
         /// Displays race settings.
         /// </summary>
-        /// <param name="ctx">Command Context.</param>
         /// <param name="preset">Preset used in race.</param>
         /// <param name="seed">Generated seed.</param>
         /// <param name="timestamp">Timestamp at which race was generated.</param>
-        /// <returns>Returns an asynchronous task.</returns>
-        public static Task RaceAsync(CommandContext ctx, Preset preset, string seed, DateTime timestamp)
+        /// <returns>Returns an embed builder.</returns>
+        public static DiscordEmbedBuilder RaceEmbed(Preset preset, string seed, DateTime timestamp)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -65,25 +61,24 @@ namespace MaraBot.Messages
                 preset.Options.Select(kvp => $"{kvp.Key}={kvp.Value}")
             );
 
+            if (String.IsNullOrEmpty(rawOptionsString))
+                rawOptionsString = "\u200B";
+
             embed
                 .AddField(preset.Name, preset.Description)
                 .AddOptions(preset)
                 .AddField("Seed", Formatter.BlockCode(seed))
                 .AddField("Raw Options", Formatter.BlockCode(rawOptionsString));
 
-            var mainBuilder = new DiscordMessageBuilder()
-               .AddEmbed(embed);
-
-            return ctx.RespondAsync(mainBuilder);
+            return embed;
         }
 
         /// <summary>
         /// Displays available presets.
         /// </summary>
-        /// <param name="ctx">Command Context.</param>
         /// <param name="presets">List of available presets.</param>
-        /// <returns>Returns an asynchronous task.</returns>
-        public static Task PresetsAsync(CommandContext ctx, IReadOnlyDictionary<string, Preset> presets)
+        /// <returns>Returns an embed builder.</returns>
+        public static DiscordEmbedBuilder PresetsEmbed(IReadOnlyDictionary<string, Preset> presets)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -107,16 +102,15 @@ namespace MaraBot.Messages
                 .AddField("Name", presetNames, true)
                 .AddField("Description", presetDescriptions, true);
 
-            return ctx.RespondAsync(embed);
+            return embed;
         }
 
         /// <summary>
         /// Displays a preset information.
         /// </summary>
-        /// <param name="ctx">Command Context.</param>
         /// <param name="preset">Preset to display.</param>
-        /// <returns>Returns an asynchronous task.</returns>
-        public static Task PresetAsync(CommandContext ctx, Preset preset)
+        /// <returns>Returns an embed builder.</returns>
+        public static DiscordEmbedBuilder PresetEmbed(Preset preset)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -131,7 +125,7 @@ namespace MaraBot.Messages
                 .AddField("Author", preset.Author)
                 .AddOptions(preset);
 
-            return ctx.RespondAsync(embed);
+            return embed;
         }
 
         private static DiscordEmbedBuilder AddOptionDictionary(this DiscordEmbedBuilder embed, string title, Dictionary<string, string> options)
@@ -155,24 +149,28 @@ namespace MaraBot.Messages
                     optionStrings[columnIndex] += "\n";
             }
 
-            embed.AddField(title, optionStrings[0], optionStrings.Length > 1);
-            for (int i = 1; i < optionStrings.Length; ++i)
-                embed.AddField("\u200B", optionStrings[i], true);
+            embed.AddField(title, optionStrings[0], true);
+
+            columnIndex = 1;
+            for (; columnIndex < optionStrings.Length; ++columnIndex)
+                embed.AddField("\u200B", optionStrings[columnIndex], true);
+            for (; columnIndex < kMaxNumberOfColumns; ++columnIndex)
+                embed.AddField("\u200B", "\u200B", true);
 
             return embed;
         }
 
         private static DiscordEmbedBuilder AddOptions(this DiscordEmbedBuilder embed, Preset preset)
         {
-            Mode mode = Option.OptionValueToMode(preset.Options["mode"]);
+            Mode mode = preset.Options.ContainsKey("mode") ? Option.OptionValueToMode(preset.Options["mode"]) : Mode.Rando;
 
             embed.AddField(Option.ModeToPrettyString(Mode.Mode), Option.ModeToPrettyString(mode));
 
-            if(preset.GeneralOptions.Count > 0)
+            if (preset.GeneralOptions.Count > 0)
                 embed.AddOptionDictionary($"{Option.ModeToPrettyString(Mode.General)} Options", preset.GeneralOptions);
-            if(preset.ModeOptions.Count > 0)
+            if (preset.ModeOptions.Count > 0)
                 embed.AddOptionDictionary($"{Option.ModeToPrettyString(mode)} Options", preset.ModeOptions);
-            if(preset.OtherOptions.Count > 0)
+            if (preset.OtherOptions.Count > 0)
                 embed.AddOptionDictionary($"{Option.ModeToPrettyString(Mode.Other)} Options", preset.OtherOptions);
 
             return embed;
@@ -181,11 +179,10 @@ namespace MaraBot.Messages
         /// <summary>
         /// Displays the leaderboard for specified weekly.
         /// </summary>
-        /// <param name="ctx">Command Context.</param>
         /// <param name="weekly">Weekly settings.</param>
         /// <param name="preventSpoilers">Hide potential spoilers.</param>
-        /// <returns>Returns an asynchronous task.</returns>
-        public static Task LeaderboardAsync(CommandContext ctx, Weekly weekly, bool preventSpoilers)
+        /// <returns>Returns an embed builder.</returns>
+        public static DiscordEmbedBuilder LeaderboardEmbed(Weekly weekly, bool preventSpoilers)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -194,7 +191,7 @@ namespace MaraBot.Messages
             };
 
             embed
-                .AddField("Weekly Seed", $"week #{weekly.WeekNumber}");
+                .AddField("Weekly Seed", $"Week #{weekly.WeekNumber} - {weekly.PresetName}");
 
             IEnumerable<KeyValuePair<string, TimeSpan>> leaderboard = weekly.Leaderboard;
 
@@ -205,16 +202,23 @@ namespace MaraBot.Messages
                     .OrderBy(kvp => kvp.Value);
             }
 
-            var emojis = String.Join("\n",
-                kRankingEmoijs.Take(Math.Min(kRankingEmoijs.Length, leaderboard.Count()))
-            );
+            var rankStrings = String.Empty;
             var userStrings = String.Empty;
             var timeStrings = String.Empty;
 
+            var rank = 0;
+            var rankTreshold = TimeSpan.MinValue;
             foreach (var entry in leaderboard)
             {
+                if (entry.Value > rankTreshold)
+                {
+                    ++rank;
+                    rankTreshold = entry.Value;
+                }
+                rankStrings += $"{(rank <= 3 ? kRankingEmoijs[rank - 1] : CommandUtils.IntegerToOrdinal(rank))}\n";
+
                 userStrings += $"{entry.Key}\n";
-                timeStrings += $"{entry.Value}\n";
+                timeStrings += $"{(entry.Value.Equals(TimeSpan.MaxValue) ? "DNF" : entry.Value.ToString())}\n";
             }
 
             if (preventSpoilers)
@@ -223,12 +227,12 @@ namespace MaraBot.Messages
             }
 
             if (!preventSpoilers)
-                embed.AddField("\u200B", emojis, true);
+                embed.AddField("\u200B", rankStrings, true);
 
             embed.AddField("User", userStrings, true);
             embed.AddField("Time", timeStrings, true);
 
-            return ctx.RespondAsync(embed);
+            return embed;
         }
     }
 }

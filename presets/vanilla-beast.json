@@ -1,9 +1,8 @@
 {
   "name": "Vanilla Mana Beast",
   "description": "Evil Gate > Mana Beast!",
-  "version": "1.21",
+  "version": "1.22",
   "author": "Menblock",
-  "weight": 2,
   "options": {
     "opManaBeastScale": "vanilla",
     "mode": "open",

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 
@@ -32,6 +33,7 @@ namespace MaraBot.Commands
         [Description("Get the weekly race.")]
         [Cooldown(2, 900, CooldownBucketType.Channel)]
         [RequireGuild]
+        [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx)
         {
             if (!Presets.ContainsKey(Weekly.PresetName) || Weekly.WeekNumber < 0)
@@ -39,12 +41,12 @@ namespace MaraBot.Commands
                 await ctx.RespondAsync(
                     $"Weekly preset '{Weekly.PresetName}' is not a a valid preset\n" +
                     "This shouldn't happen! Please contact your friendly neighbourhood developers!");
-                await CommandUtils.SendFailReaction(ctx, false);
+                await CommandUtils.SendFailReaction(ctx);
                 return;
             }
 
             var preset = Presets[Weekly.PresetName];
-            await Display.RaceAsync(ctx, preset, Weekly.Seed, Weekly.Timestamp);
+            await ctx.RespondAsync(Display.RaceEmbed(preset, Weekly.Seed, Weekly.Timestamp));
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }
