@@ -1,7 +1,7 @@
 {
   "name": "Wrong Vial",
   "description": "It's never the green one",
-  "version": "1.21",
+  "version": "1.22",
   "author": "CrashTestGenius",
   "options": {
     "deathByPoison": "yes",

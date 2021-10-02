@@ -1,0 +1,23 @@
+{
+  "name": "Should not be too hard",
+  "description": "But not too fast",
+  "version": "1.22",
+  "author": "Hermoni",
+  "options": {
+    "opManaBeastScale": "vanilla",
+    "opStartWeapon": "3",
+    "opTraps": "none",
+    "opChestFreq": "high",
+    "opGPEleRando": "no",
+    "mode": "open",
+    "opStatGrowth": "timed",
+    "opDifficulty": "kindahard",
+    "opGold": "triple",
+    "opExp": "half",
+    "opCharacters": "startboth",
+    "opStatusAilments": "type",
+    "opGoal": "vlong",
+    "opBosses": "swap",
+    "opStartChar": "sprite"
+  }
+}

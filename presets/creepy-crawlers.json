@@ -1,9 +1,8 @@
 {
   "name": "Oops! All ~~owls~~ metal crawlers!",
   "description": "They crawl everywhere!",
-  "version": "1.21",
+  "version": "1.22",
   "author": "Cyb3R",
-  "weight": 2,
   "options": {
     "opComplexity": "hard",
     "oopsAllThis": "49",
