@@ -1,9 +1,8 @@
 {
   "name": "Solo Girl MTR",
   "description": "Primm's a tree hugger!",
-  "version": "1.21",
+  "version": "1.22",
   "author": "sbz",
-  "weight": 1,
   "options": {
     "opStartWeapon": "0",
     "opNumSeeds": "random",

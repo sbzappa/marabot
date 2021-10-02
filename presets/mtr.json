@@ -1,9 +1,8 @@
 {
   "name": "Mana Tree Revival",
   "description": "I :heart: :deciduous_tree:",
-  "version": "1.21",
+  "version": "1.22",
   "author": "CrashTestGenius",
-  "weight": 2,
   "options": {
     "mode": "open",
     "opDifficulty": "kindahard",

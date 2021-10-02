@@ -1,0 +1,16 @@
+{
+  "name": "Mara's secret stash",
+  "description": "Mara has hidden some items, you'll never find them :detective:",
+  "version": "1.22",
+  "author": "sbz",
+  "options": {
+    "opNumSeeds": "6",
+    "opAllowLockedItems": "yes",
+    "mode": "open",
+    "opGoal": "mtr",
+    "opLogic": "restrictive",
+    "opStartChar": "random",
+    "opDifficulty": "kindahard",
+    "aggBosses": "yes"
+  }
+}
