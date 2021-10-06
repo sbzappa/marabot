@@ -1,18 +1,38 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace MaraBot.Core
 {
+    public interface IReadOnlyWeekly
+    {
+        /// <summary>Week number.</summary>
+        public int WeekNumber { get; }
+        /// <summary>Preset name.</summary>
+        public string PresetName { get; }
+        /// <summary>Preset.</summary>
+        public Preset Preset { get; }
+        /// <summary>Seed used in weekly. This is a string of 16 hexadecimal values.</summary>
+        public string Seed { get; }
+        /// <summary>Leaderboard for the weekly race.</summary>
+        public IReadOnlyDictionary<string, TimeSpan> Leaderboard { get; }
+        /// <summary>Timestamp at which weekly seed has been created.</summary>
+        public DateTime Timestamp { get; }
+    }
+
+
     /// <summary>
     /// Holds information on the weekly race settings.
     /// </summary>
-    public class Weekly
+    public class Weekly : IReadOnlyWeekly
     {
         /// <summary>Week number.</summary>
         public int WeekNumber;
         /// <summary>Preset name.</summary>
         public string PresetName;
+        /// <summary>Preset.</summary>
+        public Preset Preset;
         /// <summary>Seed used in weekly. This is a string of 16 hexadecimal values.</summary>
         public string Seed;
         /// <summary>Leaderboard for the weekly race.</summary>
@@ -107,5 +127,12 @@ namespace MaraBot.Core
                 Timestamp = DateTime.Now
             };
         }
+
+        int IReadOnlyWeekly.WeekNumber => WeekNumber;
+        string IReadOnlyWeekly.PresetName => PresetName;
+        Preset IReadOnlyWeekly.Preset => Preset;
+        string IReadOnlyWeekly.Seed => Seed;
+        IReadOnlyDictionary<string, TimeSpan> IReadOnlyWeekly.Leaderboard => Leaderboard;
+        DateTime IReadOnlyWeekly.Timestamp => Timestamp;
     }
 }

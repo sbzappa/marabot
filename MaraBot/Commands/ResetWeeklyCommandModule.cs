@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DSharpPlus;
@@ -22,9 +23,13 @@ namespace MaraBot.Commands
         /// </summary>
         public Weekly Weekly { private get; set; }
         /// <summary>
+        /// Randomizer Options.
+        /// </summary>
+        public IReadOnlyDictionary<string, Option> Options { private get; set; }
+        /// <summary>
         /// Bot configuration.
         /// </summary>
-        public IConfig Config { private get; set; }
+        public IReadOnlyConfig Config { private get; set; }
 
         /// <summary>
         /// Executes the weekly command.
@@ -49,25 +54,59 @@ namespace MaraBot.Commands
 
             var currentWeek = RandomUtils.GetWeekNumber();
 
-            if (Weekly.WeekNumber == currentWeek)
+            // Make a backup of the previous week's weekly and create a new
+            // weekly for the current week.
+            if (Weekly.WeekNumber != currentWeek)
             {
-                await ctx.RespondAsync($"Weekly for week {currentWeek} already exists.");
-                await CommandUtils.SendFailReaction(ctx);
-                return;
+                try
+                {
+                    await CommandUtils.RevokeAllRolesAsync(ctx, new[]
+                    {
+                        Config.WeeklyCompletedRole,
+                        Config.WeeklyForfeitedRole
+                    });
+                }
+                catch (InvalidOperationException)
+                {
+                    await CommandUtils.SendFailReaction(ctx);
+                    throw;
+                }
+
+                // Backup weekly settings to json before overriding.
+                await WeeklyIO.StoreWeeklyAsync(Weekly, $"weekly.{Weekly.WeekNumber}.json");
+
+                // Set weekly to unset settings until it's rolled out.
+                Weekly.Load(Weekly.NotSet);
+                await WeeklyIO.StoreWeeklyAsync(Weekly);
             }
 
-            // Backup weekly settings to json before overriding.
-            WeeklyIO.StoreWeeklyAsync(Weekly, $"weekly.{Weekly.WeekNumber}.json");
-
-            // Set weekly to unset settings until it's rolled out.
-            Weekly.Load(Weekly.NotSet);
-            WeeklyIO.StoreWeeklyAsync(Weekly);
-
-            await CommandUtils.RevokeAllRolesAsync(ctx, new []
+            // Load in the new preset in attachment.
+            Preset preset = default;
+            try
             {
-                Config.WeeklyCompletedRole,
-                Config.WeeklyForfeitedRole
-            });
+                preset = await CommandUtils.LoadPresetAttachmentAsync(ctx, Options);
+            }
+            catch (InvalidOperationException)
+            {
+                await CommandUtils.SendFailReaction(ctx);
+                throw;
+            }
+
+            if (preset.Equals(default))
+            {
+                await ctx.RespondAsync("Not a valid weekly preset!");
+                await CommandUtils.SendFailReaction(ctx);
+            }
+
+            await ctx.RespondAsync(CommandUtils.ValidatePresetOptions(ctx, preset, Options));
+
+            // Roll or reroll weekly seed with preset options.
+            Weekly.PresetName = "";
+            Weekly.Preset = preset;
+            Weekly.Seed = RandomUtils.GetRandomSeed();
+            await WeeklyIO.StoreWeeklyAsync(Weekly);
+
+            await ctx.RespondAsync(Display.RaceEmbed(preset, Weekly.Seed, Weekly.Timestamp));
 
             await ctx.RespondAsync("Weekly has been successfully reset!");
             await CommandUtils.SendSuccessReaction(ctx);

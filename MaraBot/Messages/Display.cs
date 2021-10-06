@@ -182,7 +182,7 @@ namespace MaraBot.Messages
         /// <param name="weekly">Weekly settings.</param>
         /// <param name="preventSpoilers">Hide potential spoilers.</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder LeaderboardEmbed(Weekly weekly, bool preventSpoilers)
+        public static DiscordEmbedBuilder LeaderboardEmbed(IReadOnlyWeekly weekly, bool preventSpoilers)
         {
             var embed = new DiscordEmbedBuilder
             {

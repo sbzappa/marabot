@@ -18,7 +18,7 @@ namespace MaraBot.Commands
         /// <summary>
         /// Weekly settings.
         /// </summary>
-        public Weekly Weekly { private get; set; }
+        public IReadOnlyWeekly Weekly { private get; set; }
         /// <summary>
         /// List of presets available.
         /// </summary>

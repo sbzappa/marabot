@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DSharpPlus;
@@ -21,11 +22,15 @@ namespace MaraBot.Commands
         /// <summary>
         /// Weekly settings.
         /// </summary>
-        public Weekly Weekly { private get; set; }
+        public IReadOnlyWeekly Weekly { private get; set; }
+        /// <summary>
+        /// Presets settings.
+        /// </summary>
+        public IReadOnlyDictionary<string, Preset> Presets { private get; set; }
         /// <summary>
         /// Bot configuration.
         /// </summary>
-        public IConfig Config { private get; set; }
+        public IReadOnlyConfig Config { private get; set; }
 
         /// <summary>
         /// Executes the leaderboard command.
@@ -49,7 +54,7 @@ namespace MaraBot.Commands
             var weekly = Weekly;
             if (weekNumber != currentWeek)
             {
-                weekly = await WeeklyIO.LoadWeeklyAsync($"weekly.{weekNumber}.json");
+                weekly = await WeeklyIO.LoadWeeklyAsync(Presets, $"weekly.{weekNumber}.json");
             }
 
             if (weekly.Leaderboard == null || weekly.Leaderboard.Count == 0)

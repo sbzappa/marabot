@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
@@ -25,7 +23,7 @@ namespace MaraBot.Commands
         /// <summary>
         /// Bot configuration.
         /// </summary>
-        public IConfig Config { private get; set; }
+        public IReadOnlyConfig Config { private get; set; }
 
         /// <summary>
         /// Executes the completed command.
@@ -53,7 +51,7 @@ namespace MaraBot.Commands
 
             // Add user to leaderboard.
             Weekly.AddToLeaderboard(ctx.User.Username, time);
-            WeeklyIO.StoreWeeklyAsync(Weekly);
+            await WeeklyIO.StoreWeeklyAsync(Weekly);
 
             // Send message in current channel and in spoiler channel.
             var message = $"Adding {ctx.User.Mention} to the leaderboard!";

@@ -6,7 +6,7 @@ namespace MaraBot.Core
     /// <summary>
     /// Interface that provides a read-only view unto the bot configuration.
     /// </summary>
-    public interface IConfig
+    public interface IReadOnlyConfig
     {
         /// <summary>
         /// Prefix used for discord commands.
@@ -37,32 +37,32 @@ namespace MaraBot.Core
     /// <summary>
     /// Configuration of the bot.
     /// </summary>
-    public class Config : IConfig
+    public class Config : IReadOnlyConfig
     {
-        /// <inheritdoc cref="IConfig.Prefix"/>
+        /// <inheritdoc cref="IReadOnlyConfig.Prefix"/>
         public string Prefix;
-        /// <inheritdoc cref="IConfig.Token"/>
+        /// <inheritdoc cref="IReadOnlyConfig.Token"/>
         public string Token;
-        /// <inheritdoc cref="IConfig.OrganizerRoles"/>
+        /// <inheritdoc cref="IReadOnlyConfig.OrganizerRoles"/>
         public string[] OrganizerRoles;
-        /// <inheritdoc cref="IConfig.WeeklyCompletedRole"/>
+        /// <inheritdoc cref="IReadOnlyConfig.WeeklyCompletedRole"/>
         public string WeeklyCompletedRole;
-        /// <inheritdoc cref="IConfig.WeeklyForfeitedRole"/>
+        /// <inheritdoc cref="IReadOnlyConfig.WeeklyForfeitedRole"/>
         public string WeeklyForfeitedRole;
-        /// <inheritdoc cref="IConfig.WeeklySpoilerChannel"/>
+        /// <inheritdoc cref="IReadOnlyConfig.WeeklySpoilerChannel"/>
         public string WeeklySpoilerChannel;
 
-        /// <inheritdoc cref="IConfig.Prefix"/>
-        string IConfig.Prefix => Prefix;
-        /// <inheritdoc cref="IConfig.Token"/>
-        string IConfig.Token => Token;
-        /// <inheritdoc cref="IConfig.OrganizerRoles"/>
-        IReadOnlyCollection<string> IConfig.OrganizerRoles => OrganizerRoles;
-        /// <inheritdoc cref="IConfig.WeeklyCompletedRole"/>
-        string IConfig.WeeklyCompletedRole => WeeklyCompletedRole;
-        /// <inheritdoc cref="IConfig.WeeklyForfeitedRole"/>
-        string IConfig.WeeklyForfeitedRole => WeeklyForfeitedRole;
-        /// <inheritdoc cref="IConfig.WeeklySpoilerChannel"/>
-        string IConfig.WeeklySpoilerChannel => WeeklySpoilerChannel;
+        /// <inheritdoc cref="IReadOnlyConfig.Prefix"/>
+        string IReadOnlyConfig.Prefix => Prefix;
+        /// <inheritdoc cref="IReadOnlyConfig.Token"/>
+        string IReadOnlyConfig.Token => Token;
+        /// <inheritdoc cref="IReadOnlyConfig.OrganizerRoles"/>
+        IReadOnlyCollection<string> IReadOnlyConfig.OrganizerRoles => OrganizerRoles;
+        /// <inheritdoc cref="IReadOnlyConfig.WeeklyCompletedRole"/>
+        string IReadOnlyConfig.WeeklyCompletedRole => WeeklyCompletedRole;
+        /// <inheritdoc cref="IReadOnlyConfig.WeeklyForfeitedRole"/>
+        string IReadOnlyConfig.WeeklyForfeitedRole => WeeklyForfeitedRole;
+        /// <inheritdoc cref="IReadOnlyConfig.WeeklySpoilerChannel"/>
+        string IReadOnlyConfig.WeeklySpoilerChannel => WeeklySpoilerChannel;
     }
 }

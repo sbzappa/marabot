@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using DSharpPlus.CommandsNext;
 using DSharpPlus;
 using DSharpPlus.Entities;
@@ -9,6 +11,7 @@ using DSharpPlus.Entities;
 namespace MaraBot.Core
 {
     using Messages;
+    using IO;
 
     public static class CommandUtils
     {
@@ -182,7 +185,7 @@ namespace MaraBot.Core
         /// <param name="ctx">Command Context.</param>
         /// <param name="roleStrings">Array of role names.</param>
         /// <returns>Returns an asynchronous task.</returns>
-        /// <exception cref="InvalidOperationException">There are no matching roles or no member are assigned with these roles.</exception>
+        /// <exception cref="InvalidOperationException">There are no matching roles.</exception>
         public static async Task RevokeAllRolesAsync(CommandContext ctx, IEnumerable<string> roleStrings)
         {
             var allMembersTask = ctx.Guild.GetAllMembersAsync();
@@ -192,13 +195,6 @@ namespace MaraBot.Core
 
             var members = allMembers
                 .Where(member => member.Roles.Any(role => roles.Contains(role)));
-
-            if (!members.Any())
-            {
-                var errorMessage = $"No members currently have specified roles in guild {ctx.Guild.Name}.";
-                await ctx.RespondAsync(errorMessage);
-                throw new InvalidOperationException(errorMessage);
-            }
 
             await RevokeRolesAsync(ctx, members, roles);
         }
@@ -322,6 +318,70 @@ namespace MaraBot.Core
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Loads a .json preset attachment if one is provided with the command.
+        /// </summary>
+        public static async Task<Preset> LoadPresetAttachmentAsync(CommandContext ctx, IReadOnlyDictionary<string, Option> options)
+        {
+            if (ctx.Message.Attachments == null || ctx.Message.Attachments.Count != 1)
+            {
+                var errorMessage = "No attachment for custom race. You must supply a valid json file.";
+
+                await ctx.RespondAsync(errorMessage);
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            var attachment = ctx.Message.Attachments[0];
+            var url = attachment.Url;
+
+            var request = WebRequest.Create(url);
+            var responseTask = request.GetResponseAsync();
+
+            if (Path.GetExtension(attachment.FileName).ToLower() != ".json")
+            {
+                var errorMessage = "Expected file extension to be .json.";
+
+                await ctx.RespondAsync(errorMessage);
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            var response = await responseTask;
+            var dataStream = response.GetResponseStream();
+
+            using (StreamReader r = new StreamReader(dataStream))
+            {
+                var jsonContent = await r.ReadToEndAsync();
+                var preset = PresetIO.LoadPreset(jsonContent, options);
+                if (preset.Equals(default))
+                {
+                    var errorMessage = "Could not parse custom json preset. Please supply a valid json file.";
+
+                    await ctx.RespondAsync(errorMessage);
+                    throw new InvalidOperationException(errorMessage);
+                }
+
+                return preset;
+            }
+        }
+
+        /// <summary>
+        /// Validates the preset options.
+        /// </summary>
+        public static string ValidatePresetOptions(CommandContext ctx, in Preset preset, IReadOnlyDictionary<string, Option> options)
+        {
+            var validationMessage = "";
+            if (preset.Version == PresetValidation.kVersion)
+                validationMessage += "**Preset has been validated successfully. Result:**\n";
+            else
+                validationMessage += $"**Preset randomizer version {preset.Version} doesn't match validator randomizer version {PresetValidation.kVersion}. Validation might be wrong in certain places. Validation Result:**\n";
+
+            List<string> errors = PresetValidation.ValidateOptions(preset.Options, options);
+            foreach (var e in errors)
+                validationMessage += $"> {e}\n";
+
+            return validationMessage;
         }
 
         /// <summary>

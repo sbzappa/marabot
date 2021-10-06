@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -20,7 +21,7 @@ namespace MaraBot.IO
         /// </summary>
         /// <param name="weekly">Weekly settings.</param>
         /// <param name="weeklyFilename">Weekly filename.</param>
-        public static async void StoreWeeklyAsync(Weekly weekly, string weeklyFilename = "weekly.json")
+        public static Task StoreWeeklyAsync(Weekly weekly, string weeklyFilename = "weekly.json")
         {
             var homeFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||
@@ -37,7 +38,7 @@ namespace MaraBot.IO
             using (StreamWriter w = new StreamWriter(weeklyPath))
             {
                 var json = JsonConvert.SerializeObject(weekly, Formatting.Indented);
-                await w.WriteAsync(json);
+                return w.WriteAsync(json);
             }
         }
 
@@ -46,7 +47,7 @@ namespace MaraBot.IO
         /// </summary>
         /// <param name="weeklyFilename">Weekly filename.</param>
         /// <returns>Returns the weekly settings.</returns>
-        public static async Task<Weekly> LoadWeeklyAsync(string weeklyFilename = "weekly.json")
+        public static async Task<Weekly> LoadWeeklyAsync(IReadOnlyDictionary<string, Preset> presets, string weeklyFilename = "weekly.json")
         {
             var homeFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||
@@ -65,7 +66,17 @@ namespace MaraBot.IO
             using (StreamReader r = new StreamReader(weeklyPath))
             {
                 var json = await r.ReadToEndAsync();
-                return JsonConvert.DeserializeObject<Weekly>(json);
+                weekly = JsonConvert.DeserializeObject<Weekly>(json);
+
+                if (weekly != null && weekly.Preset.Equals(default))
+                {
+                    if (presets.TryGetValue(weekly.PresetName, out var preset))
+                    {
+                        weekly.Preset = preset;
+                    }
+                }
+
+                return weekly;
             }
         }
     }

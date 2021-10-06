@@ -21,9 +21,9 @@ namespace MaraBot
         static async Task MainAsync()
         {
             var configTask = ConfigIO.LoadConfigAsync();
-            var weeklyTask = WeeklyIO.LoadWeeklyAsync();
             var options = await OptionsIO.LoadOptionsAsync();
-            var presetsTask = PresetIO.LoadPresetsAsync(options);
+            var presets = await PresetIO.LoadPresetsAsync(options);
+            var weeklyTask = WeeklyIO.LoadWeeklyAsync(presets);
             var responsesTask = EightBallIO.LoadResponsesAsync();
 
             var config = await configTask;
@@ -35,16 +35,16 @@ namespace MaraBot
                 Intents = DiscordIntents.AllUnprivileged | DiscordIntents.GuildMembers
             });
 
-            var presets = await presetsTask;
             var weekly = await weeklyTask;
             var responses = await responsesTask;
 
             var services = new ServiceCollection()
                 .AddSingleton<IReadOnlyDictionary<string, Preset>>(_ => presets)
                 .AddSingleton<IReadOnlyDictionary<string, Option>>(_ => options)
-                .AddSingleton<IConfig>(_ => config)
-                .AddSingleton<string[]>(_ => responses)
+                .AddSingleton<IReadOnlyConfig>(_ => config)
+                .AddSingleton(responses)
                 .AddSingleton(weekly)
+                .AddSingleton<IReadOnlyWeekly>(_ => weekly)
                 .BuildServiceProvider();
 
             // Test for network before connecting to discord.

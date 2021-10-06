@@ -27,7 +27,7 @@ namespace MaraBot.Commands
         /// <summary>
         /// Bot configuration.
         /// </summary>
-        public IConfig Config { private get; set; }
+        public IReadOnlyConfig Config { private get; set; }
 
         /// <summary>
         /// Executes the custom command.
@@ -48,53 +48,22 @@ namespace MaraBot.Commands
                 return;
             }
 
-            if (ctx.Message.Attachments == null || ctx.Message.Attachments.Count != 1)
+            Preset preset = default;
+            try
             {
-                await ctx.RespondAsync("No attachment for custom race. You must supply a valid json file.");
+                preset = await CommandUtils.LoadPresetAttachmentAsync(ctx, Options);
+            }
+            catch (InvalidOperationException)
+            {
                 await CommandUtils.SendFailReaction(ctx);
-                return;
+                throw;
             }
 
-            var attachment = ctx.Message.Attachments[0];
-            var url = attachment.Url;
-
-            var request = WebRequest.Create(url);
-            var responseTask = request.GetResponseAsync();
-
-            if (Path.GetExtension(attachment.FileName).ToLower() != ".json")
+            if (!preset.Equals(default))
             {
-                await ctx.RespondAsync("Expected file extension to be .json.");
-                await CommandUtils.SendFailReaction(ctx);
-                return;
-            }
-
-            var response = await responseTask;
-            var dataStream = response.GetResponseStream();
-
-            using (StreamReader r = new StreamReader(dataStream))
-            {
-                var jsonContent = await r.ReadToEndAsync();
-                var preset = PresetIO.LoadPreset(jsonContent, Options);
-                if (preset == null)
-                {
-                    await ctx.RespondAsync($"Could not parse custom json preset. Please supply a valid json file.");
-                    await CommandUtils.SendFailReaction(ctx);
-                    return;
-                }
-
-                string validationMessage = "";
-                if (preset.Version == PresetValidation.kVersion)
-                    validationMessage += "**Preset has been validated successfully. Result:**\n";
-                else
-                    validationMessage += $"**Preset randomizer version {preset.Version} doesn't match validator randomizer version {PresetValidation.kVersion}. Validation might be wrong in certain places. Validation Result:**\n";
-
-                List<string> errors = PresetValidation.ValidateOptions(preset.Options, Options);
-                foreach (var e in errors)
-                    validationMessage += $"> {e}\n";
-
                 // Print validation in separate message to make sure
                 // we can pin just the race embed
-                await ctx.RespondAsync(validationMessage);
+                await ctx.RespondAsync(CommandUtils.ValidatePresetOptions(ctx, preset, Options));
 
                 var seed = RandomUtils.GetRandomSeed();
                 await ctx.RespondAsync(Display.RaceEmbed(preset, seed));

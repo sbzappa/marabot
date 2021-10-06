@@ -76,7 +76,7 @@ namespace MaraBot.IO
         public static Preset LoadPreset(string jsonContent, IReadOnlyDictionary<string, Option> options)
         {
             var preset = JsonConvert.DeserializeObject<Preset>(jsonContent);
-            preset?.MakeDisplayable(options);
+            preset.MakeDisplayable(options);
 
             return preset;
         }

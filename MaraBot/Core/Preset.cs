@@ -7,7 +7,7 @@ namespace MaraBot.Core
     /// <summary>
     /// Holds information on an option flags preset.
     /// </summary>
-    public class Preset
+    public struct Preset : IEquatable<Preset>
     {
         /// <summary>
         /// Name of the preset.
@@ -37,17 +37,17 @@ namespace MaraBot.Core
         /// <summary>
         /// List of prettified general options contained in Options.
         /// </summary>
-        [JsonIgnoreAttribute] public Dictionary<string, string> GeneralOptions;
+        [JsonIgnore] public Dictionary<string, string> GeneralOptions;
 
         /// <summary>
         /// List of prettified mode-specific options contained in Options.
         /// </summary>
-        [JsonIgnoreAttribute] public Dictionary<string, string> ModeOptions;
+        [JsonIgnore] public Dictionary<string, string> ModeOptions;
 
         /// <summary>
         /// List of prettified other options contained in Options.
         /// </summary>
-        [JsonIgnoreAttribute] public Dictionary<string, string> OtherOptions;
+        [JsonIgnore] public Dictionary<string, string> OtherOptions;
 
         /// <summary>
         /// Priority of the preset in determining the next weekly preset.
@@ -108,6 +108,21 @@ namespace MaraBot.Core
                 else
                     OtherOptions.Add(option.Item2, option.Item3);
             }
+        }
+
+        public bool Equals(Preset other)
+        {
+            return Name == other.Name && Description == other.Description && Version == other.Version && Author == other.Author;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Preset other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, Description, Version, Author);
         }
     }
 }
