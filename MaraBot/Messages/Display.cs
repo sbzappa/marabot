@@ -32,7 +32,7 @@ namespace MaraBot.Messages
         /// <param name="preset">Preset used in race.</param>
         /// <param name="seed">Generated seed.</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder RaceEmbed(Preset preset, string seed)
+        public static DiscordEmbedBuilder RaceEmbed(in Preset preset, string seed)
         {
             return RaceEmbed(preset, seed, DateTime.Now);
         }
@@ -44,7 +44,7 @@ namespace MaraBot.Messages
         /// <param name="seed">Generated seed.</param>
         /// <param name="timestamp">Timestamp at which race was generated.</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder RaceEmbed(Preset preset, string seed, DateTime timestamp)
+        public static DiscordEmbedBuilder RaceEmbed(in Preset preset, string seed, DateTime timestamp)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -110,7 +110,7 @@ namespace MaraBot.Messages
         /// </summary>
         /// <param name="preset">Preset to display.</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder PresetEmbed(Preset preset)
+        public static DiscordEmbedBuilder PresetEmbed(in Preset preset)
         {
             var embed = new DiscordEmbedBuilder
             {

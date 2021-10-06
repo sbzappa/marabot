@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
@@ -81,15 +80,17 @@ namespace MaraBot.Commands
             }
 
             // Load in the new preset in attachment.
-            Preset preset = default;
+            Preset preset;
+            var seed = string.Empty;
             try
             {
-                preset = await CommandUtils.LoadPresetAttachmentAsync(ctx, Options);
+                (preset, seed) = await CommandUtils.LoadRaceAttachment(ctx, Options);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException e)
             {
+                await ctx.RespondAsync(e.Message);
                 await CommandUtils.SendFailReaction(ctx);
-                throw;
+                return;
             }
 
             if (preset.Equals(default))
@@ -103,7 +104,7 @@ namespace MaraBot.Commands
             // Roll or reroll weekly seed with preset options.
             Weekly.PresetName = "";
             Weekly.Preset = preset;
-            Weekly.Seed = RandomUtils.GetRandomSeed();
+            Weekly.Seed = string.IsNullOrEmpty(seed) ? RandomUtils.GetRandomSeed() : seed;
             await WeeklyIO.StoreWeeklyAsync(Weekly);
 
             await ctx.RespondAsync(Display.RaceEmbed(preset, Weekly.Seed, Weekly.Timestamp));

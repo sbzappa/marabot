@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
@@ -12,8 +9,6 @@ using MaraBot.Messages;
 
 namespace MaraBot.Commands
 {
-    using IO;
-
     /// <summary>
     /// Implements the custom command.
     /// This command is used to create a race using a custom .json preset file.
@@ -48,27 +43,27 @@ namespace MaraBot.Commands
                 return;
             }
 
-            Preset preset = default;
+            Preset preset;
+            var seed = string.Empty;
             try
             {
-                preset = await CommandUtils.LoadPresetAttachmentAsync(ctx, Options);
+                (preset, seed) = await CommandUtils.LoadRaceAttachment(ctx, Options);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException e)
             {
+                await ctx.RespondAsync(e.Message);
                 await CommandUtils.SendFailReaction(ctx);
-                throw;
+                return;
             }
 
-            if (!preset.Equals(default))
-            {
-                // Print validation in separate message to make sure
-                // we can pin just the race embed
-                await ctx.RespondAsync(CommandUtils.ValidatePresetOptions(ctx, preset, Options));
+            // Print validation in separate message to make sure
+            // we can pin just the race embed
+            await ctx.RespondAsync(CommandUtils.ValidatePresetOptions(ctx, preset, Options));
 
-                var seed = RandomUtils.GetRandomSeed();
-                await ctx.RespondAsync(Display.RaceEmbed(preset, seed));
-            }
+            if (string.IsNullOrEmpty(seed))
+                seed = RandomUtils.GetRandomSeed();
 
+            await ctx.RespondAsync(Display.RaceEmbed(preset, seed));
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }

@@ -80,5 +80,15 @@ namespace MaraBot.IO
 
             return preset;
         }
+
+        /// <summary>
+        /// Stores a single preset to a JSON buffer.
+        /// </summary>
+        /// <param name="preset">Preset</param>
+        /// <returns>JSON buffer.</returns>
+        public static string StorePreset(in Preset preset)
+        {
+            return JsonConvert.SerializeObject(preset, Formatting.Indented);
+        }
     }
 }
