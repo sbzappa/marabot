@@ -49,13 +49,7 @@ namespace MaraBot.Commands
 
             string message = "";
             if (optionString != null)
-            {
-                message += $"**Options have been validated for randomizer version {PresetValidation.kVersion}. Result:**\n";
-
-                List<string> errors = PresetValidation.ValidateOptions(preset.Options, Options);
-                foreach (var e in errors)
-                    message += $"> {e}\n";
-            }
+                message += PresetValidation.GenerateValidationMessage(preset, Options);
 
             string json = PresetIO.StorePreset(preset);
             message += Formatter.BlockCode(json);

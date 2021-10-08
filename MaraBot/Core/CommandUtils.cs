@@ -481,24 +481,6 @@ namespace MaraBot.Core
         }
 
         /// <summary>
-        /// Validates the preset options.
-        /// </summary>
-        public static string ValidatePresetOptions(CommandContext ctx, in Preset preset, IReadOnlyDictionary<string, Option> options)
-        {
-            var validationMessage = "";
-            if (preset.Version == PresetValidation.kVersion)
-                validationMessage += "**Preset has been validated successfully. Result:**\n";
-            else
-                validationMessage += $"**Preset randomizer version {preset.Version} doesn't match validator randomizer version {PresetValidation.kVersion}. Validation might be wrong in certain places. Validation Result:**\n";
-
-            List<string> errors = PresetValidation.ValidateOptions(preset.Options, options);
-            foreach (var e in errors)
-                validationMessage += $"> {e}\n";
-
-            return validationMessage;
-        }
-
-        /// <summary>
         /// Converts a positive integer to an ordinal number string.
         /// </summary>
         public static string IntegerToOrdinal(int n)

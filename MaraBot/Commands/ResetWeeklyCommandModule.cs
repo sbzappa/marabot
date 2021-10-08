@@ -99,7 +99,7 @@ namespace MaraBot.Commands
                 await CommandUtils.SendFailReaction(ctx);
             }
 
-            await ctx.RespondAsync(CommandUtils.ValidatePresetOptions(ctx, preset, Options));
+            await ctx.RespondAsync(PresetValidation.GenerateValidationMessage(preset, Options));
 
             // Roll or reroll weekly seed with preset options.
             Weekly.PresetName = "";

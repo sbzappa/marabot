@@ -33,9 +33,9 @@ namespace MaraBot.Core
         /// Returns the empty list if no errors are found.
         /// Otherwise, returns a list of strings explaining the errors.
         /// </summary>
-        public static List<string> ValidateOptions(IReadOnlyDictionary<string, string> options, IReadOnlyDictionary<string, Option> allOptions)
+        public static List<string> ValidateOptions(in Preset preset, IReadOnlyDictionary<string, Option> allOptions)
         {
-            Dictionary<string, string> optionsCopy = new Dictionary<string, string>(options);
+            Dictionary<string, string> optionsCopy = new Dictionary<string, string>(preset.Options);
             List<string> errors = new List<string>();
 
             /*
@@ -133,9 +133,9 @@ namespace MaraBot.Core
                 // Note that we check the actual options,
                 // because we need to know when opSpoilerLog
                 // is unparseable.
-                if (options.ContainsKey("opSpoilerLog") && options["opSpoilerLog"] == "no")
+                if (preset.Options.ContainsKey("opSpoilerLog") && preset.Options["opSpoilerLog"] == "no")
                     errors.Add($"{kValidationGoodPrefix} Options are race-safe.");
-                else if (options.ContainsKey("opSpoilerLog"))
+                else if (preset.Options.ContainsKey("opSpoilerLog"))
                     errors.Add($"{kValidationInfoPrefix} Options might not be race-safe, because I don't know if a spoiler log gets generated.");
                 else
                     errors.Add($"{kValidationInfoPrefix} Options are not race-safe, because a spoiler log gets generated.");
@@ -175,6 +175,24 @@ namespace MaraBot.Core
                 errors.Add($"{kValidationGoodPrefix} All good! :slight_smile:");
 
             return errors;
+        }
+
+        /// <summary>
+        /// Generates a validation message from validated preset options.
+        /// </summary>
+        public static string GenerateValidationMessage(in Preset preset, IReadOnlyDictionary<string, Option> allOptions)
+        {
+            var validationMessage = "";
+            if (preset.Version == kVersion)
+                validationMessage += "**Preset has been validated successfully. Result:**\n";
+            else
+                validationMessage += $"**Preset randomizer version {preset.Version} doesn't match validator randomizer version {kVersion}. Validation might be wrong in certain places. Validation Result:**\n";
+
+            List<string> errors = ValidateOptions(preset, allOptions);
+            foreach (var e in errors)
+                validationMessage += $"> {e}\n";
+
+            return validationMessage;
         }
     }
 }

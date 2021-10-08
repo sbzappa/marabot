@@ -58,7 +58,7 @@ namespace MaraBot.Commands
 
             // Print validation in separate message to make sure
             // we can pin just the race embed
-            await ctx.RespondAsync(CommandUtils.ValidatePresetOptions(ctx, preset, Options));
+            await ctx.RespondAsync(PresetValidation.GenerateValidationMessage(preset, Options));
 
             if (string.IsNullOrEmpty(seed))
                 seed = RandomUtils.GetRandomSeed();
