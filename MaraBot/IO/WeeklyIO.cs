@@ -72,7 +72,7 @@ namespace MaraBot.IO
                 {
                     if (presets.TryGetValue(weekly.PresetName, out var preset))
                     {
-                        weekly.Preset = preset;
+                        weekly.Preset = new Preset(preset);
                     }
                 }
 

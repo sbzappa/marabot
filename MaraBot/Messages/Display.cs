@@ -128,7 +128,7 @@ namespace MaraBot.Messages
             return embed;
         }
 
-        private static DiscordEmbedBuilder AddOptionDictionary(this DiscordEmbedBuilder embed, string title, Dictionary<string, string> options)
+        private static DiscordEmbedBuilder AddOptionDictionary(this DiscordEmbedBuilder embed, string title, IReadOnlyDictionary<string, string> options)
         {
             int numberOfColumns = Math.Min((int)Math.Ceiling(options.Count / (float) kMinNumberOfElementsPerColumn), kMaxNumberOfColumns);
             int numberOfElementsPerColumn = (int)Math.Ceiling(options.Count / (float) numberOfColumns);

@@ -477,14 +477,7 @@ namespace MaraBot.Core
                 options.Add(values[0], values[1]);
             }
 
-            return new Preset
-            {
-                Author = author,
-                Name = name,
-                Description = description,
-                Version = version,
-                Options = options
-            };
+            return new Preset(name, description, version, author, options);
         }
 
         /// <summary>
