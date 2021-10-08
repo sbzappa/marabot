@@ -16,7 +16,7 @@ namespace MaraBot.Core
 
     public static class CommandUtils
     {
-        const string kFriendlyMessage = "This shouldn't happen! Please contact your friendly neighbourhood developers!";
+        public const string kFriendlyMessage = "This shouldn't happen! Please contact your friendly neighbourhood developers!";
 
         private enum AttachmentFileType
         {

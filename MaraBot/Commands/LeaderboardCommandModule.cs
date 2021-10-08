@@ -28,6 +28,10 @@ namespace MaraBot.Commands
         /// </summary>
         public IReadOnlyDictionary<string, Preset> Presets { private get; set; }
         /// <summary>
+        /// Randomizer Options.
+        /// </summary>
+        public IReadOnlyDictionary<string, Option> Options { private get; set; }
+        /// <summary>
         /// Bot configuration.
         /// </summary>
         public Config Config { private get; set; }
@@ -54,7 +58,7 @@ namespace MaraBot.Commands
             var weekly = Weekly;
             if (weekNumber != currentWeek)
             {
-                weekly = await WeeklyIO.LoadWeeklyAsync(Presets, $"weekly.{weekNumber}.json");
+                weekly = await WeeklyIO.LoadWeeklyAsync(Presets, Options, $"weekly.{weekNumber}.json");
             }
 
             if (weekly.Leaderboard == null || weekly.Leaderboard.Count == 0)

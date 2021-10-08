@@ -49,14 +49,17 @@ namespace MaraBot.Core
         /// <summary>
         /// List of prettified general options contained in Options.
         /// </summary>
+        [JsonIgnore]
         public IReadOnlyDictionary<string, string> GeneralOptions => m_GeneralOptions;
         /// <summary>
         /// List of prettified mode-specific options contained in Options.
         /// </summary>
+        [JsonIgnore]
         public IReadOnlyDictionary<string, string> ModeOptions => m_ModeOptions;
         /// <summary>
         /// List of prettified other options contained in Options.
         /// </summary>
+        [JsonIgnore]
         public IReadOnlyDictionary<string, string> OtherOptions => m_OtherOptions;
 
         [JsonIgnore] private Dictionary<string, string> m_GeneralOptions;
@@ -77,7 +80,7 @@ namespace MaraBot.Core
             Description = description;
             Version = version;
             Author = author;
-            Options = options.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            Options = new Dictionary<string, string>(options);
             Weight = 1;
             m_GeneralOptions = m_ModeOptions = m_OtherOptions = null;
         }
@@ -92,12 +95,12 @@ namespace MaraBot.Core
             Description = preset.Description;
             Version = preset.Version;
             Author = preset.Author;
-            Options = preset.Options.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            Options = new Dictionary<string, string>(preset.Options);
             Weight = preset.Weight;
 
-            m_GeneralOptions = preset.GeneralOptions.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-            m_ModeOptions = preset.ModeOptions.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-            m_OtherOptions = preset.OtherOptions.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            m_GeneralOptions = new Dictionary<string, string>(preset.GeneralOptions);
+            m_ModeOptions = new Dictionary<string, string>(preset.ModeOptions);
+            m_OtherOptions = new Dictionary<string, string>(preset.OtherOptions);
         }
 
         /// <summary>

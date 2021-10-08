@@ -23,7 +23,7 @@ namespace MaraBot
             var configTask = ConfigIO.LoadConfigAsync();
             var options = await OptionsIO.LoadOptionsAsync();
             var presets = await PresetIO.LoadPresetsAsync(options);
-            var weeklyTask = WeeklyIO.LoadWeeklyAsync(presets);
+            var weeklyTask = WeeklyIO.LoadWeeklyAsync(presets, options);
             var responsesTask = EightBallIO.LoadResponsesAsync();
 
             var config = await configTask;

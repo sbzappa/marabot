@@ -21,7 +21,7 @@ namespace MaraBot.IO
         /// </summary>
         /// <param name="weekly">Weekly settings.</param>
         /// <param name="weeklyFilename">Weekly filename.</param>
-        public static Task StoreWeeklyAsync(Weekly weekly, string weeklyFilename = "weekly.json")
+        public static async Task StoreWeeklyAsync(Weekly weekly, string weeklyFilename = "weekly.json")
         {
             var homeFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||
@@ -38,7 +38,7 @@ namespace MaraBot.IO
             using (StreamWriter w = new StreamWriter(weeklyPath))
             {
                 var json = JsonConvert.SerializeObject(weekly, Formatting.Indented);
-                return w.WriteAsync(json);
+                await w.WriteAsync(json);
             }
         }
 
@@ -47,7 +47,7 @@ namespace MaraBot.IO
         /// </summary>
         /// <param name="weeklyFilename">Weekly filename.</param>
         /// <returns>Returns the weekly settings.</returns>
-        public static async Task<Weekly> LoadWeeklyAsync(IReadOnlyDictionary<string, Preset> presets, string weeklyFilename = "weekly.json")
+        public static async Task<Weekly> LoadWeeklyAsync(IReadOnlyDictionary<string, Preset> presets, IReadOnlyDictionary<string, Option> options, string weeklyFilename = "weekly.json")
         {
             var homeFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||
@@ -68,11 +68,20 @@ namespace MaraBot.IO
                 var json = await r.ReadToEndAsync();
                 weekly = JsonConvert.DeserializeObject<Weekly>(json);
 
-                if (weekly != null && weekly.Preset.Equals(default))
+                if (weekly != null)
                 {
-                    if (presets.TryGetValue(weekly.PresetName, out var preset))
+                    // Load preset name.
+                    if (!string.IsNullOrEmpty(weekly.PresetName))
                     {
-                        weekly.Preset = new Preset(preset);
+                        if (presets.TryGetValue(weekly.PresetName, out var preset))
+                        {
+                            weekly.Preset = new Preset(preset);
+                        }
+                    }
+                    // Load preset.
+                    else
+                    {
+                        weekly.Preset.MakeDisplayable(options);
                     }
                 }
 

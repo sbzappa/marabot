@@ -36,18 +36,32 @@ namespace MaraBot.Commands
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx)
         {
-            if (!Presets.ContainsKey(Weekly.PresetName) || Weekly.WeekNumber < 0)
+            if (Weekly.WeekNumber < 0)
             {
                 await ctx.RespondAsync(
-                    $"Weekly preset '{Weekly.PresetName}' is not a a valid preset\n" +
-                    "This shouldn't happen! Please contact your friendly neighbourhood developers!");
+                    $"Weekly week number '{Weekly.WeekNumber}' is not valid!\n" +
+                    CommandUtils.kFriendlyMessage);
                 await CommandUtils.SendFailReaction(ctx);
                 return;
             }
 
-            var preset = Presets[Weekly.PresetName];
-            await ctx.RespondAsync(Display.RaceEmbed(preset, Weekly.Seed, Weekly.Timestamp));
-            await CommandUtils.SendSuccessReaction(ctx);
+            if (!string.IsNullOrEmpty(Weekly.PresetName))
+            {
+                if (Presets.TryGetValue(Weekly.PresetName, out var preset))
+                {
+                    await ctx.RespondAsync(Display.RaceEmbed(preset, Weekly.Seed, Weekly.Timestamp));
+                    await CommandUtils.SendSuccessReaction(ctx);
+                    return;
+                }
+
+                await ctx.RespondAsync($"Weekly preset '{Weekly.PresetName}' is not a a valid preset\n");
+                await CommandUtils.SendFailReaction(ctx);
+            }
+            else
+            {
+                await ctx.RespondAsync(Display.RaceEmbed(Weekly.Preset, Weekly.Seed, Weekly.Timestamp));
+                await CommandUtils.SendSuccessReaction(ctx);
+            }
         }
     }
 }
