@@ -34,6 +34,7 @@ namespace MaraBot.Commands
         /// Executes the weekly command.
         /// </summary>
         /// <param name="ctx">Command Context.</param>
+        /// <param name="rawArgs">Command line arguments.</param>
         /// <returns>Returns an asynchronous task.</returns>
         [Command("reset")]
         [Description("Resets the weekly race.")]
@@ -42,7 +43,7 @@ namespace MaraBot.Commands
         [RequireBotPermissions(
             Permissions.SendMessages |
             Permissions.ManageRoles)]
-        public async Task Execute(CommandContext ctx)
+        public async Task Execute(CommandContext ctx, [RemainingText][Description(CommandUtils.kCustomRaceArgsDescription)] string rawArgs)
         {
             // Safety measure to avoid potential misuses of this command.
             if (!await CommandUtils.MemberHasPermittedRole(ctx, Config.OrganizerRoles))
@@ -81,10 +82,11 @@ namespace MaraBot.Commands
 
             // Load in the new preset in attachment.
             Preset preset;
-            var seed = string.Empty;
+            string seed;
+            string validationHash;
             try
             {
-                (preset, seed) = await CommandUtils.LoadRaceAttachment(ctx, Options);
+                (preset, seed, validationHash) = await CommandUtils.LoadRaceAttachment(ctx, rawArgs, Options);
             }
             catch (InvalidOperationException e)
             {
@@ -101,13 +103,21 @@ namespace MaraBot.Commands
 
             await ctx.RespondAsync(PresetValidation.GenerateValidationMessage(preset, Options));
 
-            // Roll or reroll weekly seed with preset options.
             Weekly.PresetName = "";
             Weekly.Preset = preset;
-            Weekly.Seed = string.IsNullOrEmpty(seed) ? RandomUtils.GetRandomSeed() : seed;
+            if (string.IsNullOrEmpty(seed))
+            {
+                Weekly.Seed = RandomUtils.GetRandomSeed();
+            }
+            else
+            {
+                Weekly.Seed = seed;
+                Weekly.ValidationHash = validationHash;
+            }
+
             await WeeklyIO.StoreWeeklyAsync(Weekly);
 
-            await ctx.RespondAsync(Display.RaceEmbed(preset, Weekly.Seed, Weekly.Timestamp));
+            await ctx.RespondAsync(Display.RaceEmbed(preset, Weekly.Seed, Weekly.ValidationHash, Weekly.Timestamp));
 
             await ctx.RespondAsync("Weekly has been successfully reset!");
             await CommandUtils.SendSuccessReaction(ctx);

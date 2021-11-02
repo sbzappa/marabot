@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace MaraBot.Core
 {
@@ -8,11 +9,6 @@ namespace MaraBot.Core
     /// </summary>
     public static class PresetValidation
     {
-        /// <summary>
-        /// Randomizer version the validation is written for.
-        /// </summary>
-        public const string kVersion = "1.22";
-
         /// <summary>
         /// Prefix for validation error messages.
         /// </summary>
@@ -37,6 +33,27 @@ namespace MaraBot.Core
         {
             Dictionary<string, string> optionsCopy = new Dictionary<string, string>(preset.Options);
             List<string> errors = new List<string>();
+
+            /*
+             * Version
+             */
+
+            // Version key is required
+            if (!optionsCopy.ContainsKey("version"))
+                errors.Add($"{kValidationErrorPrefix} Options must contain the randomizer version used (e.g. 'version=1.23').");
+            else
+            {
+                var versionRegex = new Regex("^[0-9].[0-9][0-9]$");
+                var versionString = optionsCopy["version"];
+
+                if (!versionRegex.IsMatch(versionString))
+                {
+                    errors.Add($"{kValidationErrorPrefix} '{versionString}' is not a recognized version number.");
+                }
+
+                // Remove version key. Not necessary in further validation.
+                optionsCopy.Remove("version");
+            }
 
             /*
              * Mode
@@ -183,10 +200,6 @@ namespace MaraBot.Core
         public static string GenerateValidationMessage(in Preset preset, IReadOnlyDictionary<string, Option> allOptions)
         {
             var validationMessage = "";
-            if (preset.Version == kVersion)
-                validationMessage += "**Preset has been validated successfully. Result:**\n";
-            else
-                validationMessage += $"**Preset randomizer version {preset.Version} doesn't match validator randomizer version {kVersion}. Validation might be wrong in certain places. Validation Result:**\n";
 
             List<string> errors = ValidateOptions(preset, allOptions);
             foreach (var e in errors)

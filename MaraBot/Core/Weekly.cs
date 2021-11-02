@@ -15,6 +15,8 @@ namespace MaraBot.Core
         public Preset Preset { get; }
         /// <summary>Seed used in weekly. This is a string of 16 hexadecimal values.</summary>
         public string Seed { get; }
+        /// <summary>Validation Hash. This is a string of 8 hexadecimal values (optional).</summary>
+        public string ValidationHash { get; }
         /// <summary>Leaderboard for the weekly race.</summary>
         public IReadOnlyDictionary<string, TimeSpan> Leaderboard { get; }
         /// <summary>Timestamp at which weekly seed has been created.</summary>
@@ -35,6 +37,8 @@ namespace MaraBot.Core
         public Preset Preset;
         /// <summary>Seed used in weekly. This is a string of 16 hexadecimal values.</summary>
         public string Seed;
+        /// <summary>Validation Hash. This is a string of 8 hexadecimal values (optional).</summary>
+        public string ValidationHash;
         /// <summary>Leaderboard for the weekly race.</summary>
         public Dictionary<string, TimeSpan> Leaderboard;
         /// <summary>Timestamp at which weekly seed has been created.</summary>
@@ -72,6 +76,7 @@ namespace MaraBot.Core
             WeekNumber = -1,
             PresetName = String.Empty,
             Seed = String.Empty,
+            ValidationHash = String.Empty,
             Leaderboard = null,
             Timestamp = DateTime.MinValue
         };
@@ -81,6 +86,7 @@ namespace MaraBot.Core
             WeekNumber = RandomUtils.GetWeekNumber(),
             PresetName = "not-set",
             Seed = "0",
+            ValidationHash = String.Empty,
             Leaderboard = null,
             Timestamp = DateTime.Now
         };
@@ -123,6 +129,7 @@ namespace MaraBot.Core
                 WeekNumber = weekNumber,
                 PresetName = presetName,
                 Seed = seed,
+                ValidationHash = String.Empty,
                 Leaderboard = new Dictionary<string, TimeSpan>(),
                 Timestamp = DateTime.Now
             };
@@ -132,6 +139,7 @@ namespace MaraBot.Core
         string IReadOnlyWeekly.PresetName => PresetName;
         Preset IReadOnlyWeekly.Preset => Preset;
         string IReadOnlyWeekly.Seed => Seed;
+        string IReadOnlyWeekly.ValidationHash => ValidationHash;
         IReadOnlyDictionary<string, TimeSpan> IReadOnlyWeekly.Leaderboard => Leaderboard;
         DateTime IReadOnlyWeekly.Timestamp => Timestamp;
     }

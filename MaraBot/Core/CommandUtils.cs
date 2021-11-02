@@ -18,6 +18,12 @@ namespace MaraBot.Core
     {
         public const string kFriendlyMessage = "This shouldn't happen! Please contact your friendly neighbourhood developers!";
 
+        public const string kCustomRaceArgsDescription = "\n```" +
+                                                         "  --author member    Sets the author of the preset.\n" +
+                                                         "  --name name        Sets the name of the preset.\n" +
+                                                         "  --description      Sets the description of the preset.\n" +
+                                                         "```";
+
         private enum AttachmentFileType
         {
             Invalid,
@@ -328,6 +334,76 @@ namespace MaraBot.Core
             return true;
         }
 
+        private static IEnumerable<string> Split(this string str,
+            Func<char, bool> controller)
+        {
+            int nextPiece = 0;
+
+            for (int c = 0; c < str.Length; c++)
+            {
+                if (controller(str[c]))
+                {
+                    yield return str.Substring(nextPiece, c - nextPiece);
+                    nextPiece = c + 1;
+                }
+            }
+
+            yield return str.Substring(nextPiece);
+        }
+
+        private static string TrimMatchingQuotes(this string input, char quote)
+        {
+            if ((input.Length >= 2) &&
+                (input[0] == quote) && (input[input.Length - 1] == quote))
+                return input.Substring(1, input.Length - 2);
+
+            return input;
+        }
+
+        private static void ParseCustomRaceCommandLineArguments(string rawArgs, out string author, out string name, out string description)
+        {
+            bool inQuotes = false;
+
+            var args = rawArgs.Split(c =>
+                {
+                    if (c == '\"')
+                        inQuotes = !inQuotes;
+
+                    return !inQuotes && c == ' ';
+                })
+                .Select(arg => arg.Trim().TrimMatchingQuotes('\"'))
+                .Where(arg => !string.IsNullOrEmpty(arg))
+                .ToArray();
+
+            author = name = description = String.Empty;
+
+            var index = 0;
+            while (index + 1 < args.Length)
+            {
+                switch (args[index])
+                {
+                    case "--author":
+                        author = args[++index];
+                        break;
+                    case "--name":
+                        name = args[++index];
+                        break;
+                    case "--description":
+                        description = args[++index];
+                        break;
+                    default:
+                        throw new InvalidOperationException($"Unrecognized option '{args[index]}'");
+                }
+
+                ++index;
+            }
+
+            if (index < args.Length)
+            {
+                throw new InvalidOperationException($"Unrecognized option '{args[index]}'");
+            }
+        }
+
         private static AttachmentFileType GetAttachmentFileType(CommandContext ctx, out string errorMessage)
         {
             if (ctx.Message.Attachments == null || ctx.Message.Attachments.Count != 1)
@@ -394,8 +470,12 @@ namespace MaraBot.Core
             }
         }
 
-        private static async Task<(Preset Preset, string Seed)> LoadLogAttachmentAsync(CommandContext ctx, IReadOnlyDictionary<string, Option> options)
+        private static async Task<(Preset Preset, string Seed, string ValidationHash)> LoadLogAttachmentAsync(CommandContext ctx, string rawArgs, IReadOnlyDictionary<string, Option> options)
         {
+            // Parse command line arguments to retrieve preset author, name and description if available.
+            ParseCustomRaceCommandLineArguments(rawArgs, out string author, out string name, out string description);
+
+            // Load attachment file.
             var attachment = ctx.Message.Attachments[0];
             var url = attachment.Url;
 
@@ -403,30 +483,36 @@ namespace MaraBot.Core
             var response = await request.GetResponseAsync();
             var dataStream = response.GetResponseStream();
 
+            if (dataStream == null)
+                throw new InvalidOperationException($"Could not open attachment file {url}");
+
             using (StreamReader r = new StreamReader(dataStream))
             {
+                // Read file header.
                 await r.ReadLineAsync();
                 var seedLineTask = r.ReadLineAsync();
                 var optionsLineTask = r.ReadLineAsync();
-                await r.ReadLineAsync();
-                await r.ReadLineAsync();
-                var versionLineTask = r.ReadLineAsync();
+
+                // Go to end of file.
+                var restOfFileTask = r.ReadToEndAsync();
 
                 var seedRegex = new Regex("Seed = (?<seed>[A-F0-9]{16})");
                 var optionsRegex = new Regex("Options = (?<options>.*)$");
-                var versionRegex = new Regex("version (?<version>[0-9].[0-9][0-9])");
+                var validationHashRegex = new Regex("Hash check value: (?<validationHash>[A-F0-9]{8})");
 
                 var seedMatch = seedRegex.Match(await seedLineTask);
                 var optionsMatch = optionsRegex.Match(await optionsLineTask);
-                var versionMatch = versionRegex.Match(await versionLineTask);
+
+                var validationHashMatch = validationHashRegex.Match(await restOfFileTask);
 
                 var seed = seedMatch.Success ? seedMatch.Groups["seed"].Value : string.Empty;
                 var optionsString = optionsMatch.Success ? optionsMatch.Groups["options"].Value : string.Empty;
-                var version = versionMatch.Success ? versionMatch.Groups["version"].Value : String.Empty;
+                string validationHash = validationHashMatch.Success ? validationHashMatch.Groups["validationHash"].Value : String.Empty;
 
-                Preset preset = CreatePresetFromOptionsString( ctx.User.Username,  "DummyName", "DummyDescription", version, optionsString);
+                Preset preset = CreatePresetFromOptionsString( String.IsNullOrEmpty(author) ? ctx.User.Username : author,  name, description, optionsString);
+
                 preset.MakeDisplayable(options);
-                return (preset, seed);
+                return (preset, seed, validationHash);
             }
         }
 
@@ -434,10 +520,11 @@ namespace MaraBot.Core
         /// Loads a race attachment
         /// </summary>
         /// <param name="ctx">Command context.</param>
+        /// <param name="rawArgs">Command line arguments</param>
         /// <param name="options">Preset options.</param>
         /// <returns>Tuple of preset and seed string.</returns>
         /// <exception cref="InvalidOperationException">Thrown if there was an error while parsing provided attachment.</exception>
-        public static async Task<(Preset Preset, string Seed)> LoadRaceAttachment(CommandContext ctx, IReadOnlyDictionary<string, Option> options)
+        public static async Task<(Preset Preset, string Seed, string ValidationHash)> LoadRaceAttachment(CommandContext ctx, string rawArgs, IReadOnlyDictionary<string, Option> options)
         {
             var attachmentType = GetAttachmentFileType(ctx, out var errorMessage);
 
@@ -445,9 +532,9 @@ namespace MaraBot.Core
             {
                 case AttachmentFileType.JsonPreset:
                     var preset = await LoadPresetAttachmentAsync(ctx, options);
-                    return (preset, String.Empty);
+                    return (preset, String.Empty, String.Empty);
                 case AttachmentFileType.LogFile:
-                    return await LoadLogAttachmentAsync(ctx, options);
+                    return await LoadLogAttachmentAsync(ctx, rawArgs, options);
                 default:
                     throw new InvalidOperationException(errorMessage);
             }
@@ -457,12 +544,13 @@ namespace MaraBot.Core
         /// Creates a preset from raw options string.
         /// </summary>
         /// <param name="author">Author of preset.</param>
+        /// <param name="name">Name of preset.</param>
         /// <param name="description">Description of preset.</param>
         /// <param name="version">Version of the randomizer.</param>
         /// <param name="optionsString">Raw options string.</param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException">Thrown if there was an error while parsing options string.</exception>
-        public static Preset CreatePresetFromOptionsString(string author, string name, string description, string version, string optionsString)
+        public static Preset CreatePresetFromOptionsString(string author, string name, string description, string optionsString)
         {
             string[] optionsValues = String.IsNullOrEmpty(optionsString) ? new [] { "mode=rando" } : optionsString.Split(' ');
 
@@ -477,7 +565,7 @@ namespace MaraBot.Core
                 options.Add(values[0], values[1]);
             }
 
-            return new Preset(name, description, version, author, options);
+            return new Preset(name, description, author, options);
         }
 
         /// <summary>

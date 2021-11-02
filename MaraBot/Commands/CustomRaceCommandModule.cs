@@ -28,13 +28,14 @@ namespace MaraBot.Commands
         /// Executes the custom command.
         /// </summary>
         /// <param name="ctx">Command Context.</param>
+        /// <param name="rawArgs">Command line arguments.</param>
         /// <returns>Returns an asynchronous task.</returns>
         [Command("custom")]
         [Description("Start a custom race based on a .json file")]
         [Cooldown(3, 600, CooldownBucketType.User)]
         [RequireGuild]
         [RequireBotPermissions(Permissions.SendMessages)]
-        public async Task Execute(CommandContext ctx)
+        public async Task Execute(CommandContext ctx, [RemainingText][Description(CommandUtils.kCustomRaceArgsDescription)] string rawArgs)
         {
             // Safety measure to avoid potential misuses of this command. May be revisited in the future.
             if (!await CommandUtils.MemberHasPermittedRole(ctx, Config.OrganizerRoles))
@@ -44,10 +45,11 @@ namespace MaraBot.Commands
             }
 
             Preset preset;
-            var seed = string.Empty;
+            string seed;
+            string validationHash;
             try
             {
-                (preset, seed) = await CommandUtils.LoadRaceAttachment(ctx, Options);
+                (preset, seed, validationHash) = await CommandUtils.LoadRaceAttachment(ctx, rawArgs, Options);
             }
             catch (InvalidOperationException e)
             {
@@ -63,7 +65,7 @@ namespace MaraBot.Commands
             if (string.IsNullOrEmpty(seed))
                 seed = RandomUtils.GetRandomSeed();
 
-            await ctx.RespondAsync(Display.RaceEmbed(preset, seed));
+            await ctx.RespondAsync(Display.RaceEmbed(preset, seed, validationHash));
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }

@@ -49,7 +49,7 @@ namespace MaraBot.Commands
             {
                 if (Presets.TryGetValue(Weekly.PresetName, out var preset))
                 {
-                    await ctx.RespondAsync(Display.RaceEmbed(preset, Weekly.Seed, Weekly.Timestamp));
+                    await ctx.RespondAsync(Display.RaceEmbed(preset, Weekly.Seed, Weekly.ValidationHash, Weekly.Timestamp));
                     await CommandUtils.SendSuccessReaction(ctx);
                     return;
                 }
@@ -59,7 +59,7 @@ namespace MaraBot.Commands
             }
             else
             {
-                await ctx.RespondAsync(Display.RaceEmbed(Weekly.Preset, Weekly.Seed, Weekly.Timestamp));
+                await ctx.RespondAsync(Display.RaceEmbed(Weekly.Preset, Weekly.Seed, Weekly.ValidationHash, Weekly.Timestamp));
                 await CommandUtils.SendSuccessReaction(ctx);
             }
         }

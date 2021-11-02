@@ -38,7 +38,7 @@ namespace MaraBot.Commands
             Preset preset;
             try
             {
-                preset = CommandUtils.CreatePresetFromOptionsString( ctx.User.Username, "DummyName", "DummyDescription", PresetValidation.kVersion, optionString);
+                preset = CommandUtils.CreatePresetFromOptionsString( ctx.User.Username, "DummyName", "DummyDescription", optionString);
             }
             catch (InvalidOperationException e)
             {

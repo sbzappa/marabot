@@ -23,12 +23,6 @@ namespace MaraBot.Core
         public readonly string Description;
 
         /// <summary>
-        /// Version of the randomizer the preset is made for.
-        /// </summary>
-        [JsonProperty]
-        public readonly string Version;
-
-        /// <summary>
         /// Author of the preset.
         /// </summary>
         [JsonProperty]
@@ -74,11 +68,10 @@ namespace MaraBot.Core
         /// <param name="version">Randomizer version for preset.</param>
         /// <param name="author">Preset author.</param>
         /// <param name="options">Collection of raw options.</param>
-        public Preset(string name, string description, string version, string author, IReadOnlyDictionary<string, string> options)
+        public Preset(string name, string description, string author, IReadOnlyDictionary<string, string> options)
         {
             Name = name;
             Description = description;
-            Version = version;
             Author = author;
             Options = new Dictionary<string, string>(options);
             Weight = 1;
@@ -93,7 +86,6 @@ namespace MaraBot.Core
         {
             Name = preset.Name;
             Description = preset.Description;
-            Version = preset.Version;
             Author = preset.Author;
             Options = new Dictionary<string, string>(preset.Options);
             Weight = preset.Weight;
@@ -111,7 +103,8 @@ namespace MaraBot.Core
         {
             var list = new List<Tuple<Mode, string, string>>();
 
-            foreach(var pair in Options) {
+            foreach(var pair in Options)
+            {
                 if(options.ContainsKey(pair.Key)) { // Found key
                     var o = options[pair.Key];
                     if(o.Type == OptionType.List) // List type
@@ -134,11 +127,17 @@ namespace MaraBot.Core
                         ));
                 }
                 else // No key found, use raw values
+                {
+                    // Skip version...
+                    if (pair.Key == "version")
+                        continue;
+
                     list.Add(new Tuple<Mode, string, string>(
                         Mode.Other,
                         pair.Key,
                         pair.Value
                     ));
+                }
             }
 
             Mode mode = Options.ContainsKey("mode") ? Option.OptionValueToMode(Options["mode"]) : Mode.Rando;
@@ -161,7 +160,7 @@ namespace MaraBot.Core
 
         public bool Equals(Preset other)
         {
-            return Name == other.Name && Description == other.Description && Version == other.Version && Author == other.Author;
+            return Name == other.Name && Description == other.Description && Author == other.Author;
         }
 
         public override bool Equals(object obj)
@@ -171,7 +170,7 @@ namespace MaraBot.Core
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Name, Description, Version, Author);
+            return HashCode.Combine(Name, Description, Author);
         }
     }
 }
