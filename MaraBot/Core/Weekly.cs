@@ -63,6 +63,7 @@ namespace MaraBot.Core
         {
             WeekNumber = weekly.WeekNumber;
             PresetName = weekly.PresetName;
+            Preset = weekly.Preset;
             Seed = weekly.Seed;
             Leaderboard = weekly.Leaderboard;
             Timestamp = weekly.Timestamp;

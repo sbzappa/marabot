@@ -19,9 +19,9 @@ namespace MaraBot.Core
         public const string kFriendlyMessage = "This shouldn't happen! Please contact your friendly neighbourhood developers!";
 
         public const string kCustomRaceArgsDescription = "\n```" +
-                                                         "  --author member    Sets the author of the preset.\n" +
-                                                         "  --name name        Sets the name of the preset.\n" +
-                                                         "  --description      Sets the description of the preset.\n" +
+                                                         "  --author <string>      Sets the author of the preset.\n" +
+                                                         "  --name <string>        Sets the name of the preset.\n" +
+                                                         "  --description <string> Sets the description of the preset.\n" +
                                                          "```";
 
         private enum AttachmentFileType
@@ -408,7 +408,7 @@ namespace MaraBot.Core
         {
             if (ctx.Message.Attachments == null || ctx.Message.Attachments.Count != 1)
             {
-                errorMessage = "No attachment provided. You must supply upload a file when using this command.";
+                errorMessage = "No attachment provided. You must supply a file when using this command.";
                 return AttachmentFileType.Invalid;
             }
 

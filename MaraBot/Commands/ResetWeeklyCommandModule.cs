@@ -52,11 +52,13 @@ namespace MaraBot.Commands
                 return;
             }
 
+            var previousWeek = Weekly.WeekNumber;
             var currentWeek = RandomUtils.GetWeekNumber();
+            var backupAndResetWeekly = previousWeek != currentWeek;
 
             // Make a backup of the previous week's weekly and create a new
             // weekly for the current week.
-            if (Weekly.WeekNumber != currentWeek)
+            if (backupAndResetWeekly)
             {
                 try
                 {
@@ -73,11 +75,14 @@ namespace MaraBot.Commands
                 }
 
                 // Backup weekly settings to json before overriding.
-                await WeeklyIO.StoreWeeklyAsync(Weekly, $"weekly.{Weekly.WeekNumber}.json");
+                await WeeklyIO.StoreWeeklyAsync(Weekly, $"weekly.{previousWeek}.json");
 
                 // Set weekly to unset settings until it's rolled out.
                 Weekly.Load(Weekly.NotSet);
                 await WeeklyIO.StoreWeeklyAsync(Weekly);
+
+                await ctx.RespondAsync($"Weekly leaderboard has been successfully reset!");
+                await CommandUtils.SendSuccessReaction(ctx);
             }
 
             // Load in the new preset in attachment.
@@ -103,7 +108,7 @@ namespace MaraBot.Commands
 
             await ctx.RespondAsync(PresetValidation.GenerateValidationMessage(preset, Options));
 
-            Weekly.PresetName = "";
+            Weekly.PresetName = String.Empty;
             Weekly.Preset = preset;
             if (string.IsNullOrEmpty(seed))
             {
@@ -119,7 +124,7 @@ namespace MaraBot.Commands
 
             await ctx.RespondAsync(Display.RaceEmbed(preset, Weekly.Seed, Weekly.ValidationHash, Weekly.Timestamp));
 
-            await ctx.RespondAsync("Weekly has been successfully reset!");
+            await ctx.RespondAsync("Weekly preset has been successfully reset!");
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }
