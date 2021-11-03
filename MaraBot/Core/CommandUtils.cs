@@ -19,9 +19,9 @@ namespace MaraBot.Core
         public const string kFriendlyMessage = "This shouldn't happen! Please contact your friendly neighbourhood developers!";
 
         public const string kCustomRaceArgsDescription = "\n```" +
-                                                         "  --author <string>      Sets the author of the preset.\n" +
-                                                         "  --name <string>        Sets the name of the preset.\n" +
-                                                         "  --description <string> Sets the description of the preset.\n" +
+                                                         "  --author string      Sets the author of the preset.\n" +
+                                                         "  --name string        Sets the name of the preset.\n" +
+                                                         "  --description string Sets the description of the preset.\n" +
                                                          "```";
 
         private enum AttachmentFileType
