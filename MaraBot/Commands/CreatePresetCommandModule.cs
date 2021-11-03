@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
@@ -8,6 +9,7 @@ using Newtonsoft.Json;
 namespace MaraBot.Commands
 {
     using Core;
+    using IO;
 
     /// <summary>
     /// Implements the newpreset command.
@@ -33,40 +35,23 @@ namespace MaraBot.Commands
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx, [RemainingText] string optionString)
         {
-            string[] optionValues = optionString == null ? new string[] { "key=value" } : optionString.Split(' ');
-
-            var options = new Dictionary<string, string>();
-
-            foreach(string option in optionValues)
+            Preset preset;
+            try
             {
-                if(!option.Contains('='))
-                {
-                    await ctx.RespondAsync($"'{option}' is not formatted correctly. Format must be 'key=value'.");
-                    await CommandUtils.SendFailReaction(ctx);
-                    return;
-                }
-                string[] values = option.Split('=');
-                options.Add(values[0], values[1]);
+                preset = CommandUtils.CreatePresetFromOptionsString( ctx.User.Username, "DummyName", "DummyDescription", optionString);
             }
-
-            Dictionary<string, object> preset = new Dictionary<string, object>();
-            preset.Add("name", "Dummyname");
-            preset.Add("description", "Dummydescription");
-            preset.Add("version",  PresetValidation.kVersion);
-            preset.Add("author", ctx.User.Username);
-            preset.Add("options", options);
+            catch (InvalidOperationException e)
+            {
+                await ctx.RespondAsync(e.Message);
+                await CommandUtils.SendFailReaction(ctx);
+                return;
+            }
 
             string message = "";
             if (optionString != null)
-            {
-                message += $"**Options have been validated for randomizer version {PresetValidation.kVersion}. Result:**\n";
+                message += PresetValidation.GenerateValidationMessage(preset, Options);
 
-                List<string> errors = PresetValidation.ValidateOptions(options, Options);
-                foreach (var e in errors)
-                    message += $"> {e}\n";
-            }
-
-            string json = JsonConvert.SerializeObject(preset, Formatting.Indented);
+            string json = PresetIO.StorePreset(preset);
             message += Formatter.BlockCode(json);
 
             await ctx.RespondAsync(message);

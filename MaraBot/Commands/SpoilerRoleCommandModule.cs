@@ -24,7 +24,7 @@ namespace MaraBot.Commands
         /// <summary>
         /// Bot configuration.
         /// </summary>
-        public IConfig Config { private get; set; }
+        public Config Config { private get; set; }
 
         /// <summary>
         /// Grant/Revoke spoiler roles manually.

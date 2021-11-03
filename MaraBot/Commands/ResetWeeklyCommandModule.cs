@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
@@ -22,14 +22,19 @@ namespace MaraBot.Commands
         /// </summary>
         public Weekly Weekly { private get; set; }
         /// <summary>
+        /// Randomizer Options.
+        /// </summary>
+        public IReadOnlyDictionary<string, Option> Options { private get; set; }
+        /// <summary>
         /// Bot configuration.
         /// </summary>
-        public IConfig Config { private get; set; }
+        public Config Config { private get; set; }
 
         /// <summary>
         /// Executes the weekly command.
         /// </summary>
         /// <param name="ctx">Command Context.</param>
+        /// <param name="rawArgs">Command line arguments.</param>
         /// <returns>Returns an asynchronous task.</returns>
         [Command("reset")]
         [Description("Resets the weekly race.")]
@@ -38,7 +43,7 @@ namespace MaraBot.Commands
         [RequireBotPermissions(
             Permissions.SendMessages |
             Permissions.ManageRoles)]
-        public async Task Execute(CommandContext ctx)
+        public async Task Execute(CommandContext ctx, [RemainingText][Description(CommandUtils.kCustomRaceArgsDescription)] string rawArgs)
         {
             // Safety measure to avoid potential misuses of this command.
             if (!await CommandUtils.MemberHasPermittedRole(ctx, Config.OrganizerRoles))
@@ -47,29 +52,79 @@ namespace MaraBot.Commands
                 return;
             }
 
+            var previousWeek = Weekly.WeekNumber;
             var currentWeek = RandomUtils.GetWeekNumber();
+            var backupAndResetWeekly = previousWeek != currentWeek;
 
-            if (Weekly.WeekNumber == currentWeek)
+            // Make a backup of the previous week's weekly and create a new
+            // weekly for the current week.
+            if (backupAndResetWeekly)
             {
-                await ctx.RespondAsync($"Weekly for week {currentWeek} already exists.");
+                try
+                {
+                    await CommandUtils.RevokeAllRolesAsync(ctx, new[]
+                    {
+                        Config.WeeklyCompletedRole,
+                        Config.WeeklyForfeitedRole
+                    });
+                }
+                catch (InvalidOperationException)
+                {
+                    await CommandUtils.SendFailReaction(ctx);
+                    throw;
+                }
+
+                // Backup weekly settings to json before overriding.
+                await WeeklyIO.StoreWeeklyAsync(Weekly, $"weekly.{previousWeek}.json");
+
+                // Set weekly to unset settings until it's rolled out.
+                Weekly.Load(Weekly.NotSet);
+                await WeeklyIO.StoreWeeklyAsync(Weekly);
+
+                await ctx.RespondAsync($"Weekly leaderboard has been successfully reset!");
+                await CommandUtils.SendSuccessReaction(ctx);
+            }
+
+            // Load in the new preset in attachment.
+            Preset preset;
+            string seed;
+            string validationHash;
+            try
+            {
+                (preset, seed, validationHash) = await CommandUtils.LoadRaceAttachment(ctx, rawArgs, Options);
+            }
+            catch (InvalidOperationException e)
+            {
+                await ctx.RespondAsync(e.Message);
                 await CommandUtils.SendFailReaction(ctx);
                 return;
             }
 
-            // Backup weekly settings to json before overriding.
-            WeeklyIO.StoreWeeklyAsync(Weekly, $"weekly.{Weekly.WeekNumber}.json");
-
-            // Set weekly to unset settings until it's rolled out.
-            Weekly.Load(Weekly.NotSet);
-            WeeklyIO.StoreWeeklyAsync(Weekly);
-
-            await CommandUtils.RevokeAllRolesAsync(ctx, new []
+            if (preset.Equals(default))
             {
-                Config.WeeklyCompletedRole,
-                Config.WeeklyForfeitedRole
-            });
+                await ctx.RespondAsync("Not a valid weekly preset!");
+                await CommandUtils.SendFailReaction(ctx);
+            }
 
-            await ctx.RespondAsync("Weekly has been successfully reset!");
+            await ctx.RespondAsync(PresetValidation.GenerateValidationMessage(preset, Options));
+
+            Weekly.PresetName = String.Empty;
+            Weekly.Preset = preset;
+            if (string.IsNullOrEmpty(seed))
+            {
+                Weekly.Seed = RandomUtils.GetRandomSeed();
+            }
+            else
+            {
+                Weekly.Seed = seed;
+                Weekly.ValidationHash = validationHash;
+            }
+
+            await WeeklyIO.StoreWeeklyAsync(Weekly);
+
+            await ctx.RespondAsync(Display.RaceEmbed(preset, Weekly.Seed, Weekly.ValidationHash, Weekly.Timestamp));
+
+            await ctx.RespondAsync("Weekly preset has been successfully reset!");
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }

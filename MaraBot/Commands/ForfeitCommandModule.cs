@@ -25,7 +25,7 @@ namespace MaraBot.Commands
         /// <summary>
         /// Bot configuration.
         /// </summary>
-        public IConfig Config { private get; set; }
+        public Config Config { private get; set; }
 
         /// <summary>
         /// Executes the forfeit command.
@@ -46,7 +46,7 @@ namespace MaraBot.Commands
         {
             // Add user to leaderboard.
             Weekly.AddToLeaderboard(ctx.User.Username, TimeSpan.MaxValue);
-            WeeklyIO.StoreWeeklyAsync(Weekly);
+            await WeeklyIO.StoreWeeklyAsync(Weekly);
 
             // Send message in current channel and in spoiler channel.
             var message = $"{ctx.User.Mention} forfeited the weekly!";

@@ -2,6 +2,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Text.RegularExpressions;
 using DSharpPlus.CommandsNext;
 using DSharpPlus;
 using DSharpPlus.Entities;
@@ -9,10 +12,24 @@ using DSharpPlus.Entities;
 namespace MaraBot.Core
 {
     using Messages;
+    using IO;
 
     public static class CommandUtils
     {
-        const string kFriendlyMessage = "This shouldn't happen! Please contact your friendly neighbourhood developers!";
+        public const string kFriendlyMessage = "This shouldn't happen! Please contact your friendly neighbourhood developers!";
+
+        public const string kCustomRaceArgsDescription = "\n```" +
+                                                         "  --author string      Sets the author of the preset.\n" +
+                                                         "  --name string        Sets the name of the preset.\n" +
+                                                         "  --description string Sets the description of the preset.\n" +
+                                                         "```";
+
+        private enum AttachmentFileType
+        {
+            Invalid,
+            JsonPreset,
+            LogFile
+        };
 
         /// <summary>
         /// Check if the bot is in a direct message.
@@ -182,7 +199,7 @@ namespace MaraBot.Core
         /// <param name="ctx">Command Context.</param>
         /// <param name="roleStrings">Array of role names.</param>
         /// <returns>Returns an asynchronous task.</returns>
-        /// <exception cref="InvalidOperationException">There are no matching roles or no member are assigned with these roles.</exception>
+        /// <exception cref="InvalidOperationException">There are no matching roles.</exception>
         public static async Task RevokeAllRolesAsync(CommandContext ctx, IEnumerable<string> roleStrings)
         {
             var allMembersTask = ctx.Guild.GetAllMembersAsync();
@@ -192,13 +209,6 @@ namespace MaraBot.Core
 
             var members = allMembers
                 .Where(member => member.Roles.Any(role => roles.Contains(role)));
-
-            if (!members.Any())
-            {
-                var errorMessage = $"No members currently have specified roles in guild {ctx.Guild.Name}.";
-                await ctx.RespondAsync(errorMessage);
-                throw new InvalidOperationException(errorMessage);
-            }
 
             await RevokeRolesAsync(ctx, members, roles);
         }
@@ -322,6 +332,240 @@ namespace MaraBot.Core
             }
 
             return true;
+        }
+
+        private static IEnumerable<string> Split(this string str,
+            Func<char, bool> controller)
+        {
+            int nextPiece = 0;
+
+            for (int c = 0; c < str.Length; c++)
+            {
+                if (controller(str[c]))
+                {
+                    yield return str.Substring(nextPiece, c - nextPiece);
+                    nextPiece = c + 1;
+                }
+            }
+
+            yield return str.Substring(nextPiece);
+        }
+
+        private static string TrimMatchingQuotes(this string input, char quote)
+        {
+            if ((input.Length >= 2) &&
+                (input[0] == quote) && (input[input.Length - 1] == quote))
+                return input.Substring(1, input.Length - 2);
+
+            return input;
+        }
+
+        private static void ParseCustomRaceCommandLineArguments(string rawArgs, out string author, out string name, out string description)
+        {
+            bool inQuotes = false;
+
+            var args = rawArgs.Split(c =>
+                {
+                    if (c == '\"')
+                        inQuotes = !inQuotes;
+
+                    return !inQuotes && c == ' ';
+                })
+                .Select(arg => arg.Trim().TrimMatchingQuotes('\"'))
+                .Where(arg => !string.IsNullOrEmpty(arg))
+                .ToArray();
+
+            author = name = description = String.Empty;
+
+            var index = 0;
+            while (index + 1 < args.Length)
+            {
+                switch (args[index])
+                {
+                    case "--author":
+                        author = args[++index];
+                        break;
+                    case "--name":
+                        name = args[++index];
+                        break;
+                    case "--description":
+                        description = args[++index];
+                        break;
+                    default:
+                        throw new InvalidOperationException($"Unrecognized option '{args[index]}'");
+                }
+
+                ++index;
+            }
+
+            if (index < args.Length)
+            {
+                throw new InvalidOperationException($"Unrecognized option '{args[index]}'");
+            }
+        }
+
+        private static AttachmentFileType GetAttachmentFileType(CommandContext ctx, out string errorMessage)
+        {
+            if (ctx.Message.Attachments == null || ctx.Message.Attachments.Count != 1)
+            {
+                errorMessage = "No attachment provided. You must supply a file when using this command.";
+                return AttachmentFileType.Invalid;
+            }
+
+            var attachment = ctx.Message.Attachments[0];
+
+            // Json Preset
+            if (Path.GetExtension(attachment.FileName).ToLower() == ".json")
+            {
+                errorMessage = String.Empty;
+                return AttachmentFileType.JsonPreset;
+            }
+            // Log Txt File
+            else if (Path.GetExtension(attachment.FileName).ToLower() == ".txt")
+            {
+                var body = attachment.FileName.Remove(attachment.FileName.Length - 4);
+
+                // Should not be the spoiler log.
+                if (body.EndsWith("_SPOILER"))
+                {
+                    errorMessage = "Spoiler log file has been provided. Please, provide non-spoiler log instead.";
+                    return AttachmentFileType.Invalid;
+                }
+
+                var regex = new Regex("log_[A-F0-9]{16}");
+                var match = regex.Match(body);
+
+                // Should match the usual log file format.
+                if (match.Length != body.Length)
+                {
+                    errorMessage = "Spoiler log file name is not standard. Expecting a log_ prefix followed by a 16 digits hexadecimal seed.";
+                    return AttachmentFileType.Invalid;
+                }
+
+                errorMessage = String.Empty;
+                return AttachmentFileType.LogFile;
+            }
+
+            errorMessage = "Unrecognized file extension";
+            return AttachmentFileType.Invalid;
+        }
+
+        private static async Task<Preset> LoadPresetAttachmentAsync(CommandContext ctx, IReadOnlyDictionary<string, Option> options)
+        {
+            var attachment = ctx.Message.Attachments[0];
+            var url = attachment.Url;
+
+            var request = WebRequest.Create(url);
+            var response = await request.GetResponseAsync();
+            var dataStream = response.GetResponseStream();
+
+            using (StreamReader r = new StreamReader(dataStream))
+            {
+                var jsonContent = await r.ReadToEndAsync();
+                var preset = PresetIO.LoadPreset(jsonContent, options);
+                if (preset.Equals(default))
+                    throw new InvalidOperationException("Could not parse custom json preset. Please supply a valid json file.");
+
+                return preset;
+            }
+        }
+
+        private static async Task<(Preset Preset, string Seed, string ValidationHash)> LoadLogAttachmentAsync(CommandContext ctx, string rawArgs, IReadOnlyDictionary<string, Option> options)
+        {
+            // Parse command line arguments to retrieve preset author, name and description if available.
+            ParseCustomRaceCommandLineArguments(rawArgs, out string author, out string name, out string description);
+
+            // Load attachment file.
+            var attachment = ctx.Message.Attachments[0];
+            var url = attachment.Url;
+
+            var request = WebRequest.Create(url);
+            var response = await request.GetResponseAsync();
+            var dataStream = response.GetResponseStream();
+
+            if (dataStream == null)
+                throw new InvalidOperationException($"Could not open attachment file {url}");
+
+            using (StreamReader r = new StreamReader(dataStream))
+            {
+                // Read file header.
+                await r.ReadLineAsync();
+                var seedLineTask = r.ReadLineAsync();
+                var optionsLineTask = r.ReadLineAsync();
+
+                // Go to end of file.
+                var restOfFileTask = r.ReadToEndAsync();
+
+                var seedRegex = new Regex("Seed = (?<seed>[A-F0-9]{16})");
+                var optionsRegex = new Regex("Options = (?<options>.*)$");
+                var validationHashRegex = new Regex("Hash check value: (?<validationHash>[A-F0-9]{8})");
+
+                var seedMatch = seedRegex.Match(await seedLineTask);
+                var optionsMatch = optionsRegex.Match(await optionsLineTask);
+
+                var validationHashMatch = validationHashRegex.Match(await restOfFileTask);
+
+                var seed = seedMatch.Success ? seedMatch.Groups["seed"].Value : string.Empty;
+                var optionsString = optionsMatch.Success ? optionsMatch.Groups["options"].Value : string.Empty;
+                string validationHash = validationHashMatch.Success ? validationHashMatch.Groups["validationHash"].Value : String.Empty;
+
+                Preset preset = CreatePresetFromOptionsString( String.IsNullOrEmpty(author) ? ctx.User.Username : author,  name, description, optionsString);
+
+                preset.MakeDisplayable(options);
+                return (preset, seed, validationHash);
+            }
+        }
+
+        /// <summary>
+        /// Loads a race attachment
+        /// </summary>
+        /// <param name="ctx">Command context.</param>
+        /// <param name="rawArgs">Command line arguments</param>
+        /// <param name="options">Preset options.</param>
+        /// <returns>Tuple of preset and seed string.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if there was an error while parsing provided attachment.</exception>
+        public static async Task<(Preset Preset, string Seed, string ValidationHash)> LoadRaceAttachment(CommandContext ctx, string rawArgs, IReadOnlyDictionary<string, Option> options)
+        {
+            var attachmentType = GetAttachmentFileType(ctx, out var errorMessage);
+
+            switch (attachmentType)
+            {
+                case AttachmentFileType.JsonPreset:
+                    var preset = await LoadPresetAttachmentAsync(ctx, options);
+                    return (preset, String.Empty, String.Empty);
+                case AttachmentFileType.LogFile:
+                    return await LoadLogAttachmentAsync(ctx, rawArgs, options);
+                default:
+                    throw new InvalidOperationException(errorMessage);
+            }
+        }
+
+        /// <summary>
+        /// Creates a preset from raw options string.
+        /// </summary>
+        /// <param name="author">Author of preset.</param>
+        /// <param name="name">Name of preset.</param>
+        /// <param name="description">Description of preset.</param>
+        /// <param name="version">Version of the randomizer.</param>
+        /// <param name="optionsString">Raw options string.</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException">Thrown if there was an error while parsing options string.</exception>
+        public static Preset CreatePresetFromOptionsString(string author, string name, string description, string optionsString)
+        {
+            string[] optionsValues = String.IsNullOrEmpty(optionsString) ? new [] { "mode=rando" } : optionsString.Split(' ');
+
+            var options = new Dictionary<string, string>();
+
+            foreach(string option in optionsValues)
+            {
+                if(!option.Contains('='))
+                    throw new InvalidOperationException($"'{option}' is not formatted correctly. Format must be 'key=value'.");
+
+                string[] values = option.Split('=');
+                options.Add(values[0], values[1]);
+            }
+
+            return new Preset(name, description, author, options);
         }
 
         /// <summary>

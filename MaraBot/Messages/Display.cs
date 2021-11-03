@@ -31,10 +31,11 @@ namespace MaraBot.Messages
         /// </summary>
         /// <param name="preset">Preset used in race.</param>
         /// <param name="seed">Generated seed.</param>
+        /// <param name="validationHash">Validation hash (optional).</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder RaceEmbed(Preset preset, string seed)
+        public static DiscordEmbedBuilder RaceEmbed(in Preset preset, string seed, string validationHash = default)
         {
-            return RaceEmbed(preset, seed, DateTime.Now);
+            return RaceEmbed(preset, seed, validationHash, DateTime.Now);
         }
 
         /// <summary>
@@ -42,9 +43,10 @@ namespace MaraBot.Messages
         /// </summary>
         /// <param name="preset">Preset used in race.</param>
         /// <param name="seed">Generated seed.</param>
+        /// <param name="validationHash"></param>
         /// <param name="timestamp">Timestamp at which race was generated.</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder RaceEmbed(Preset preset, string seed, DateTime timestamp)
+        public static DiscordEmbedBuilder RaceEmbed(in Preset preset, string seed, string validationHash, DateTime timestamp)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -64,11 +66,22 @@ namespace MaraBot.Messages
             if (String.IsNullOrEmpty(rawOptionsString))
                 rawOptionsString = "\u200B";
 
+            if (!String.IsNullOrEmpty(preset.Name))
+            {
+                embed.AddField(preset.Name, preset.Description);
+            }
+
             embed
-                .AddField(preset.Name, preset.Description)
+                .AddField("Author", preset.Author)
                 .AddOptions(preset)
-                .AddField("Seed", Formatter.BlockCode(seed))
-                .AddField("Raw Options", Formatter.BlockCode(rawOptionsString));
+                .AddField("Seed", Formatter.BlockCode(seed));
+
+            if (!String.IsNullOrEmpty(validationHash))
+            {
+                embed.AddField("Validation Hash", Formatter.BlockCode(validationHash));
+            }
+
+            embed.AddField("Raw Options", Formatter.BlockCode(rawOptionsString));
 
             return embed;
         }
@@ -110,7 +123,7 @@ namespace MaraBot.Messages
         /// </summary>
         /// <param name="preset">Preset to display.</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder PresetEmbed(Preset preset)
+        public static DiscordEmbedBuilder PresetEmbed(in Preset preset)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -121,14 +134,13 @@ namespace MaraBot.Messages
             embed
                 .AddField("Preset", preset.Name)
                 .AddField("Description", preset.Description)
-                .AddField("Version", preset.Version)
                 .AddField("Author", preset.Author)
                 .AddOptions(preset);
 
             return embed;
         }
 
-        private static DiscordEmbedBuilder AddOptionDictionary(this DiscordEmbedBuilder embed, string title, Dictionary<string, string> options)
+        private static DiscordEmbedBuilder AddOptionDictionary(this DiscordEmbedBuilder embed, string title, IReadOnlyDictionary<string, string> options)
         {
             int numberOfColumns = Math.Min((int)Math.Ceiling(options.Count / (float) kMinNumberOfElementsPerColumn), kMaxNumberOfColumns);
             int numberOfElementsPerColumn = (int)Math.Ceiling(options.Count / (float) numberOfColumns);
@@ -163,8 +175,11 @@ namespace MaraBot.Messages
         private static DiscordEmbedBuilder AddOptions(this DiscordEmbedBuilder embed, Preset preset)
         {
             Mode mode = preset.Options.ContainsKey("mode") ? Option.OptionValueToMode(preset.Options["mode"]) : Mode.Rando;
+            string version = preset.Options.ContainsKey("version") ? preset.Options["version"] : "n/a";
 
-            embed.AddField(Option.ModeToPrettyString(Mode.Mode), Option.ModeToPrettyString(mode));
+            embed
+                .AddField(Option.ModeToPrettyString(Mode.Mode), Option.ModeToPrettyString(mode))
+                .AddField("Version", version);
 
             if (preset.GeneralOptions.Count > 0)
                 embed.AddOptionDictionary($"{Option.ModeToPrettyString(Mode.General)} Options", preset.GeneralOptions);
@@ -182,7 +197,7 @@ namespace MaraBot.Messages
         /// <param name="weekly">Weekly settings.</param>
         /// <param name="preventSpoilers">Hide potential spoilers.</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder LeaderboardEmbed(Weekly weekly, bool preventSpoilers)
+        public static DiscordEmbedBuilder LeaderboardEmbed(IReadOnlyWeekly weekly, bool preventSpoilers)
         {
             var embed = new DiscordEmbedBuilder
             {
