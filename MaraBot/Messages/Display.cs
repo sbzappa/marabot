@@ -206,7 +206,7 @@ namespace MaraBot.Messages
             };
 
             embed
-                .AddField("Weekly Seed", $"Week #{weekly.WeekNumber} - {weekly.PresetName}");
+                .AddField("Weekly Seed", $"Week #{weekly.WeekNumber}" + (String.IsNullOrEmpty(weekly.PresetName) ? "" :  $"- {weekly.PresetName}"));
 
             IEnumerable<KeyValuePair<string, TimeSpan>> leaderboard = weekly.Leaderboard;
 
