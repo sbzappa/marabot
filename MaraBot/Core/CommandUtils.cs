@@ -562,7 +562,7 @@ namespace MaraBot.Core
                     throw new InvalidOperationException($"'{option}' is not formatted correctly. Format must be 'key=value'.");
 
                 string[] values = option.Split('=');
-                options.Add(values[0], values[1]);
+                options[values[0]] = values[1];
             }
 
             return new Preset(name, description, author, options);
