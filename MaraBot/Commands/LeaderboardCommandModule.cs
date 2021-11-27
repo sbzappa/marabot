@@ -45,7 +45,7 @@ namespace MaraBot.Commands
         [Command("leaderboard")]
         [Description("Get the weekly leaderboard.")]
         [Aliases("lb")]
-        [Cooldown(2, 900, CooldownBucketType.Channel)]
+        [Cooldown(15, 600, CooldownBucketType.Channel)]
         [RequireGuild]
         [RequireBotPermissions(
             Permissions.SendMessages |

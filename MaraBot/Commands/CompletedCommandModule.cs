@@ -34,7 +34,7 @@ namespace MaraBot.Commands
         [Command("completed")]
         [Aliases("done")]
         [Description("Add your time to the leaderboard.")]
-        [Cooldown(2, 900, CooldownBucketType.User)]
+        [Cooldown(5, 600, CooldownBucketType.User)]
         [RequireGuild]
         [RequireBotPermissions(
             Permissions.SendMessages |

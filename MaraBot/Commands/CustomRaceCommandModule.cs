@@ -32,7 +32,7 @@ namespace MaraBot.Commands
         /// <returns>Returns an asynchronous task.</returns>
         [Command("custom")]
         [Description("Start a custom race based on a .json file")]
-        [Cooldown(3, 600, CooldownBucketType.User)]
+        [Cooldown(5, 600, CooldownBucketType.User)]
         [RequireGuild]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx, [RemainingText][Description(CommandUtils.kCustomRaceArgsDescription)] string rawArgs)

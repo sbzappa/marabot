@@ -38,7 +38,7 @@ namespace MaraBot.Commands
         /// <returns>Returns an asynchronous task.</returns>
         [Command("reset")]
         [Description("Resets the weekly race.")]
-        [Cooldown(2, 900, CooldownBucketType.Channel)]
+        [Cooldown(30, 600, CooldownBucketType.Channel)]
         [RequireGuild]
         [RequireBotPermissions(
             Permissions.SendMessages |

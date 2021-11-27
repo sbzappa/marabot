@@ -31,7 +31,7 @@ namespace MaraBot.Commands
         /// <returns>Returns an asynchronous task.</returns>
         [Command("weekly")]
         [Description("Get the weekly race.")]
-        [Cooldown(2, 900, CooldownBucketType.Channel)]
+        [Cooldown(15, 600, CooldownBucketType.Channel)]
         [RequireGuild]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx)
