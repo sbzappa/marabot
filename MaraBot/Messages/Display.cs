@@ -68,7 +68,7 @@ namespace MaraBot.Messages
 
             if (!String.IsNullOrEmpty(preset.Name))
             {
-                embed.AddField(preset.Name, preset.Description);
+                embed.AddField(preset.Name, String.IsNullOrEmpty(preset.Description) ? "\u200B" : preset.Description);
             }
 
             embed

@@ -28,7 +28,7 @@ namespace MaraBot.Commands
         /// <returns>Returns an asynchronous task.</returns>
         [Command("race")]
         [Description("Generate a race based on the preset given.")]
-        [Cooldown(3, 600, CooldownBucketType.User)]
+        [Cooldown(5, 600, CooldownBucketType.User)]
         [RequireGuild]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx, string presetName)

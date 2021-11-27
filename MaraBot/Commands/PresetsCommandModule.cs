@@ -27,7 +27,7 @@ namespace MaraBot.Commands
         /// <returns>Returns an asynchronous task.</returns>
         [Command("presets")]
         [Description("Get the list of presets.")]
-        [Cooldown(2, 900, CooldownBucketType.Channel)]
+        [Cooldown(5, 600, CooldownBucketType.Channel)]
         [RequireGuild]
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx)

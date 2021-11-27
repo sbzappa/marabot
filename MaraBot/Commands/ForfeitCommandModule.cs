@@ -35,7 +35,7 @@ namespace MaraBot.Commands
         [Command("forfeit")]
         [Aliases("forfeited")]
         [Description("Forfeit the weekly.")]
-        [Cooldown(2, 900, CooldownBucketType.User)]
+        [Cooldown(5, 600, CooldownBucketType.User)]
         [RequireGuild]
         [RequireBotPermissions(
             Permissions.SendMessages |

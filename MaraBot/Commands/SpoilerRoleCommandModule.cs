@@ -34,7 +34,7 @@ namespace MaraBot.Commands
         /// <returns>Returns an asynchronous task.</returns>
         [Command("spoiler")]
         [Description("Grant or revoke the spoiler roles.")]
-        [Cooldown(15, 900, CooldownBucketType.Channel)]
+        [Cooldown(15, 600, CooldownBucketType.Channel)]
         [RequireGuild]
         [RequireBotPermissions(
             Permissions.SendMessages |
