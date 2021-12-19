@@ -878,6 +878,39 @@
       "yes": "Yes"
     }
   },
+  "opBoyRole": {
+    "name": "Boy role",
+    "mode": "Open",
+    "values": {
+      "random"        : "Random",
+      "randomunique"  : "Random (unique)",
+      "ogboy"         : "Boy",
+      "oggirl"        : "Girl",
+      "ogsprite"      : "Sprite"
+    }
+  },
+  "opGirlRole": {
+    "name": "Girl role",
+    "mode": "Open",
+    "values": {
+      "random"        : "Random",
+      "randomunique"  : "Random (unique)",
+      "ogboy"         : "Boy",
+      "oggirl"        : "Girl",
+      "ogsprite"      : "Sprite"
+    }
+  },
+  "opSpriteRole": {
+    "name": "Sprite role",
+    "mode": "Open",
+    "values": {
+      "random"        : "Random",
+      "randomunique"  : "Random (unique)",
+      "ogboy"         : "Boy",
+      "oggirl"        : "Girl",
+      "ogsprite"      : "Sprite"
+    }
+  },
 
 
 

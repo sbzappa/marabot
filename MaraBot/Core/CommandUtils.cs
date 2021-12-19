@@ -364,6 +364,11 @@ namespace MaraBot.Core
         {
             bool inQuotes = false;
 
+            author = name = description = String.Empty;
+
+            if (rawArgs == null)
+                return;
+
             var args = rawArgs.Split(c =>
                 {
                     if (c == '\"')
@@ -374,8 +379,6 @@ namespace MaraBot.Core
                 .Select(arg => arg.Trim().TrimMatchingQuotes('\"'))
                 .Where(arg => !string.IsNullOrEmpty(arg))
                 .ToArray();
-
-            author = name = description = String.Empty;
 
             var index = 0;
             while (index + 1 < args.Length)
