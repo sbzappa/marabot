@@ -499,9 +499,9 @@ namespace MaraBot.Core
                 // Go to end of file.
                 var restOfFileTask = r.ReadToEndAsync();
 
-                var seedRegex = new Regex("Seed = (?<seed>[A-F0-9]{16})");
+                var seedRegex = new Regex("Seed = (?<seed>[A-F0-9]{1,16})");
                 var optionsRegex = new Regex("Options = (?<options>.*)$");
-                var validationHashRegex = new Regex("Hash check value: (?<validationHash>[A-F0-9]{8})");
+                var validationHashRegex = new Regex("Hash check value: (?<validationHash>[A-F0-9]{1,8})");
 
                 var seedMatch = seedRegex.Match(await seedLineTask);
                 var optionsMatch = optionsRegex.Match(await optionsLineTask);
