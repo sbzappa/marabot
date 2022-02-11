@@ -13,27 +13,6 @@
 
 
 
-  "aggBosses": {
-    "name": "Aggressive bosses",
-    "mode": "General",
-    "values": {
-      "yes": "Yes"
-    }
-  },
-  "aggEnemies": {
-    "name": "Aggressive enemies",
-    "mode": "General",
-    "values": {
-      "yes": "Yes"
-    }
-  },
-  "ovrchrgFix": {
-    "name": "Overcharge fix",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
   "funSpeedup": {
     "name": "Speedup improvements",
     "mode": "General",
@@ -41,50 +20,8 @@
       "no": "No"
     }
   },
-  "longStatus": {
-    "name": "Status length increase",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
-  "magicRebalance": {
-    "name": "Magic rebalance",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
   "mpAtLevel": {
     "name": "MP Restore at level up",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
-  "noBsVampires": {
-    "name": "Hittable Vampires",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
-  "noGigasSplit": {
-    "name": "Gigases don't split",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
-  "orbFix": {
-    "name": "Orb reward fix",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
-  "bossDeathFix": {
-    "name": "Boss death fix",
     "mode": "General",
     "values": {
       "no": "No"
@@ -104,20 +41,6 @@
       "no": "No"
     }
   },
-  "accuratePercent": {
-    "name": "Accurate damage percentages",
-    "mode": "General",
-    "values": {
-      "yes": "Yes"
-    }
-  },
-  "whipFix": {
-    "name": "Whip coordinate corruption fix",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
   "offscreenTarget": {
     "name": "Extended targetting",
     "mode": "General",
@@ -125,57 +48,8 @@
       "no": "No"
     }
   },
-  "manaMagicFix": {
-    "name": "Mana Magic change",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
-  "noSummonDespawn": {
-    "name": "Summoning Despawn Fix",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
-  "confusionFix": {
-    "name": "Confusion Fix",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
-  "hittableBeaks": {
-    "name": "Beak Shield Disable",
-    "mode": "General",
-    "values": {
-      "yes": "Yes"
-    }
-  },
-  "percentPoison": {
-    "name": "Percentage Damage Poison",
-    "mode": "General",
-    "values": {
-      "yes": "Yes"
-    }
-  },
-  "defRefactor": {
-    "name": "Defense Refactor",
-    "mode": "General",
-    "values": {
-      "yes": "Yes"
-    }
-  },
   "moreItems": {
     "name": "7 items max",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
-  "statusGlow": {
-    "name": "Status glow",
     "mode": "General",
     "values": {
       "no": "No"
@@ -216,8 +90,108 @@
       "no": "No"
     }
   },
-  "starterGear": {
-    "name": "Starter gear",
+  "buyMultiple": {
+    "name": "Buy multiple consumables",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "showEvades": {
+    "name": "Show evades",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  
+  "ovrchrgFix": {
+    "name": "Overcharge fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "orbFix": {
+    "name": "Orb reward fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "bossDeathFix": {
+    "name": "Boss death fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "whipFix": {
+    "name": "Whip coordinate corruption fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "noSummonDespawn": {
+    "name": "Summoning Despawn Fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "confusionFix": {
+    "name": "Confusion Fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "mode7Fix": {
+    "name": "Mode 7 edges fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "mechRiderDeathFix": {
+    "name": "Mech rider death fix",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  
+  "aggBosses": {
+    "name": "Aggressive bosses",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "aggEnemies": {
+    "name": "Aggressive enemies",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "noBsVampires": {
+    "name": "Hittable Vampires",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "noGigasSplit": {
+    "name": "Gigases don't split",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "hittableBeaks": {
+    "name": "Beak Shield Disable",
     "mode": "General",
     "values": {
       "yes": "Yes"
@@ -230,50 +204,8 @@
       "yes": "Yes"
     }
   },
-  "buyMultiple": {
-    "name": "Buy multiple consumables",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
   "adjustEnemyPos": {
     "name": "Enemy position adjustment",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
-  "seReduction": {
-    "name": "Sound effects reduction",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
-  "rainbowRabites": {
-    "name": "Random Rabite colors",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
-  "fastTransition": {
-    "name": "Fast transitions",
-    "mode": "General",
-    "values": {
-      "yes": "Yes"
-    }
-  },
-  "mode7Fix": {
-    "name": "Mode 7 edges fix",
-    "mode": "General",
-    "values": {
-      "no": "No"
-    }
-  },
-  "mechRiderDeathFix": {
-    "name": "Mech rider death fix",
     "mode": "General",
     "values": {
       "no": "No"
@@ -300,6 +232,99 @@
       "yes": "Yes"
     }
   },
+  "attacksForever": {
+    "name": "Attacks don't cost stamina",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  
+  "longStatus": {
+    "name": "Status length increase",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "magicRebalance": {
+    "name": "Magic rebalance",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "accuratePercent": {
+    "name": "Accurate damage percentages",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "manaMagicFix": {
+    "name": "Mana Magic change",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "percentPoison": {
+    "name": "Percentage Damage Poison",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "defRefactor": {
+    "name": "Defense Refactor",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "starterGear": {
+    "name": "Starter gear",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "bossFixedZ": {
+    "name": "Bosses at Fixed Z Position",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  
+  "statusGlow": {
+    "name": "Status glow",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "seReduction": {
+    "name": "Sound effects reduction",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "rainbowRabites": {
+    "name": "Random Rabite colors",
+    "mode": "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "fastTransition": {
+    "name": "Fast transitions",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
   "muteMusic": {
     "name": "Mute all music",
     "mode": "General",
@@ -315,6 +340,15 @@
       "custom": "Custom (Specify...)"
     }
   },
+  
+  "bossElementRando": {
+    "name": "Randomize Boss Elements",
+    "mode": "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  
   "ohko": {
     "name": "One-hit KO",
     "mode": "General",
@@ -324,13 +358,6 @@
   },
   "noclip": {
     "name": "Walk through walls",
-    "mode": "General",
-    "values": {
-      "yes": "Yes"
-    }
-  },
-  "attacksForever": {
-    "name": "Attacks don't cost stamina",
     "mode": "General",
     "values": {
       "yes": "Yes"
@@ -595,13 +622,7 @@
       "awful"   : "Random (awful)"
     }
   },
-  "opShowLevels": {
-    "name": "Show enemy level",
-    "mode": "Open",
-    "values": {
-      "no": "No"
-    }
-  },
+  
   "opComplexity": {
     "name": "Complexity",
     "mode": "Open",
@@ -615,6 +636,142 @@
     "mode": "Open",
     "values": {
       "vanilla": "Vanilla"
+    }
+  },
+  "opTraps": {
+    "name": "Chest traps",
+    "mode": "Open",
+    "values": {
+      "none": "None",
+      "many": "Many"
+    }
+  },
+  "opChestFreq": {
+    "name": "Chest drop frequency",
+    "mode": "Open",
+    "values": {
+      "none"   : "None",
+      "low"    : "Low",
+      "high"   : "High",
+      "highest": "Highest"
+    }
+  },
+  "opXmasItems": {
+    "name": "Random drops",
+    "mode": "Open",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "opMinLevel": {
+    "name": "Minimum enemy level",
+    "mode": "Open",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "opMaxLevel": {
+    "name": "Maximum enemy level",
+    "mode": "Open",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "opDisableHints": {
+    "name": "Disable hints",
+    "mode": "Open",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "opPlatinumMode": {
+    "name": "Black out map data",
+    "mode": "Open",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  
+  "opBoyRole": {
+    "name": "Boy character role",
+    "mode": "Open",
+    "values": {
+      "random"        : "Random",
+      "randomunique"  : "Random (unique)",
+      "ogboy"         : "Boy",
+      "oggirl"        : "Girl",
+      "ogsprite"      : "Sprite"
+    }
+  },
+  "opGirlRole": {
+    "name": "Girl character role",
+    "mode": "Open",
+    "values": {
+      "random"        : "Random",
+      "randomunique"  : "Random (unique)",
+      "ogboy"         : "Boy",
+      "oggirl"        : "Girl",
+      "ogsprite"      : "Sprite"
+    }
+  },
+  "opSpriteRole": {
+    "name": "Sprite character role",
+    "mode": "Open",
+    "values": {
+      "random"        : "Random",
+      "randomunique"  : "Random (unique)",
+      "ogboy"         : "Boy",
+      "oggirl"        : "Girl",
+      "ogsprite"      : "Sprite"
+    }
+  },
+  
+  "opNumSeeds": {
+    "name": "Mana Tree Revival seeds required",
+    "mode": "Open",
+    "values": {
+      "random": "Random",
+      "1"     : "1",
+      "2"     : "2",
+      "3"     : "3",
+      "4"     : "4",
+      "5"     : "5",
+      "6"     : "6",
+      "7"     : "7"
+    }
+  },
+  "opMinSeeds": {
+    "name": "Minimum Mana Tree Revival seeds required",
+    "mode": "Open",
+    "values": {
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8"
+    }
+  },
+  "opMaxSeeds": {
+    "name": "Maximum Mana Tree Revival seeds required",
+    "mode": "Open",
+    "values": {
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7"
+    }
+  },
+  
+  "opShowLevels": {
+    "name": "Show enemy level",
+    "mode": "Open",
+    "values": {
+      "no": "No"
     }
   },
   "opAutosave": {
@@ -736,69 +893,11 @@
       "7": "7 - Javelin"
     }
   },
-  "opNumSeeds": {
-    "name": "Mana Tree Revival seeds required",
-    "mode": "Open",
-    "values": {
-      "random": "Random",
-      "1"     : "1",
-      "2"     : "2",
-      "3"     : "3",
-      "4"     : "4",
-      "5"     : "5",
-      "6"     : "6",
-      "7"     : "7"
-    }
-  },
-  "opMinSeeds": {
-    "name": "Minimum Mana Tree Revival seeds required",
-    "mode": "Open",
-    "values": {
-      "2": "2",
-      "3": "3",
-      "4": "4",
-      "5": "5",
-      "6": "6",
-      "7": "7",
-      "8": "8"
-    }
-  },
-  "opMaxSeeds": {
-    "name": "Maximum Mana Tree Revival seeds required",
-    "mode": "Open",
-    "values": {
-      "1": "1",
-      "2": "2",
-      "3": "3",
-      "4": "4",
-      "5": "5",
-      "6": "6",
-      "7": "7"
-    }
-  },
   "opChestsDontRun": {
     "name": "Chests don't run away",
     "mode": "Open",
     "values": {
       "no": "No"
-    }
-  },
-  "opTraps": {
-    "name": "Chest traps",
-    "mode": "Open",
-    "values": {
-      "none": "None",
-      "many": "Many"
-    }
-  },
-  "opChestFreq": {
-    "name": "Chest drop frequency",
-    "mode": "Open",
-    "values": {
-      "none"   : "None",
-      "low"    : "Low",
-      "high"   : "High",
-      "highest": "Highest"
     }
   },
   "opAiRando": {
@@ -822,13 +921,6 @@
       "yes": "Yes"
     }
   },
-  "opXmasItems": {
-    "name": "Random drops",
-    "mode": "Open",
-    "values": {
-      "yes": "Yes"
-    }
-  },
   "opGPEleRando": {
     "name": "Randomize Grand Palace elements",
     "mode": "Open",
@@ -836,29 +928,8 @@
       "no": "No"
     }
   },
-  "opMinLevel": {
-    "name": "Minimum enemy level",
-    "mode": "Open",
-    "values": {
-      "yes": "Yes"
-    }
-  },
-  "opMaxLevel": {
-    "name": "Maximum enemy level",
-    "mode": "Open",
-    "values": {
-      "yes": "Yes"
-    }
-  },
   "opAllowLockedItems": {
     "name": "Allow locked items",
-    "mode": "Open",
-    "values": {
-      "yes": "Yes"
-    }
-  },
-  "opDisableHints": {
-    "name": "Disable hints",
     "mode": "Open",
     "values": {
       "yes": "Yes"
@@ -871,44 +942,11 @@
       "no": "No"
     }
   },
-  "opPlatinumMode": {
-    "name": "Black out map data",
+  "opAllWeaponOrbs": {
+    "name": "Start with all weapon orbs",
     "mode": "Open",
     "values": {
       "yes": "Yes"
-    }
-  },
-  "opBoyRole": {
-    "name": "Boy role",
-    "mode": "Open",
-    "values": {
-      "random"        : "Random",
-      "randomunique"  : "Random (unique)",
-      "ogboy"         : "Boy",
-      "oggirl"        : "Girl",
-      "ogsprite"      : "Sprite"
-    }
-  },
-  "opGirlRole": {
-    "name": "Girl role",
-    "mode": "Open",
-    "values": {
-      "random"        : "Random",
-      "randomunique"  : "Random (unique)",
-      "ogboy"         : "Boy",
-      "oggirl"        : "Girl",
-      "ogsprite"      : "Sprite"
-    }
-  },
-  "opSpriteRole": {
-    "name": "Sprite role",
-    "mode": "Open",
-    "values": {
-      "random"        : "Random",
-      "randomunique"  : "Random (unique)",
-      "ogboy"         : "Boy",
-      "oggirl"        : "Girl",
-      "ogsprite"      : "Sprite"
     }
   },
 
