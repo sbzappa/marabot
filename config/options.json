@@ -56,7 +56,7 @@
     }
   },
   "leavePlayersBehind": {
-    "name": "Alow leaving characters behind",
+    "name": "Allow leaving characters behind",
     "mode": "General",
     "values": {
       "no": "No"
