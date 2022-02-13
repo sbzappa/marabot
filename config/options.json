@@ -42,7 +42,7 @@
     }
   },
   "offscreenTarget": {
-    "name": "Extended targetting",
+    "name": "Extended targeting",
     "mode": "General",
     "values": {
       "no": "No"
