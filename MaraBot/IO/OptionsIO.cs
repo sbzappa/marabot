@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MaraBot.IO
 {
@@ -41,7 +42,15 @@ namespace MaraBot.IO
             using (StreamReader r = new StreamReader(optionsPath))
             {
                 var json = await r.ReadToEndAsync();
-                return JsonConvert.DeserializeObject<Dictionary<string, Option>>(json);
+                return JsonConvert.DeserializeObject<Dictionary<string, Option>>
+                (
+                    json,
+                    new JsonSerializerSettings
+                    {
+                        TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
+                        TypeNameHandling = TypeNameHandling.All,
+                    }
+                );
             }
         }
     }
