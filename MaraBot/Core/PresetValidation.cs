@@ -144,9 +144,13 @@ namespace MaraBot.Core
                 if ((!optionsCopy.ContainsKey("opEnemies") || optionsCopy["opEnemies"] != "oops") && optionsCopy.ContainsKey("oopsAllThis"))
                     errors.Add($"{kValidationInfoPrefix} Selecting a different 'Oops! All owls' enemy is useless if you don't have 'Oops! All owls' enabled.");
 
-                // If 'Enemy stat growth' is set to 'None (vanilla), setting a difficulty doesn't make sense
+                // If 'Enemy stat growth' is set to 'None (vanilla)', setting a difficulty doesn't make sense
                 if (optionsCopy.ContainsKey("opStatGrowth") && optionsCopy["opStatGrowth"] == "vanilla" && optionsCopy.ContainsKey("opDifficulty"))
                     errors.Add($"{kValidationInfoPrefix} Selecting a different difficulty is useless if you have vanilla enemy stat growth enabled.");
+
+                // If 'Enemy stat growth' is not set to 'No Future', setting a "No Future" level doesn't make sense
+                if ((!optionsCopy.ContainsKey("opStatGrowth") || optionsCopy["opStatGrowth"] != "nofuture") && optionsCopy.ContainsKey("opNoFutureLevel"))
+                    errors.Add($"{kValidationInfoPrefix} Selecting a \"No Future\" level is useless if you don't have \"No Future\" enemy stat growth");
 
                 // Use sensible mana seed settings
                 if ((!optionsCopy.ContainsKey("opGoal") || optionsCopy["opGoal"] != "mtr") && (
