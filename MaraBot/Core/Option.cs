@@ -189,8 +189,7 @@ namespace MaraBot.Core
             if (Precision > 0)
             {
                 // double
-                double v;
-                bool success = double.TryParse(val, out v);
+                bool success = double.TryParse(val, out var v);
                 if (!success)
                     return val;
                 return v.ToString($"F{Precision.ToString()}");
@@ -198,8 +197,7 @@ namespace MaraBot.Core
             else
             {
                 // int
-                int v;
-                bool success = int.TryParse(val, out v);
+                bool success = int.TryParse(val, out var v);
                 if (!success)
                     return val;
                 return v.ToString(); // TODO: add rounding for Precision < 0
