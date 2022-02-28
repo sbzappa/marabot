@@ -25,7 +25,7 @@ A Secret of Mana Randomizer bot for Discord.
 
 ### Permissions
 
-For all commands to work, the following permissions must be given to the bot on discord
+For all commands to work, the following permissions must be given to the bot on discord:
 
 - Send Messages
 - Manage Messages
@@ -57,3 +57,14 @@ required for the bot to authenticate itself with Discord. Look for
 You can copy your `config.json` in either: 
 - `config/`
 - `$HOME/marabot/config/`
+
+### Compilation and Running
+
+To compile the bot, run `dotnet build` in the project root.
+
+The executable will be located at `MaraBot/bin/Debug/netcoreapp3.1/MaraBot`.
+A daemon script for Linux is provided at `linux/marabotd`.
+
+You can also build in release mode by running `dotnet build -c Release`.
+The executable will then be located at `MaraBot/bin/Release/netcoreapp3.1/MaraBot`.
+Note that the daemon assumes we have a fresh release build.
