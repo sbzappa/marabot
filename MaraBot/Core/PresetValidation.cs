@@ -116,8 +116,7 @@ namespace MaraBot.Core
                     // Skip if value is not within bounds
                     foreach (var o in option.List ? Option.ParseList(pair.Value) : new List<string> { pair.Value })
                     {
-                        double v;
-                        bool success = double.TryParse(o, out v);
+                        bool success = double.TryParse(o, out var v);
                         if(!success)
                         {
                             errors.Add($"{kValidationErrorPrefix} '{pair.Key}' has non-numeric value '{o}'");
