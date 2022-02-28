@@ -64,3 +64,7 @@ To compile the bot, run `dotnet build` in the project root.
 
 The executable will be located at `MaraBot/bin/Debug/netcoreapp3.1/MaraBot`.
 A daemon script for Linux is provided at `linux/marabotd`.
+
+You can also build in release mode by running `dotnet build -c Release`.
+The executable will then be located at `MaraBot/bin/Release/netcoreapp3.1/MaraBot`.
+Note that the daemon assumes we have a fresh debug build.
