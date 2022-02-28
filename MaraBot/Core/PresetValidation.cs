@@ -64,7 +64,7 @@ namespace MaraBot.Core
             if (!optionsCopy.ContainsKey("mode"))
                 errors.Add($"{kValidationErrorPrefix} Options must contain what mode is used (e.g. 'mode=rando').");
             // Mode value must be correct
-            else if (!allOptions["mode"].Values.ContainsKey(optionsCopy["mode"]))
+            else if (!(allOptions["mode"] as EnumOption).Values.ContainsKey(optionsCopy["mode"]))
                 errors.Add($"{kValidationErrorPrefix} '{optionsCopy["mode"]}' is not a known mode.");
             // No mode errors, so we can use the mode for mode-specific validation
             else
@@ -82,7 +82,8 @@ namespace MaraBot.Core
                     continue;
                 }
 
-                var pairMode = allOptions[pair.Key].Mode;
+                var option = allOptions[pair.Key];
+                var pairMode = option.Mode;
 
                 // Skip mode validation, as it's already been done
                 if (pairMode == Mode.Mode)
@@ -92,15 +93,45 @@ namespace MaraBot.Core
                 if (pairMode != mode && pairMode != Mode.General)
                     errors.Add($"{kValidationInfoPrefix} '{pair.Key}' belongs to the {Option.ModeToPrettyString(pairMode)} mode, but the selected mode is {Option.ModeToPrettyString(mode)}.");
 
-                // Skip if value doesn't exist
-                foreach (var o in allOptions[pair.Key].Type == OptionType.List
-                        ? Option.ParseList(pair.Value) : new List<string> { pair.Value })
-                    if (!allOptions[pair.Key].Values.ContainsKey(o))
+                // General enum validation
+                if (option is EnumOption)
+                {
+                    var enumOption = option as EnumOption;
+
+                    // Skip if value doesn't exist
+                    foreach (var o in option.List ? Option.ParseList(pair.Value) : new List<string> { pair.Value })
+                        if (!enumOption.Values.ContainsKey(o))
+                        {
+                            errors.Add($"{kValidationErrorPrefix} '{pair.Key}' has no known value '{o}'");
+                            optionsCopy.Remove(pair.Key); // Make sure we don't validate on unknown values
+                            continue; // Check if there are more unknown values, so that we can show those errors too
+                        }
+                }
+
+                // General numeric validation
+                if (option is NumericOption)
+                {
+                    var numericOption = option as NumericOption;
+
+                    // Skip if value is not within bounds
+                    foreach (var o in option.List ? Option.ParseList(pair.Value) : new List<string> { pair.Value })
                     {
-                        errors.Add($"{kValidationErrorPrefix} '{pair.Key}' has no known value '{o}'");
-                        optionsCopy.Remove(pair.Key); // Make sure we don't validate on unknown values
-                        continue;
+                        bool success = double.TryParse(o, out var v);
+                        if(!success)
+                        {
+                            errors.Add($"{kValidationErrorPrefix} '{pair.Key}' has non-numeric value '{o}'");
+                            optionsCopy.Remove(pair.Key); // Make sure we don't validate on invalid values
+                            continue; // Check if there are more invalid values, so that we can show those errors too
+                        }
+                        if (v < numericOption.Min || v > numericOption.Max)
+                        {
+                            errors.Add($"{kValidationErrorPrefix} '{pair.Key}' has out-of-bounds value '{o}' (must be between {numericOption.Min} and {numericOption.Max})");
+                            optionsCopy.Remove(pair.Key); // Make sure we don't validate on invalid values
+                            continue; // Check if there are more invalid values, so that we can show those errors too
+                        }
+                        // TODO: precision checks?
                     }
+                }
             }
 
             /*
@@ -112,9 +143,13 @@ namespace MaraBot.Core
                 if ((!optionsCopy.ContainsKey("opEnemies") || optionsCopy["opEnemies"] != "oops") && optionsCopy.ContainsKey("oopsAllThis"))
                     errors.Add($"{kValidationInfoPrefix} Selecting a different 'Oops! All owls' enemy is useless if you don't have 'Oops! All owls' enabled.");
 
-                // If 'Enemy stat growth' is set to 'None (vanilla), setting a difficulty doesn't make sense
+                // If 'Enemy stat growth' is set to 'None (vanilla)', setting a difficulty doesn't make sense
                 if (optionsCopy.ContainsKey("opStatGrowth") && optionsCopy["opStatGrowth"] == "vanilla" && optionsCopy.ContainsKey("opDifficulty"))
                     errors.Add($"{kValidationInfoPrefix} Selecting a different difficulty is useless if you have vanilla enemy stat growth enabled.");
+
+                // If 'Enemy stat growth' is not set to 'No Future', setting a "No Future" level doesn't make sense
+                if ((!optionsCopy.ContainsKey("opStatGrowth") || optionsCopy["opStatGrowth"] != "nofuture") && optionsCopy.ContainsKey("opNoFutureLevel"))
+                    errors.Add($"{kValidationInfoPrefix} Selecting a \"No Future\" level is useless if you don't have \"No Future\" enemy stat growth");
 
                 // Use sensible mana seed settings
                 if ((!optionsCopy.ContainsKey("opGoal") || optionsCopy["opGoal"] != "mtr") && (

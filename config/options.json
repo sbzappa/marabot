@@ -1,7 +1,12 @@
 {
+  "$type":"System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[MaraBot.Core.Option, MaraBot]], mscorlib",
+
+
+
   "mode": {
-    "name": "Game Mode",
-    "mode": "Mode",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Game Mode",
+    "mode"  : "Mode",
     "values": {
       "rando"      : "Rando"       ,
       "open"       : "Open World"  ,
@@ -14,358 +19,408 @@
 
 
   "funSpeedup": {
-    "name": "Speedup improvements",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Speedup improvements",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "mpAtLevel": {
-    "name": "MP Restore at level up",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "MP Restore at level up",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "speciesDamage": {
-    "name": "Enemy species damage",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Enemy species damage",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "elemDamage": {
-    "name": "Elemental melee damage",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Elemental melee damage",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "offscreenTarget": {
-    "name": "Extended targeting",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Extended targeting",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "moreItems": {
-    "name": "7 items max",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "7 items max",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "leavePlayersBehind": {
-    "name": "Allow leaving characters behind",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Allow leaving characters behind",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "fasterMagicLevel": {
-    "name": "Faster magic levels",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Faster magic levels",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "fasterWeaponLevel": {
-    "name": "Faster weapon levels",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Faster weapon levels",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "fasterChests": {
-    "name": "Faster chest opening",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Faster chest opening",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "fasterMessages": {
-    "name": "Faster messages",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Faster messages",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "buyMultiple": {
-    "name": "Buy multiple consumables",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Buy multiple consumables",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "showEvades": {
-    "name": "Show evades",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Show evades",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
-  
+
   "ovrchrgFix": {
-    "name": "Overcharge fix",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Overcharge fix",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "orbFix": {
-    "name": "Orb reward fix",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Orb reward fix",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "bossDeathFix": {
-    "name": "Boss death fix",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Boss death fix",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "whipFix": {
-    "name": "Whip coordinate corruption fix",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Whip coordinate corruption fix",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "noSummonDespawn": {
-    "name": "Summoning Despawn Fix",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Summoning Despawn Fix",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "confusionFix": {
-    "name": "Confusion Fix",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Confusion Fix",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "mode7Fix": {
-    "name": "Mode 7 edges fix",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Mode 7 edges fix",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "mechRiderDeathFix": {
-    "name": "Mech rider death fix",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Mech rider death fix",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
-  
+
   "aggBosses": {
-    "name": "Aggressive bosses",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Aggressive bosses",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
   "aggEnemies": {
-    "name": "Aggressive enemies",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Aggressive enemies",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
   "noBsVampires": {
-    "name": "Hittable Vampires",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Hittable Vampires",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "noGigasSplit": {
-    "name": "Gigases don't split",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Gigases don't split",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "hittableBeaks": {
-    "name": "Beak Shield Disable",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Beak Shield Disable",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
   "noStaminaRun": {
-    "name": "No stamina cost to run",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "No stamina cost to run",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
   "adjustEnemyPos": {
-    "name": "Enemy position adjustment",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Enemy position adjustment",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "obscureDamage": {
-    "name": "Obscure damage",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Obscure damage",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
   "obscureHp": {
-    "name": "Obscure own HP",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Obscure own HP",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
   "obscureGold": {
-    "name": "Obscure own gold",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Obscure own gold",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
   "attacksForever": {
-    "name": "Attacks don't cost stamina",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Attacks don't cost stamina",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
-  
+
   "longStatus": {
-    "name": "Status length increase",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Status length increase",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "magicRebalance": {
-    "name": "Magic rebalance",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Magic rebalance",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "accuratePercent": {
-    "name": "Accurate damage percentages",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Accurate damage percentages",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
   "manaMagicFix": {
-    "name": "Mana Magic change",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Mana Magic change",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "percentPoison": {
-    "name": "Percentage Damage Poison",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Percentage Damage Poison",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
   "defRefactor": {
-    "name": "Defense Refactor",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Defense Refactor",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
   "starterGear": {
-    "name": "Starter gear",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Starter gear",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
   "bossFixedZ": {
-    "name": "Bosses at Fixed Z Position",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Bosses at Fixed Z Position",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
-  
+
   "statusGlow": {
-    "name": "Status glow",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Status glow",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "seReduction": {
-    "name": "Sound effects reduction",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Sound effects reduction",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "rainbowRabites": {
-    "name": "Random Rabite colors",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Random Rabite colors",
+    "mode"  : "General",
     "values": {
       "no": "No"
     }
   },
   "fastTransition": {
-    "name": "Fast transitions",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Fast transitions",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
   "muteMusic": {
-    "name": "Mute all music",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Mute all music",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
   "characterColors": {
-    "name": "Character colors",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Character colors",
+    "mode"  : "General",
     "values": {
       "none"  : "No change",
       "custom": "Custom (Specify...)"
     }
   },
-  
+
   "bossElementRando": {
-    "name": "Randomize Boss Elements",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Randomize Boss Elements",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
-  
+
   "ohko": {
-    "name": "One-hit KO",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "One-hit KO",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
   "noclip": {
-    "name": "Walk through walls",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Walk through walls",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
   },
   "deathByPoison": {
-    "name": "Poisoned players",
-    "mode": "General",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Poisoned players",
+    "mode"  : "General",
     "values": {
       "yes": "Yes"
     }
@@ -374,71 +429,81 @@
 
 
   "rBosses": {
-    "name": "Randomize bosses",
-    "mode": "Rando",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Randomize bosses",
+    "mode"  : "Rando",
     "values": {
       "no": "No"
     }
   },
   "rEnemies": {
-    "name": "Randomize non-boss enemies",
-    "mode": "Rando",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Randomize non-boss enemies",
+    "mode"  : "Rando",
     "values": {
       "no": "No"
     }
   },
   "rOrbs": {
-    "name": "Randomize weapon orbs",
-    "mode": "Rando",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Randomize weapon orbs",
+    "mode"  : "Rando",
     "values": {
       "no": "No"
     }
   },
   "rElements": {
-    "name": "Randomize elements",
-    "mode": "Rando",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Randomize elements",
+    "mode"  : "Rando",
     "values": {
       "no": "No"
     }
   },
   "rWeapons": {
-    "name": "Randomize weapons",
-    "mode": "Rando",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Randomize weapons",
+    "mode"  : "Rando",
     "values": {
       "no": "No"
     }
   },
   "rMusic": {
-    "name": "Randomize music",
-    "mode": "Rando",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Randomize music",
+    "mode"  : "Rando",
     "values": {
       "no": "No"
     }
   },
   "rDialogue": {
-    "name": "Shorter dialogue",
-    "mode": "Rando",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Shorter dialogue",
+    "mode"  : "Rando",
     "values": {
       "no": "No"
     }
   },
   "rAutosave": {
-    "name": "Autosave",
-    "mode": "Rando",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Autosave",
+    "mode"  : "Rando",
     "values": {
       "no": "No"
     }
   },
   "rPreserve": {
-    "name": "Preserve early bosses",
-    "mode": "Rando",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Preserve early bosses",
+    "mode"  : "Rando",
     "values": {
       "yes": "Yes"
     }
   },
   "rExp": {
-    "name": "Experience",
-    "mode": "Rando",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Experience",
+    "mode"  : "Rando",
     "values": {
       "half"  : "Half",
       "normal": "Normal",
@@ -446,8 +511,9 @@
     }
   },
   "rGold": {
-    "name": "Gold",
-    "mode": "Rando",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Gold",
+    "mode"  : "Rando",
     "values": {
       "half"  : "Half",
       "normal": "Normal",
@@ -455,8 +521,9 @@
     }
   },
   "rStatusAilments": {
-    "name": "Status ailments",
-    "mode": "Rando",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Status ailments",
+    "mode"  : "Rando",
     "values": {
       "type"    : "Enemy type",
       "easy"    : "Random (easy)",
@@ -465,16 +532,18 @@
     }
   },
   "rHoliday": {
-    "name": "Special mode",
-    "mode": "Rando",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Special mode",
+    "mode"  : "Rando",
     "values": {
       "halloween": "Halloween",
       "xmas"     : "Christmas"
     }
   },
   "rDifficulty": {
-    "name": "Enemy difficulty",
-    "mode": "Rando",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Enemy difficulty",
+    "mode"  : "Rando",
     "values": {
       "20" : "Easiest [20%]",
       "40" : "Easier [40%]",
@@ -490,36 +559,41 @@
 
 
   "opWeapons": {
-    "name": "Randomize weapons",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Randomize weapons",
+    "mode"  : "Open",
     "values": {
       "no": "No"
     }
   },
   "opMusic": {
-    "name": "Randomize music",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Randomize music",
+    "mode"  : "Open",
     "values": {
       "no": "No"
     }
   },
   "opShop": {
-    "name": "Randomize shops",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Randomize shops",
+    "mode"  : "Open",
     "values": {
       "no": "No"
     }
   },
   "opMapColors": {
-    "name": "Randomize map colors",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Randomize map colors",
+    "mode"  : "Open",
     "values": {
       "yes": "Yes"
     }
   },
   "opStartChar": {
-    "name": "Start char",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Start char",
+    "mode"  : "Open",
     "values": {
       "random": "Random",
       "girl"  : "Girl",
@@ -527,16 +601,18 @@
     }
   },
   "opBosses": {
-    "name": "Bosses",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Bosses",
+    "mode"  : "Open",
     "values": {
       "vanilla": "Vanilla",
       "swap"   : "Swap"
     }
   },
   "opEnemies": {
-    "name": "Enemies",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Enemies",
+    "mode"  : "Open",
     "values": {
       "vanilla": "Vanilla",
       "random" : "Random spawns",
@@ -545,8 +621,9 @@
     }
   },
   "opGoal": {
-    "name": "Goal",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Goal",
+    "mode"  : "Open",
     "values": {
       "vlong": "Vanilla long",
       "mtr": "Mana tree revival",
@@ -555,15 +632,17 @@
     }
   },
   "opLogic": {
-    "name": "Logic",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Logic",
+    "mode"  : "Open",
     "values": {
       "restrictive": "Restrictive"
     }
   },
   "opStatGrowth": {
-    "name": "Enemy stat growth",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Enemy stat growth",
+    "mode"  : "Open",
     "values": {
       "boss"  : "Increase after bosses",
       "timed"  : "Timed",
@@ -571,8 +650,9 @@
     }
   },
   "opDifficulty": {
-    "name": "Difficulty",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Difficulty",
+    "mode"  : "Open",
     "values": {
       "easy"      : "Easy",
       "sortaeasy" : "Sorta easy",
@@ -582,8 +662,9 @@
     }
   },
   "opCharacters": {
-    "name": "Other chars",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Other chars",
+    "mode"  : "Open",
     "values": {
       "startboth"  : "Start with both",
       "findbothCL" : "Find both at current level",
@@ -594,27 +675,10 @@
       "none"       : "They don't exist"
     }
   },
-  "opExp": {
-    "name": "Experience",
-    "mode": "Open",
-    "values": {
-      "half"  : "Half",
-      "normal": "Normal",
-      "triple": "Triple"
-    }
-  },
-  "opGold": {
-    "name": "Gold",
-    "mode": "Open",
-    "values": {
-      "half"  : "Half",
-      "normal": "Normal",
-      "triple": "Triple"
-    }
-  },
   "opStatusAilments": {
-    "name": "Status ailments",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Status ailments",
+    "mode"  : "Open",
     "values": {
       "type"    : "Enemy type",
       "easy"    : "Random (easy)",
@@ -622,33 +686,37 @@
       "awful"   : "Random (awful)"
     }
   },
-  
+
   "opComplexity": {
-    "name": "Complexity",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Complexity",
+    "mode"  : "Open",
     "values": {
       "easy": "Easy",
       "hard": "Hard"
     }
   },
   "opManaBeastScale": {
-    "name": "Mana Beast Stats",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Mana Beast Stats",
+    "mode"  : "Open",
     "values": {
       "vanilla": "Vanilla"
     }
   },
   "opTraps": {
-    "name": "Chest traps",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Chest traps",
+    "mode"  : "Open",
     "values": {
       "none": "None",
       "many": "Many"
     }
   },
   "opChestFreq": {
-    "name": "Chest drop frequency",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Chest drop frequency",
+    "mode"  : "Open",
     "values": {
       "none"   : "None",
       "low"    : "Low",
@@ -657,44 +725,50 @@
     }
   },
   "opXmasItems": {
-    "name": "Random drops",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Random drops",
+    "mode"  : "Open",
     "values": {
       "yes": "Yes"
     }
   },
   "opMinLevel": {
-    "name": "Minimum enemy level",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Minimum enemy level",
+    "mode"  : "Open",
     "values": {
       "yes": "Yes"
     }
   },
   "opMaxLevel": {
-    "name": "Maximum enemy level",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Maximum enemy level",
+    "mode"  : "Open",
     "values": {
       "yes": "Yes"
     }
   },
   "opDisableHints": {
-    "name": "Disable hints",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Disable hints",
+    "mode"  : "Open",
     "values": {
       "yes": "Yes"
     }
   },
   "opPlatinumMode": {
-    "name": "Black out map data",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Black out map data",
+    "mode"  : "Open",
     "values": {
       "yes": "Yes"
     }
   },
-  
+
   "opBoyRole": {
-    "name": "Boy character role",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Boy character role",
+    "mode"  : "Open",
     "values": {
       "random"        : "Random",
       "randomunique"  : "Random (unique)",
@@ -704,8 +778,9 @@
     }
   },
   "opGirlRole": {
-    "name": "Girl character role",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Girl character role",
+    "mode"  : "Open",
     "values": {
       "random"        : "Random",
       "randomunique"  : "Random (unique)",
@@ -715,8 +790,9 @@
     }
   },
   "opSpriteRole": {
-    "name": "Sprite character role",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Sprite character role",
+    "mode"  : "Open",
     "values": {
       "random"        : "Random",
       "randomunique"  : "Random (unique)",
@@ -725,10 +801,11 @@
       "ogsprite"      : "Sprite"
     }
   },
-  
+
   "opNumSeeds": {
-    "name": "Mana Tree Revival seeds required",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Mana Tree Revival seeds required",
+    "mode"  : "Open",
     "values": {
       "random": "Random",
       "1"     : "1",
@@ -741,8 +818,9 @@
     }
   },
   "opMinSeeds": {
-    "name": "Minimum Mana Tree Revival seeds required",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Minimum Mana Tree Revival seeds required",
+    "mode"  : "Open",
     "values": {
       "2": "2",
       "3": "3",
@@ -754,8 +832,9 @@
     }
   },
   "opMaxSeeds": {
-    "name": "Maximum Mana Tree Revival seeds required",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Maximum Mana Tree Revival seeds required",
+    "mode"  : "Open",
     "values": {
       "1": "1",
       "2": "2",
@@ -766,31 +845,35 @@
       "7": "7"
     }
   },
-  
+
   "opShowLevels": {
-    "name": "Show enemy level",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Show enemy level",
+    "mode"  : "Open",
     "values": {
       "no": "No"
     }
   },
   "opAutosave": {
-    "name": "Autosave",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Autosave",
+    "mode"  : "Open",
     "values": {
       "no": "No"
     }
   },
   "opMagicRopeRefactor": {
-    "name": "Magic Rope Refactor",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Magic Rope Refactor",
+    "mode"  : "Open",
     "values": {
       "no": "No"
     }
   },
   "oopsAllThis": {
-    "name": "But why owls?",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "But why owls?",
+    "mode"  : "Open",
     "values": {
       "random": "Random",
       "0"     : "0 - Rabite",
@@ -879,9 +962,18 @@
       "83"    : "83 - Master Ninja"
     }
   },
+  "opNoFutureLevel": {
+    "$type"    : "MaraBot.Core.NumericOption, MaraBot",
+    "name"     : "\"No Future\" level",
+    "mode"     : "Open",
+    "precision": 0,
+    "min"      : 1,
+    "max"      : 99
+  },
   "opStartWeapon": {
-    "name": "Force starting weapon",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Force starting weapon",
+    "mode"  : "Open",
     "values": {
       "0": "0 - Glove",
       "1": "1 - Sword",
@@ -894,67 +986,125 @@
     }
   },
   "opChestsDontRun": {
-    "name": "Chests don't run away",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Chests don't run away",
+    "mode"  : "Open",
     "values": {
       "no": "No"
     }
   },
   "opAiRando": {
-    "name": "Enemy AI mode",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Enemy AI mode",
+    "mode"  : "Open",
     "values": {
       "swap": "Swap"
     }
   },
   "opPauseInMenu": {
-    "name": "Pause timer in menu",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Pause timer in menu",
+    "mode"  : "Open",
     "values": {
       "no": "No"
     }
   },
   "opXmasMaps": {
-    "name": "Christmas theme",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Christmas theme",
+    "mode"  : "Open",
     "values": {
       "yes": "Yes"
     }
   },
   "opGPEleRando": {
-    "name": "Randomize Grand Palace elements",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Randomize Grand Palace elements",
+    "mode"  : "Open",
     "values": {
       "no": "No"
     }
   },
   "opAllowLockedItems": {
-    "name": "Allow locked items",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Allow locked items",
+    "mode"  : "Open",
     "values": {
       "yes": "Yes"
     }
   },
   "opSpoilerLog": {
-    "name": "Spoiler log",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Spoiler log",
+    "mode"  : "Open",
     "values": {
       "no": "No"
     }
   },
   "opAllWeaponOrbs": {
-    "name": "Start with all weapon orbs",
-    "mode": "Open",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Start with all weapon orbs",
+    "mode"  : "Open",
     "values": {
       "yes": "Yes"
     }
+  },
+  "opFastWhipPosts": {
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Fast whip posts",
+    "mode"  : "Open",
+    "values": {
+      "no": "No"
+    }
+  },
+
+  "opExp": {
+    "$type"    : "MaraBot.Core.NumericOption, MaraBot",
+    "name"     : "Experience multiplier",
+    "mode"     : "Open",
+    "precision": 1,
+    "min"      : 0.0,
+    "max"      : 1000.0
+  },
+  "opGold": {
+    "$type"    : "MaraBot.Core.NumericOption, MaraBot",
+    "name"     : "Gold multiplier",
+    "mode"     : "Open",
+    "precision": 1,
+    "min"      : 0.0,
+    "max"      : 1000.0
+  },
+  "opGoldCheckMul": {
+    "$type"    : "MaraBot.Core.NumericOption, MaraBot",
+    "name"     : "Gold check multiplier",
+    "mode"     : "Open",
+    "precision": 1,
+    "min"      : 0.0,
+    "max"      : 50.0
+  },
+  "opGoldDropMul": {
+    "$type"    : "MaraBot.Core.NumericOption, MaraBot",
+    "name"     : "Gold drop multiplier",
+    "mode"     : "Open",
+    "precision": 0,
+    "min"      : 0,
+    "max"      : 255
+  },
+  "opStartGold": {
+    "$type"    : "MaraBot.Core.NumericOption, MaraBot",
+    "name"     : "Starting gold",
+    "mode"     : "Open",
+    "precision": 0,
+    "min"      : 0,
+    "max"      : 65535
   },
 
 
 
   "acDifficulty": {
-    "name": "Difficulty",
-    "mode": "AncientCave",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Difficulty",
+    "mode"  : "AncientCave",
     "values": {
       "hard"      : "Hard",
       "reallyhard": "Really hard",
@@ -962,67 +1112,76 @@
     }
   },
   "acDialogue": {
-    "name": "NPC Dialogue",
-    "mode": "AncientCave",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "NPC Dialogue",
+    "mode"  : "AncientCave",
     "values": {
       "demetri": "Demetri Martin"
     }
   },
   "acFilter": {
-    "name": "Dialogue language filter",
-    "mode": "AncientCave",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Dialogue language filter",
+    "mode"  : "AncientCave",
     "values": {
       "yes": "Yes"
     }
   },
   "acMusic": {
-    "name": "Random music",
-    "mode": "AncientCave",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Random music",
+    "mode"  : "AncientCave",
     "values": {
       "no": "No"
     }
   },
   "acBoy": {
-    "name": "Boy",
-    "mode": "AncientCave",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Boy",
+    "mode"  : "AncientCave",
     "values": {
       "no": "No"
     }
   },
   "acGirl": {
-    "name": "Girl",
-    "mode": "AncientCave",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Girl",
+    "mode"  : "AncientCave",
     "values": {
       "no": "No"
     }
   },
   "acSprite": {
-    "name": "Sprite",
-    "mode": "AncientCave",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Sprite",
+    "mode"  : "AncientCave",
     "values": {
       "no": "No"
     }
   },
   "acLength": {
-    "name": "Length",
-    "mode": "AncientCave",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Length",
+    "mode"  : "AncientCave",
     "values": {
       "short": "Short (8 Floors)",
       "long" : "Long (24 Floors)"
     }
   },
   "acBosses": {
-    "name": "Bosses",
-    "mode": "AncientCave",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Bosses",
+    "mode"  : "AncientCave",
     "values": {
       "every": "Every floor",
       "final": "Final only"
     }
   },
   "acBiomeTypes": {
-    "name": "Floor Types",
-    "mode": "AncientCave",
-    "type": "List",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Floor Types",
+    "mode"  : "AncientCave",
+    "list"  : true,
     "values": {
       "forest"          : "Forest",
       "island"          : "Island",
@@ -1035,8 +1194,9 @@
 
 
   "brDifficulty": {
-    "name": "Difficulty",
-    "mode": "BossRush",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Difficulty",
+    "mode"  : "BossRush",
     "values": {
       "hard"      : "Hard",
       "reallyhard": "Really hard",
@@ -1044,29 +1204,33 @@
     }
   },
   "brBoy": {
-    "name": "Boy",
-    "mode": "BossRush",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Boy",
+    "mode"  : "BossRush",
     "values": {
       "no": "No"
     }
   },
   "brGirl": {
-    "name": "Girl",
-    "mode": "BossRush",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Girl",
+    "mode"  : "BossRush",
     "values": {
       "no": "No"
     }
   },
   "brSprite": {
-    "name": "Sprite",
-    "mode": "BossRush",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Sprite",
+    "mode"  : "BossRush",
     "values": {
       "no": "No"
     }
   },
   "brLimitMpAbsorb": {
-    "name": "Limit MP Absorb",
-    "mode": "BossRush",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Limit MP Absorb",
+    "mode"  : "BossRush",
     "values": {
       "no": "No"
     }
@@ -1075,8 +1239,9 @@
 
 
   "chDifficulty": {
-    "name": "Difficulty",
-    "mode": "Chaos",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Difficulty",
+    "mode"  : "Chaos",
     "values": {
       "hard"      : "Hard",
       "reallyhard": "Really hard",
@@ -1084,29 +1249,33 @@
     }
   },
   "chBoy": {
-    "name": "Boy",
-    "mode": "Chaos",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Boy",
+    "mode"  : "Chaos",
     "values": {
       "no": "No"
     }
   },
   "chGirl": {
-    "name": "Girl",
-    "mode": "Chaos",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Girl",
+    "mode"  : "Chaos",
     "values": {
       "no": "No"
     }
   },
   "chSprite": {
-    "name": "Sprite",
-    "mode": "Chaos",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Sprite",
+    "mode"  : "Chaos",
     "values": {
       "no": "No"
     }
   },
   "chFloors": {
-    "name": "Length",
-    "mode": "Chaos",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Length",
+    "mode"  : "Chaos",
     "values": {
       "vfew" : "Very few",
       "few"  : "Few",
@@ -1115,8 +1284,9 @@
     }
   },
   "chBosses": {
-    "name": "Bosses",
-    "mode": "Chaos",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Bosses",
+    "mode"  : "Chaos",
     "values": {
       "vfew" : "Very few",
       "few"  : "Few",
@@ -1125,23 +1295,26 @@
     }
   },
   "chMapColors": {
-    "name": "Color randomization",
-    "mode": "Chaos",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Color randomization",
+    "mode"  : "Chaos",
     "values": {
       "none"      : "None",
       "ridiculous": "Ridiculous"
     }
   },
   "chHealSpellsFirst": {
-    "name": "Prioritize heal spells",
-    "mode": "Chaos",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Prioritize heal spells",
+    "mode"  : "Chaos",
     "values": {
       "no": "No"
     }
   },
   "chEasyEarlyFloors": {
-    "name": "Safer early floors",
-    "mode": "Chaos",
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Safer early floors",
+    "mode"  : "Chaos",
     "values": {
       "no": "No"
     }

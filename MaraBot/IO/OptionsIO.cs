@@ -41,7 +41,15 @@ namespace MaraBot.IO
             using (StreamReader r = new StreamReader(optionsPath))
             {
                 var json = await r.ReadToEndAsync();
-                return JsonConvert.DeserializeObject<Dictionary<string, Option>>(json);
+                return JsonConvert.DeserializeObject<Dictionary<string, Option>>
+                (
+                    json,
+                    new JsonSerializerSettings
+                    {
+                        TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
+                        TypeNameHandling = TypeNameHandling.All,
+                    }
+                );
             }
         }
     }
