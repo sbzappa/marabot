@@ -382,6 +382,14 @@
       "yes": "Yes"
     }
   },
+  "nameEntryFix": {
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Name entry changes",
+    "mode"  : "General",
+    "values": {
+      "no": "No"
+    }
+  },
   "characterColors": {
     "$type" : "MaraBot.Core.EnumOption, MaraBot",
     "name"  : "Character colors",
@@ -423,6 +431,22 @@
     "mode"  : "General",
     "values": {
       "yes": "Yes"
+    }
+  },
+  "enemyInfiniteMp": {
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Infinite enemy MP",
+    "mode"  : "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
+  "trashWeapons": {
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Trash weapons",
+    "mode"  : "General",
+    "values": {
+      "no": "No"
     }
   },
 
