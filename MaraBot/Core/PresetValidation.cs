@@ -150,6 +150,10 @@ namespace MaraBot.Core
                 // If 'Enemy stat growth' is not set to 'No Future', setting a "No Future" level doesn't make sense
                 if ((!optionsCopy.ContainsKey("opStatGrowth") || optionsCopy["opStatGrowth"] != "nofuture") && optionsCopy.ContainsKey("opNoFutureLevel"))
                     errors.Add($"{kValidationInfoPrefix} Selecting a \"No Future\" level is useless if you don't have \"No Future\" enemy stat growth");
+                
+                // If 'Goal' is not set to 'Gift exchange', the 'Xmas gifts' option doesn't make sense
+                if ((!optionsCopy.ContainsKey("opGoal") || optionsCopy["opGoal"] != "gift") && optionsCopy.ContainsKey("opXmasGifts"))
+                    errors.Add($"{kValidationInfoPrefix} Selecting the amount of gifts needed is useless if you don't have the 'Gift exchange' goal enabled.");
 
                 // Use sensible mana seed settings
                 if ((!optionsCopy.ContainsKey("opGoal") || optionsCopy["opGoal"] != "mtr") && (
