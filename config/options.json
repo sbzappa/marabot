@@ -122,6 +122,14 @@
       "no": "No"
     }
   },
+  "showMinimap": {
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Show minimap",
+    "mode"  : "General",
+    "values": {
+      "no": "No"
+    }
+  },
 
   "ovrchrgFix": {
     "$type" : "MaraBot.Core.EnumOption, MaraBot",
@@ -185,6 +193,15 @@
     "mode"  : "General",
     "values": {
       "no": "No"
+    }
+  },
+  "dmgCancelAllow": {
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Damage cancel",
+    "mode"  : "General",
+    "values": {
+      "consumables": "Consumables",
+      "none"       : "None"
     }
   },
 
@@ -1121,6 +1138,14 @@
     "precision": 0,
     "min"      : 0,
     "max"      : 65535
+  },
+  "opXmasGifts": {
+    "$type"    : "MaraBot.Core.NumericOption, MaraBot",
+    "name"     : "Xmas gifts",
+    "mode"     : "Open",
+    "precision": 0,
+    "min"      : 4,
+    "max"      : 8
   },
 
 
