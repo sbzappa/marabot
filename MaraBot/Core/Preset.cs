@@ -41,6 +41,11 @@ namespace MaraBot.Core
         public readonly int Weight;
 
         /// <summary>
+        /// Open Mode Goal if applicable.
+        /// </summary>
+        [JsonIgnore]
+        public string OpenModeGoal => m_OpenModeGoal;
+        /// <summary>
         /// List of prettified general options contained in Options.
         /// </summary>
         [JsonIgnore]
@@ -56,6 +61,7 @@ namespace MaraBot.Core
         [JsonIgnore]
         public IReadOnlyDictionary<string, string> OtherOptions => m_OtherOptions;
 
+        [JsonIgnore] private string m_OpenModeGoal;
         [JsonIgnore] private Dictionary<string, string> m_GeneralOptions;
         [JsonIgnore] private Dictionary<string, string> m_ModeOptions;
         [JsonIgnore] private Dictionary<string, string> m_OtherOptions;
@@ -75,6 +81,7 @@ namespace MaraBot.Core
             Author = author;
             Options = new Dictionary<string, string>(options);
             Weight = 1;
+            m_OpenModeGoal = String.Empty;
             m_GeneralOptions = m_ModeOptions = m_OtherOptions = null;
         }
 
@@ -90,6 +97,7 @@ namespace MaraBot.Core
             Options = new Dictionary<string, string>(preset.Options);
             Weight = preset.Weight;
 
+            m_OpenModeGoal = String.Empty;
             m_GeneralOptions = new Dictionary<string, string>(preset.GeneralOptions);
             m_ModeOptions = new Dictionary<string, string>(preset.ModeOptions);
             m_OtherOptions = new Dictionary<string, string>(preset.OtherOptions);
@@ -101,36 +109,48 @@ namespace MaraBot.Core
         /// </summary>
         public void MakeDisplayable(IReadOnlyDictionary<string, Option> options)
         {
-            var list = new List<Tuple<Mode, string, string>>();
+            var list = new List<Tuple<Category, string, string>>();
 
-            foreach(var pair in Options)
+            foreach (var pair in Options)
             {
-                if(options.ContainsKey(pair.Key)) // Found key
+                // These options are shown separately.
+                if (pair.Key == "mode" || pair.Key == "opGoal")
+                    continue;
+
+                if (options.ContainsKey(pair.Key)) // Found key
                 {
                     var o = options[pair.Key];
-                    list.Add(new Tuple<Mode, string, string>(o.Mode, o.Name, o.ParseValue(pair.Value)));
+                    list.Add(new Tuple<Category, string, string>(o.Category, o.Name, o.ParseValue(pair.Value)));
                 }
                 else // No key found, use raw values
                 {
                     // Skip version...
                     if (pair.Key == "version")
                         continue;
-                    list.Add(new Tuple<Mode, string, string>(Mode.Other, pair.Key, pair.Value));
+                    list.Add(new Tuple<Category, string, string>(Category.Other, pair.Key, pair.Value));
                 }
             }
 
-            Mode mode = Options.ContainsKey("mode") ? Option.OptionValueToMode(Options["mode"]) : Mode.Rando;
+            Category gameMode = Options.ContainsKey("mode") ? Option.OptionValueToCategory(Options["mode"]) : Category.Rando;
+
+            // Consider open mode goal separately.
+            if (gameMode == Category.Open)
+            {
+                if (!Options.TryGetValue("opGoal", out var goalValue))
+                    goalValue = "vlong";
+
+                m_OpenModeGoal = options["opGoal"].ParseValue(goalValue);
+            }
+
             m_GeneralOptions = new Dictionary<string, string>();
             m_ModeOptions    = new Dictionary<string, string>();
             m_OtherOptions   = new Dictionary<string, string>();
 
             foreach(var option in list)
             {
-                if(option.Item1 == Mode.Mode)
-                    continue;
-                if(option.Item1 == mode)
+                if (option.Item1 == gameMode)
                     m_ModeOptions.Add(option.Item2, option.Item3);
-                else if(option.Item1 == Mode.General)
+                else if(option.Item1 == Category.General)
                     m_GeneralOptions.Add(option.Item2, option.Item3);
                 else
                     m_OtherOptions.Add(option.Item2, option.Item3);

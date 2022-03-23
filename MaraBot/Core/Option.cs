@@ -8,7 +8,7 @@ namespace MaraBot.Core
     /// <summary>
     /// Randomizer modes the options are categorized by.
     /// </summary>
-    public enum Mode
+    public enum Category
     {
         Mode,
         General,
@@ -33,7 +33,7 @@ namespace MaraBot.Core
         /// <summary>
         /// Mode it belongs in.
         /// </summary>
-        public readonly Mode Mode;
+        public readonly Category Category;
 
         /// <summary>
         /// Does this option accept a comma separated list of values?
@@ -44,10 +44,10 @@ namespace MaraBot.Core
         /// <summary>
         /// Create an Option with specified properties.
         /// </summary>
-        public Option(string name, Mode mode, bool list = false)
+        public Option(string name, Category category, bool list = false)
         {
             Name = name;
-            Mode = mode;
+            Category = category;
             List = list;
         }
 
@@ -60,17 +60,17 @@ namespace MaraBot.Core
         /// <summary>
         /// Translate a mode to a human-readable string.
         /// </summary>
-        public static string ModeToPrettyString(Mode mode)
+        public static string CategoryToPrettyString(Category category)
         {
-            switch(mode)
+            switch(category)
             {
-                case Mode.Mode       : return "Game Mode"   ;
-                case Mode.General    : return "General"     ;
-                case Mode.Rando      : return "Rando"       ;
-                case Mode.Open       : return "Open World"  ;
-                case Mode.AncientCave: return "Ancient Cave";
-                case Mode.BossRush   : return "Boss Rush"   ;
-                case Mode.Chaos      : return "Chaos"       ;
+                case Category.Mode       : return "Game Mode"   ;
+                case Category.General    : return "General"     ;
+                case Category.Rando      : return "Rando"       ;
+                case Category.Open       : return "Open World"  ;
+                case Category.AncientCave: return "Ancient Cave";
+                case Category.BossRush   : return "Boss Rush"   ;
+                case Category.Chaos      : return "Chaos"       ;
                 default              : return "Other"       ;
             }
         }
@@ -78,16 +78,16 @@ namespace MaraBot.Core
         /// <summary>
         /// Translate a 'mode' value to the correct Mode enum.
         /// </summary>
-        public static Mode OptionValueToMode(string modeString)
+        public static Category OptionValueToCategory(string modeString)
         {
             switch(modeString)
             {
-                case "rando"      : return Mode.Rando      ;
-                case "open"       : return Mode.Open       ;
-                case "ancientcave": return Mode.AncientCave;
-                case "bossrush"   : return Mode.BossRush   ;
-                case "chaos"      : return Mode.Chaos      ;
-                default           : return Mode.Other      ;
+                case "rando"      : return Category.Rando      ;
+                case "open"       : return Category.Open       ;
+                case "ancientcave": return Category.AncientCave;
+                case "bossrush"   : return Category.BossRush   ;
+                case "chaos"      : return Category.Chaos      ;
+                default           : return Category.Other      ;
             }
         }
 
@@ -131,8 +131,8 @@ namespace MaraBot.Core
         /// <summary>
         /// Create an EnumOption with specified properties.
         /// </summary>
-        public EnumOption(string name, Mode mode, IDictionary<string, string> values, bool list = false)
-            : base(name, mode, list)
+        public EnumOption(string name, Category category, IDictionary<string, string> values, bool list = false)
+            : base(name, category, list)
         {
             Values = values;
         }
@@ -176,8 +176,8 @@ namespace MaraBot.Core
         /// <summary>
         /// Create a NumericOption with specified properties.
         /// </summary>
-        public NumericOption(string name, Mode mode, int precision, double min, double max, bool list = false)
-            : base(name, mode, list)
+        public NumericOption(string name, Category category, int precision, double min, double max, bool list = false)
+            : base(name, category, list)
         {
             Precision = precision;
             Min       = min      ;
