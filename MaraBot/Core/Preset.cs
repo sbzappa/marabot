@@ -131,10 +131,10 @@ namespace MaraBot.Core
                 }
             }
 
-            Category gameMode = Options.ContainsKey("mode") ? Option.OptionValueToGameMode(Options["mode"]) : Category.Rando;
+            GameMode gameMode = Options.ContainsKey("mode") ? Option.OptionValueToGameMode(Options["mode"]) : GameMode.Rando;
 
             // Consider open mode goal separately.
-            if (gameMode == Category.Open)
+            if (gameMode == GameMode.Open)
             {
                 if (!Options.TryGetValue("opGoal", out var goalValue))
                     goalValue = "vlong";
@@ -148,7 +148,7 @@ namespace MaraBot.Core
 
             foreach(var option in list)
             {
-                if (option.Item1 == gameMode)
+                if (option.Item1 == (Category)gameMode)
                     m_ModeOptions.Add(option.Item2, option.Item3);
                 else if (option.Item1 == Category.General)
                     m_GeneralOptions.Add(option.Item2, option.Item3);

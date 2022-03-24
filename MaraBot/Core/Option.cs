@@ -6,17 +6,29 @@ using System.ComponentModel;
 namespace MaraBot.Core
 {
     /// <summary>
-    /// Randomizer modes the options are categorized by.
+    /// Randomizer game modes.
     /// </summary>
-    public enum Category
+    public enum GameMode
     {
-        Mode,
-        General,
         Rando,
         Open,
         AncientCave,
         BossRush,
         Chaos,
+    }
+
+    /// <summary>
+    /// Option categories.
+    /// </summary>
+    public enum Category
+    {
+        Rando = GameMode.Rando,
+        Open = GameMode.Open,
+        AncientCave = GameMode.AncientCave,
+        BossRush = GameMode.BossRush,
+        Chaos = GameMode.Chaos,
+        Mode,
+        General,
         Other
     }
 
@@ -46,9 +58,9 @@ namespace MaraBot.Core
         /// </summary>
         public Option(string name, Category category, bool list = false)
         {
-            Name = name;
+            Name     = name;
             Category = category;
-            List = list;
+            List     = list;
         }
 
         /// <summary>
@@ -76,18 +88,24 @@ namespace MaraBot.Core
         }
 
         /// <summary>
-        /// Translate a 'mode' value to the correct Mode enum.
+        /// Translate a game mode to a human-readable string.
         /// </summary>
-        public static Category OptionValueToGameMode(string modeString)
+        public static string GameModeToPrettyString(GameMode gameMode)
+            => CategoryToPrettyString((Category)gameMode);
+
+        /// <summary>
+        /// Translate a 'mode' value to the correct GameMode enum type.
+        /// </summary>
+        public static GameMode OptionValueToGameMode(string modeString)
         {
             switch(modeString)
             {
-                case "rando"      : return Category.Rando      ;
-                case "open"       : return Category.Open       ;
-                case "ancientcave": return Category.AncientCave;
-                case "bossrush"   : return Category.BossRush   ;
-                case "chaos"      : return Category.Chaos      ;
-                default           : return Category.Other      ;
+                case "rando"      : return GameMode.Rando      ;
+                case "open"       : return GameMode.Open       ;
+                case "ancientcave": return GameMode.AncientCave;
+                case "bossrush"   : return GameMode.BossRush   ;
+                case "chaos"      : return GameMode.Chaos      ;
+                default           : return GameMode.Rando      ;
             }
         }
 
