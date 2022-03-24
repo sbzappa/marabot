@@ -31,7 +31,7 @@ namespace MaraBot.Core
         public readonly string Name;
 
         /// <summary>
-        /// Mode it belongs in.
+        /// Randomizer category it belongs in.
         /// </summary>
         public readonly Category Category;
 
@@ -58,7 +58,7 @@ namespace MaraBot.Core
         protected abstract string ParseValueItem(string val);
 
         /// <summary>
-        /// Translate a mode to a human-readable string.
+        /// Translate a category to a human-readable string.
         /// </summary>
         public static string CategoryToPrettyString(Category category)
         {
@@ -71,14 +71,14 @@ namespace MaraBot.Core
                 case Category.AncientCave: return "Ancient Cave";
                 case Category.BossRush   : return "Boss Rush"   ;
                 case Category.Chaos      : return "Chaos"       ;
-                default              : return "Other"       ;
+                default                  : return "Other"       ;
             }
         }
 
         /// <summary>
         /// Translate a 'mode' value to the correct Mode enum.
         /// </summary>
-        public static Category OptionValueToCategory(string modeString)
+        public static Category OptionValueToGameMode(string modeString)
         {
             switch(modeString)
             {

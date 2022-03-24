@@ -56,19 +56,19 @@ namespace MaraBot.Core
             }
 
             /*
-             * Mode
+             * Category
              */
-            Category category = Category.Other;
+            Category gameMode = Category.Other;
 
             // Mode key is required
             if (!optionsCopy.ContainsKey("mode"))
                 errors.Add($"{kValidationErrorPrefix} Options must contain what mode is used (e.g. 'mode=rando').");
             // Mode value must be correct
             else if (!(allOptions["mode"] as EnumOption).Values.ContainsKey(optionsCopy["mode"]))
-                errors.Add($"{kValidationErrorPrefix} '{optionsCopy["mode"]}' is not a known mode.");
+                errors.Add($"{kValidationErrorPrefix} '{optionsCopy["mode"]}' is not a known game mode.");
             // No mode errors, so we can use the mode for mode-specific validation
             else
-                category = Option.OptionValueToCategory(optionsCopy["mode"]);
+                gameMode = Option.OptionValueToGameMode(optionsCopy["mode"]);
 
             /*
              * Other
@@ -137,7 +137,7 @@ namespace MaraBot.Core
             /*
              * Open
              */
-            if (category == Category.Open)
+            if (gameMode == Category.Open)
             {
                 // If 'Oops! All owls' is not selected, the 'But why owls?' option doesn't make sense
                 if ((!optionsCopy.ContainsKey("opEnemies") || optionsCopy["opEnemies"] != "oops") && optionsCopy.ContainsKey("oopsAllThis"))
@@ -200,7 +200,7 @@ namespace MaraBot.Core
             /*
              * Ancient Cave
              */
-            if (category == Category.AncientCave)
+            if (gameMode == Category.AncientCave)
             {
                 if (optionsCopy.ContainsKey("acBoy") && optionsCopy.ContainsKey("acGirl") && optionsCopy.ContainsKey("acSprite"))
                     errors.Add($"{kValidationErrorPrefix} Must have at least one character to start with.");
@@ -211,7 +211,7 @@ namespace MaraBot.Core
             /*
              * Boss Rush
              */
-            if (category == Category.BossRush)
+            if (gameMode == Category.BossRush)
             {
                 if (optionsCopy.ContainsKey("brBoy") && optionsCopy.ContainsKey("brGirl") && optionsCopy.ContainsKey("brSprite"))
                     errors.Add($"{kValidationErrorPrefix} Must have at least one character to start with.");
@@ -220,7 +220,7 @@ namespace MaraBot.Core
             /*
              * Chaos
              */
-            if (category == Category.Chaos)
+            if (gameMode == Category.Chaos)
             {
                 if (optionsCopy.ContainsKey("chBoy") && optionsCopy.ContainsKey("chGirl") && optionsCopy.ContainsKey("chSprite"))
                     errors.Add($"{kValidationErrorPrefix} Must have at least one character to start with.");

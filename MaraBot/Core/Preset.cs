@@ -41,7 +41,7 @@ namespace MaraBot.Core
         public readonly int Weight;
 
         /// <summary>
-        /// Open Mode Goal if applicable.
+        /// Human-readable string describing the Open Mode Goal if applicable.
         /// </summary>
         [JsonIgnore]
         public string OpenModeGoal => m_OpenModeGoal;
@@ -131,7 +131,7 @@ namespace MaraBot.Core
                 }
             }
 
-            Category gameMode = Options.ContainsKey("mode") ? Option.OptionValueToCategory(Options["mode"]) : Category.Rando;
+            Category gameMode = Options.ContainsKey("mode") ? Option.OptionValueToGameMode(Options["mode"]) : Category.Rando;
 
             // Consider open mode goal separately.
             if (gameMode == Category.Open)
@@ -150,7 +150,7 @@ namespace MaraBot.Core
             {
                 if (option.Item1 == gameMode)
                     m_ModeOptions.Add(option.Item2, option.Item3);
-                else if(option.Item1 == Category.General)
+                else if (option.Item1 == Category.General)
                     m_GeneralOptions.Add(option.Item2, option.Item3);
                 else
                     m_OtherOptions.Add(option.Item2, option.Item3);

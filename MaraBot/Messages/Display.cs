@@ -174,7 +174,7 @@ namespace MaraBot.Messages
 
         private static DiscordEmbedBuilder AddOptions(this DiscordEmbedBuilder embed, Preset preset)
         {
-            Category gameMode = preset.Options.ContainsKey("mode") ? Option.OptionValueToCategory(preset.Options["mode"]) : Category.Rando;
+            Category gameMode = preset.Options.ContainsKey("mode") ? Option.OptionValueToGameMode(preset.Options["mode"]) : Category.Rando;
 
             embed.AddField(Option.CategoryToPrettyString(Category.Mode), Option.CategoryToPrettyString(gameMode));
 
