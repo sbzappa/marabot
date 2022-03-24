@@ -174,19 +174,22 @@ namespace MaraBot.Messages
 
         private static DiscordEmbedBuilder AddOptions(this DiscordEmbedBuilder embed, Preset preset)
         {
-            Mode mode = preset.Options.ContainsKey("mode") ? Option.OptionValueToMode(preset.Options["mode"]) : Mode.Rando;
-            string version = preset.Options.ContainsKey("version") ? preset.Options["version"] : "n/a";
+            GameMode gameMode = preset.Options.ContainsKey("mode") ? Option.OptionValueToGameMode(preset.Options["mode"]) : GameMode.Rando;
 
-            embed
-                .AddField(Option.ModeToPrettyString(Mode.Mode), Option.ModeToPrettyString(mode))
-                .AddField("Version", version);
+            embed.AddField(Option.CategoryToPrettyString(Category.Mode), Option.GameModeToPrettyString(gameMode));
+
+            if (gameMode == GameMode.Open && !String.IsNullOrEmpty(preset.OpenModeGoal))
+                embed.AddField("Goal", preset.OpenModeGoal);
+
+            string version = preset.Options.ContainsKey("version") ? preset.Options["version"] : "n/a";
+            embed.AddField("Version", version);
 
             if (preset.GeneralOptions.Count > 0)
-                embed.AddOptionDictionary($"{Option.ModeToPrettyString(Mode.General)} Options", preset.GeneralOptions);
+                embed.AddOptionDictionary($"{Option.CategoryToPrettyString(Category.General)} Options", preset.GeneralOptions);
             if (preset.ModeOptions.Count > 0)
-                embed.AddOptionDictionary($"{Option.ModeToPrettyString(mode)} Options", preset.ModeOptions);
+                embed.AddOptionDictionary($"{Option.GameModeToPrettyString(gameMode)} Options", preset.ModeOptions);
             if (preset.OtherOptions.Count > 0)
-                embed.AddOptionDictionary($"{Option.ModeToPrettyString(Mode.Other)} Options", preset.OtherOptions);
+                embed.AddOptionDictionary($"{Option.CategoryToPrettyString(Category.Other)} Options", preset.OtherOptions);
 
             return embed;
         }

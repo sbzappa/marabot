@@ -6,17 +6,29 @@ using System.ComponentModel;
 namespace MaraBot.Core
 {
     /// <summary>
-    /// Randomizer modes the options are categorized by.
+    /// Randomizer game modes.
     /// </summary>
-    public enum Mode
+    public enum GameMode
     {
-        Mode,
-        General,
         Rando,
         Open,
         AncientCave,
         BossRush,
         Chaos,
+    }
+
+    /// <summary>
+    /// Option categories.
+    /// </summary>
+    public enum Category
+    {
+        Rando = GameMode.Rando,
+        Open = GameMode.Open,
+        AncientCave = GameMode.AncientCave,
+        BossRush = GameMode.BossRush,
+        Chaos = GameMode.Chaos,
+        Mode,
+        General,
         Other
     }
 
@@ -31,9 +43,9 @@ namespace MaraBot.Core
         public readonly string Name;
 
         /// <summary>
-        /// Mode it belongs in.
+        /// Randomizer category it belongs in.
         /// </summary>
-        public readonly Mode Mode;
+        public readonly Category Category;
 
         /// <summary>
         /// Does this option accept a comma separated list of values?
@@ -44,11 +56,11 @@ namespace MaraBot.Core
         /// <summary>
         /// Create an Option with specified properties.
         /// </summary>
-        public Option(string name, Mode mode, bool list = false)
+        public Option(string name, Category category, bool list = false)
         {
-            Name = name;
-            Mode = mode;
-            List = list;
+            Name     = name;
+            Category = category;
+            List     = list;
         }
 
         /// <summary>
@@ -58,36 +70,42 @@ namespace MaraBot.Core
         protected abstract string ParseValueItem(string val);
 
         /// <summary>
-        /// Translate a mode to a human-readable string.
+        /// Translate a category to a human-readable string.
         /// </summary>
-        public static string ModeToPrettyString(Mode mode)
+        public static string CategoryToPrettyString(Category category)
         {
-            switch(mode)
+            switch(category)
             {
-                case Mode.Mode       : return "Game Mode"   ;
-                case Mode.General    : return "General"     ;
-                case Mode.Rando      : return "Rando"       ;
-                case Mode.Open       : return "Open World"  ;
-                case Mode.AncientCave: return "Ancient Cave";
-                case Mode.BossRush   : return "Boss Rush"   ;
-                case Mode.Chaos      : return "Chaos"       ;
-                default              : return "Other"       ;
+                case Category.Mode       : return "Game Mode"   ;
+                case Category.General    : return "General"     ;
+                case Category.Rando      : return "Rando"       ;
+                case Category.Open       : return "Open World"  ;
+                case Category.AncientCave: return "Ancient Cave";
+                case Category.BossRush   : return "Boss Rush"   ;
+                case Category.Chaos      : return "Chaos"       ;
+                default                  : return "Other"       ;
             }
         }
 
         /// <summary>
-        /// Translate a 'mode' value to the correct Mode enum.
+        /// Translate a game mode to a human-readable string.
         /// </summary>
-        public static Mode OptionValueToMode(string modeString)
+        public static string GameModeToPrettyString(GameMode gameMode)
+            => CategoryToPrettyString((Category)gameMode);
+
+        /// <summary>
+        /// Translate a 'mode' value to the correct GameMode enum type.
+        /// </summary>
+        public static GameMode OptionValueToGameMode(string modeString)
         {
             switch(modeString)
             {
-                case "rando"      : return Mode.Rando      ;
-                case "open"       : return Mode.Open       ;
-                case "ancientcave": return Mode.AncientCave;
-                case "bossrush"   : return Mode.BossRush   ;
-                case "chaos"      : return Mode.Chaos      ;
-                default           : return Mode.Other      ;
+                case "rando"      : return GameMode.Rando      ;
+                case "open"       : return GameMode.Open       ;
+                case "ancientcave": return GameMode.AncientCave;
+                case "bossrush"   : return GameMode.BossRush   ;
+                case "chaos"      : return GameMode.Chaos      ;
+                default           : return GameMode.Rando      ;
             }
         }
 
@@ -131,8 +149,8 @@ namespace MaraBot.Core
         /// <summary>
         /// Create an EnumOption with specified properties.
         /// </summary>
-        public EnumOption(string name, Mode mode, IDictionary<string, string> values, bool list = false)
-            : base(name, mode, list)
+        public EnumOption(string name, Category category, IDictionary<string, string> values, bool list = false)
+            : base(name, category, list)
         {
             Values = values;
         }
@@ -176,8 +194,8 @@ namespace MaraBot.Core
         /// <summary>
         /// Create a NumericOption with specified properties.
         /// </summary>
-        public NumericOption(string name, Mode mode, int precision, double min, double max, bool list = false)
-            : base(name, mode, list)
+        public NumericOption(string name, Category category, int precision, double min, double max, bool list = false)
+            : base(name, category, list)
         {
             Precision = precision;
             Min       = min      ;
