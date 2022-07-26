@@ -358,6 +358,22 @@
       "yes": "Yes"
     }
   },
+  "cupAtZeroHp": {
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Cup of Wishes at 0 HP",
+    "category" : "General",
+    "values": {
+      "no": "No"
+    }
+  },
+  "candyHealouts": {
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Candy heal-outs",
+    "category" : "General",
+    "values": {
+      "no": "No"
+    }
+  },
 
   "statusGlow": {
     "$type" : "MaraBot.Core.EnumOption, MaraBot",
@@ -687,6 +703,7 @@
     "values": {
       "boss"  : "Increase after bosses",
       "timed"  : "Timed",
+      "nofuture": "No Future",
       "vanilla": "None (vanilla)"
     }
   },
@@ -1138,6 +1155,14 @@
     "precision": 0,
     "min"      : 0,
     "max"      : 65535
+  },
+  "opStartLevel": {
+    "$type"    : "MaraBot.Core.NumericOption, MaraBot",
+    "name"     : "Starting level",
+    "category"    : "Open",
+    "precision": 0,
+    "min"      : 1,
+    "max"      : 99
   },
   "opXmasGifts": {
     "$type"    : "MaraBot.Core.NumericOption, MaraBot",
