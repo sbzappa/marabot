@@ -491,28 +491,23 @@ namespace MaraBot.Core
 
             using (StreamReader r = new StreamReader(dataStream))
             {
-                // Read file header.
-                await r.ReadLineAsync();
-                var seedLineTask = r.ReadLineAsync();
-                var optionsLineTask = r.ReadLineAsync();
-
-                // Go to end of file.
-                var restOfFileTask = r.ReadToEndAsync();
+                var allFileTask = r.ReadToEndAsync();
 
                 var seedRegex = new Regex("Seed = (?<seed>[A-F0-9]{1,16})");
-                var optionsRegex = new Regex("Options = (?<options>.*)$");
+                var optionsRegex = new Regex("[[]ALL_OPTIONS[]] = <(?<options>[^>\n]*)");
                 var validationHashRegex = new Regex("Hash check value: (?<validationHash>[A-F0-9]{1,8})");
 
-                var seedMatch = seedRegex.Match(await seedLineTask);
-                var optionsMatch = optionsRegex.Match(await optionsLineTask);
+                var allFile = await allFileTask;
 
-                var validationHashMatch = validationHashRegex.Match(await restOfFileTask);
+                var seedMatch = seedRegex.Match(allFile);
+                var optionsMatch = optionsRegex.Match(allFile);
+                var validationHashMatch = validationHashRegex.Match(allFile);
 
                 var seed = seedMatch.Success ? seedMatch.Groups["seed"].Value : string.Empty;
                 var optionsString = optionsMatch.Success ? optionsMatch.Groups["options"].Value : string.Empty;
-                string validationHash = validationHashMatch.Success ? validationHashMatch.Groups["validationHash"].Value : String.Empty;
+                string validationHash = validationHashMatch.Success ? validationHashMatch.Groups["validationHash"].Value : string.Empty;
 
-                Preset preset = CreatePresetFromOptionsString( String.IsNullOrEmpty(author) ? ctx.User.Username : author,  name, description, optionsString);
+                var preset = CreatePresetFromOptionsString( String.IsNullOrEmpty(author) ? ctx.User.Username : author,  name, description, optionsString);
 
                 preset.MakeDisplayable(options);
                 return (preset, seed, validationHash);
