@@ -44,6 +44,12 @@ namespace MaraBot.Commands
             Permissions.AccessChannels)]
         public async Task Execute(CommandContext ctx)
         {
+            // Give a sufficient delay before deleting message
+            await Task.Delay(500);
+
+            // Delete user message to avoid spoilers, if we can delete the message.
+            await ctx.Message.DeleteAsync();
+
             // Add user to leaderboard.
             Weekly.AddToLeaderboard(ctx.User.Username, TimeSpan.MaxValue);
             await WeeklyIO.StoreWeeklyAsync(Weekly);
