@@ -64,8 +64,6 @@ namespace MaraBot.Commands
 
             // Display leaderboard in the spoiler channel.
             await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, Display.LeaderboardEmbed(Weekly, false));
-
-            await CommandUtils.SendSuccessReaction(ctx);
         }
     }
 }
