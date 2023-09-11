@@ -20,7 +20,8 @@ namespace MaraBot.IO
             "../../../config",
             "../../../../config",
             "$HOME/marabot/config",
-            "$HOME/marabot"
+            "$HOME/marabot",
+            "$APP/../../../../config"
         };
 
         /// <summary>
@@ -35,9 +36,12 @@ namespace MaraBot.IO
                  Environment.OSVersion.Platform == PlatformID.MacOSX)
                     ? Environment.GetEnvironmentVariable("HOME")
                     : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+            var appFolder = AppDomain.CurrentDomain.BaseDirectory;
 
             var configPath = k_ConfigFolders
-                .Select(path => path.Replace("$HOME", homeFolder) + "/config.json")
+                .Select(path => path
+                    .Replace("$HOME", homeFolder)
+                    .Replace("$APP", appFolder) + "/config.json")
                 .FirstOrDefault(path => File.Exists(path));
 
             if (String.IsNullOrEmpty(configPath))

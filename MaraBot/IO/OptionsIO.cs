@@ -20,6 +20,9 @@ namespace MaraBot.IO
             "config",
             "../../../config",
             "../../../../config",
+            "$HOME/marabot/config",
+            "$HOME/marabot",
+            "$APP/../../../../config"
         };
 
         /// <summary>
@@ -29,8 +32,17 @@ namespace MaraBot.IO
         /// <exception cref="InvalidOperationException">No options file has been found.</exception>
         public static async Task<Dictionary<string, Option>> LoadOptionsAsync()
         {
+            var homeFolder =
+                (Environment.OSVersion.Platform == PlatformID.Unix ||
+                 Environment.OSVersion.Platform == PlatformID.MacOSX)
+                    ? Environment.GetEnvironmentVariable("HOME")
+                    : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+            var appFolder = AppDomain.CurrentDomain.BaseDirectory;
+
             var optionsPath = k_ConfigFolders
-                .Select(path => $"{path}/options.json")
+                .Select(path => path
+                    .Replace("$HOME", homeFolder)
+                    .Replace("$APP", appFolder) + "/options.json")
                 .FirstOrDefault(path => File.Exists(path));
 
             if (String.IsNullOrEmpty(optionsPath))

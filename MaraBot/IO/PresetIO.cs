@@ -17,10 +17,11 @@ namespace MaraBot.IO
     {
         static readonly string[] k_PresetFolders = new []
         {
-            "$HOME/marabot/presets",
             "presets",
             "../../../presets",
-            "../../../../presets"
+            "../../../../presets",
+            "$HOME/marabot/presets",
+            "$APP/../../../../presets"
         };
 
         /// <summary>
@@ -36,9 +37,12 @@ namespace MaraBot.IO
                  Environment.OSVersion.Platform == PlatformID.MacOSX)
                     ? Environment.GetEnvironmentVariable("HOME")
                     : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+            var appFolder = AppDomain.CurrentDomain.BaseDirectory;
 
             var presetFolder = k_PresetFolders
-                .Select(path => path.Replace("$HOME", homeFolder))
+                .Select(path => path
+                    .Replace("$HOME", homeFolder)
+                    .Replace("$APP", appFolder))
                 .FirstOrDefault(path => Directory.Exists(path));
 
             if (String.IsNullOrEmpty(presetFolder))
