@@ -56,7 +56,6 @@ namespace MaraBot.Commands
 
             // Send message in current channel and in spoiler channel.
             var message = $"{ctx.User.Mention} forfeited the weekly!";
-            await ctx.RespondAsync(message);
             await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, message);
 
             // Grant user their new role.
