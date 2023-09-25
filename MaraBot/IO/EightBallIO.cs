@@ -18,6 +18,9 @@ namespace MaraBot.IO
             "config",
             "../../../config",
             "../../../../config",
+            "$HOME/marabot/config",
+            "$HOME/marabot",
+            "$APP/../../../../config"
         };
 
         /// <summary>
@@ -27,8 +30,17 @@ namespace MaraBot.IO
         /// <exception cref="InvalidOperationException">No config file has been found.</exception>
         public static async Task<string[]> LoadResponsesAsync()
         {
+            var homeFolder =
+                (Environment.OSVersion.Platform == PlatformID.Unix ||
+                 Environment.OSVersion.Platform == PlatformID.MacOSX)
+                    ? Environment.GetEnvironmentVariable("HOME")
+                    : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+            var appFolder = AppDomain.CurrentDomain.BaseDirectory;
+
             var optionsPath = k_ConfigFolders
-                .Select(path => $"{path}/8ball.json")
+                .Select(path => path
+                    .Replace("$HOME", homeFolder)
+                    .Replace("$APP", appFolder) + "/8ball.json")
                 .FirstOrDefault(path => File.Exists(path));
 
             if (String.IsNullOrEmpty(optionsPath))
