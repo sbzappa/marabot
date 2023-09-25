@@ -79,7 +79,7 @@ namespace MaraBot.Commands
                 }
             }
 
-            await ctx.RespondAsync(Display.LeaderboardEmbed(weekly, false));
+            await ctx.RespondAsync(await Display.LeaderboardEmbedAsync(ctx.Guild, weekly, false));
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }

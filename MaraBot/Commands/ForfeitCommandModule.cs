@@ -33,7 +33,7 @@ namespace MaraBot.Commands
         /// <param name="ctx">Command Context.</param>
         /// <returns>Returns an asynchronous task.</returns>
         [Command("forfeit")]
-        [Aliases("forfeited")]
+        [Aliases("forfeited", "ff")]
         [Description("Forfeit the weekly.")]
         [Cooldown(5, 600, CooldownBucketType.User)]
         [RequireGuild]
@@ -56,14 +56,13 @@ namespace MaraBot.Commands
 
             // Send message in current channel and in spoiler channel.
             var message = $"{ctx.User.Mention} forfeited the weekly!";
-            await ctx.RespondAsync(message);
             await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, message);
 
             // Grant user their new role.
             await CommandUtils.GrantRolesToSelfAsync(ctx, new [] {Config.WeeklyForfeitedRole});
 
             // Display leaderboard in the spoiler channel.
-            await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, Display.LeaderboardEmbed(Weekly, false));
+            await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, await Display.LeaderboardEmbedAsync(ctx.Guild, Weekly, false));
         }
     }
 }

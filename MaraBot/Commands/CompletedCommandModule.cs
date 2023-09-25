@@ -65,14 +65,13 @@ namespace MaraBot.Commands
 
             // Send message in current channel and in spoiler channel.
             var message = $"Adding {ctx.User.Mention} to the leaderboard!";
-            await ctx.RespondAsync(message);
             await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, message);
 
             // Grant user their new role.
             await CommandUtils.GrantRolesToSelfAsync(ctx, new [] {Config.WeeklyCompletedRole});
 
             // Display leaderboard in the spoiler channel.
-            await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, Display.LeaderboardEmbed(Weekly, false));
+            await CommandUtils.SendToChannelAsync(ctx, Config.WeeklySpoilerChannel, await Display.LeaderboardEmbedAsync(ctx.Guild, Weekly, false));
         }
     }
 }

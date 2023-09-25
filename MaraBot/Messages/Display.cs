@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.Entities;
 
@@ -200,7 +201,7 @@ namespace MaraBot.Messages
         /// <param name="weekly">Weekly settings.</param>
         /// <param name="preventSpoilers">Hide potential spoilers.</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder LeaderboardEmbed(IReadOnlyWeekly weekly, bool preventSpoilers)
+        public static async Task<DiscordEmbedBuilder> LeaderboardEmbedAsync(DiscordGuild guild, IReadOnlyWeekly weekly, bool preventSpoilers)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -226,29 +227,39 @@ namespace MaraBot.Messages
 
             var rank = 0;
             var rankTreshold = TimeSpan.MinValue;
-            foreach (var entry in leaderboard)
+
+            if (leaderboard != null)
             {
-                if (entry.Value > rankTreshold)
+                var allMembers = await guild.GetAllMembersAsync();
+
+                foreach (var entry in leaderboard)
                 {
-                    ++rank;
-                    rankTreshold = entry.Value;
+                    if (entry.Value > rankTreshold)
+                    {
+                        ++rank;
+                        rankTreshold = entry.Value;
+                    }
+                    rankStrings += $"{(rank <= 3 ? kRankingEmoijs[rank - 1] : CommandUtils.IntegerToOrdinal(rank))}\n";
+
+                    if (CommandUtils.UsernameToUserMention(allMembers, entry.Key, out var userMention))
+                        userStrings += $"{userMention}\n";
+                    else
+                        userStrings += $"{entry.Key}\n";
+
+                    timeStrings += $"{(entry.Value.Equals(TimeSpan.MaxValue) ? "DNF" : entry.Value.ToString())}\n";
                 }
-                rankStrings += $"{(rank <= 3 ? kRankingEmoijs[rank - 1] : CommandUtils.IntegerToOrdinal(rank))}\n";
 
-                userStrings += $"{entry.Key}\n";
-                timeStrings += $"{(entry.Value.Equals(TimeSpan.MaxValue) ? "DNF" : entry.Value.ToString())}\n";
+                if (preventSpoilers)
+                {
+                    timeStrings = Formatter.Spoiler(timeStrings);
+                }
+
+                if (!preventSpoilers)
+                    embed.AddField("\u200B", rankStrings, true);
+
+                embed.AddField("User", userStrings, true);
+                embed.AddField("Time", timeStrings, true);
             }
-
-            if (preventSpoilers)
-            {
-                timeStrings = Formatter.Spoiler(timeStrings);
-            }
-
-            if (!preventSpoilers)
-                embed.AddField("\u200B", rankStrings, true);
-
-            embed.AddField("User", userStrings, true);
-            embed.AddField("Time", timeStrings, true);
 
             return embed;
         }

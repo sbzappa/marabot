@@ -334,6 +334,25 @@ namespace MaraBot.Core
             return true;
         }
 
+        /// <summary>
+        /// Converts a username to a user mention string if the user exists in the guild.
+        /// </summary>
+        /// <param name="guild">Discord guild</param>
+        /// <param name="username">Username</param>
+        /// <param name="mention">User mention</param>
+        /// <returns>True if user exists in guild, false otherwise.</returns>
+        public static bool UsernameToUserMention(IEnumerable<DiscordMember> members, string username, out string mention)
+        {
+            mention = String.Empty;
+
+            var member = members.FirstOrDefault(member => member.Username.Equals(username));
+            if (member == null)
+                return false;
+
+            mention = member.Mention;
+            return true;
+        }
+
         private static IEnumerable<string> Split(this string str,
             Func<char, bool> controller)
         {
