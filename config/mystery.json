@@ -1,0 +1,187 @@
+{
+  "mode": {
+    "values": {
+      "open": 100
+    }
+  },
+
+  "bossElementRando": {
+    "values": {
+      "yes": 20
+    }
+  },
+
+  "opGoal": {
+    "values": {
+      "vlong": 40,
+      "mtr": 50
+    }
+  },
+
+  "opLogic": {
+    "values": {
+      "restrictive": 100
+    }
+  },
+
+  "opShop": {
+    "values": {
+      "no": 25
+    }
+  },
+
+  "opStartChar": {
+    "values": {
+      "random": 25,
+      "girl"  : 25,
+      "sprite": 25
+    }
+  },
+
+  "opBosses": {
+    "values": {
+      "vanilla": 33,
+      "swap"   : 33
+    }
+  },
+
+  "opEnemies": {
+    "values": {
+      "vanilla": 10,
+      "random" : 40,
+      "oops"   : 10
+    }
+  },
+
+  "opStatGrowth": {
+    "values": {
+      "boss"  : 20,
+      "timed"  : 20
+    }
+  },
+
+  "opCharacters": {
+    "values": {
+      "startboth"  : 5,
+      "findbothCL" : 30,
+      "start1find1": 5,
+      "start1only" : 5,
+      "find1L1"    : 10,
+      "find1CL"    : 10,
+      "none"       : 5
+    }
+  },
+
+  "opStatusAilments": {
+    "values": {
+      "type"    : 30,
+      "easy"    : 10,
+      "annoying": 10,
+      "awful"   : 10
+    }
+  },
+
+  "opComplexity": {
+    "values": {
+      "easy": 10,
+      "hard": 10
+    }
+  },
+
+  "opTraps": {
+    "values": {
+      "none": 33,
+      "many": 33
+    }
+  },
+
+  "opChestFreq": {
+    "values": {
+      "none"   : 20,
+      "low"    : 20,
+      "high"   : 20,
+      "highest": 20
+    }
+  },
+
+  "opDisableHints": {
+    "values": {
+      "yes": 10
+    }
+  },
+
+  "opRole": {
+    "values": {
+      "random"        : 10,
+      "randomunique"  : 10
+    }
+  },
+
+  "opNumSeeds": {
+    "required": "opGoal=mtr",
+    "values": {
+      "random": 50,
+      "5"     : 10,
+      "6"     : 15,
+      "7"     : 15
+    }
+  },
+
+  "opMinSeeds": {
+    "required": "opNumSeeds=random",
+    "values": {
+      "5": 50,
+      "6": 50
+    }
+  },
+
+  "opMaxSeeds": {
+    "required": "opNumSeeds=random",
+    "values": {
+      "7": 50
+    }
+  },
+
+  "oopsAllThis": {
+    "required": "opEnemies=oops",
+    "values": {
+      "random": 100
+    }
+  },
+
+  "opAllowLockedItems": {
+    "values": {
+      "yes": 25
+    }
+  },
+
+  "opExp": {
+    "value": {
+      "1": 25,
+      "3": 10
+    }
+  },
+
+  "opGold": {
+    "value": {
+      "0": 10,
+      "1": 25,
+      "3": 10
+    }
+  },
+
+  "opGoldCheckMul": {
+    "value": {
+      "2": 5,
+      "3": 5
+    }
+  },
+
+  "opGoldDropMul": {
+    "value": {
+      "0": 5,
+      "100": 10,
+      "200": 5
+    }
+  }
+}
