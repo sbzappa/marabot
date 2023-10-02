@@ -45,9 +45,10 @@ namespace MaraBot.IO
         /// <summary>
         /// Reads the weekly settings from file.
         /// </summary>
+        /// <param name="options">Randomizer options</param>
         /// <param name="weeklyFilename">Weekly filename.</param>
         /// <returns>Returns the weekly settings.</returns>
-        public static async Task<Weekly> LoadWeeklyAsync(IReadOnlyDictionary<string, Preset> presets, IReadOnlyDictionary<string, Option> options, string weeklyFilename = "weekly.json")
+        public static async Task<Weekly> LoadWeeklyAsync(IReadOnlyDictionary<string, Option> options, string weeklyFilename = "weekly.json")
         {
             var homeFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||
@@ -70,19 +71,7 @@ namespace MaraBot.IO
 
                 if (weekly != null)
                 {
-                    // Load preset name.
-                    if (!string.IsNullOrEmpty(weekly.PresetName))
-                    {
-                        if (presets.TryGetValue(weekly.PresetName, out var preset))
-                        {
-                            weekly.Preset = new Preset(preset);
-                        }
-                    }
-                    // Load preset.
-                    else
-                    {
-                        weekly.Preset.MakeDisplayable(options);
-                    }
+                    weekly.Preset.MakeDisplayable(options);
                 }
 
                 return weekly;

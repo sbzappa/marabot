@@ -24,10 +24,6 @@ namespace MaraBot.Commands
         /// </summary>
         public IReadOnlyWeekly Weekly { private get; set; }
         /// <summary>
-        /// Presets settings.
-        /// </summary>
-        public IReadOnlyDictionary<string, Preset> Presets { private get; set; }
-        /// <summary>
         /// Randomizer Options.
         /// </summary>
         public IReadOnlyDictionary<string, Option> Options { private get; set; }
@@ -43,14 +39,14 @@ namespace MaraBot.Commands
         /// <param name="weekNumber"></param>
         /// <returns>Returns an asynchronous task.</returns>
         [Command("leaderboard")]
-        [Description("Get the weekly leaderboard.")]
+        [Description("Get the weekly leaderboard. The current leaderboard can only be displayed in the spoiler channel.")]
         [Aliases("lb")]
         [Cooldown(15, 600, CooldownBucketType.Channel)]
         [RequireGuild]
         [RequireBotPermissions(
             Permissions.SendMessages |
             Permissions.AccessChannels)]
-        public async Task Execute(CommandContext ctx, int weekNumber = -1)
+        public async Task Execute(CommandContext ctx, [Description("(optional) Week number.")]int weekNumber = -1)
         {
             var currentWeek = RandomUtils.GetWeekNumber();
             weekNumber = weekNumber == -1 ? currentWeek : weekNumber;
@@ -58,7 +54,7 @@ namespace MaraBot.Commands
             var weekly = Weekly;
             if (weekNumber != currentWeek)
             {
-                weekly = await WeeklyIO.LoadWeeklyAsync(Presets, Options, $"weekly.{weekNumber}.json");
+                weekly = await WeeklyIO.LoadWeeklyAsync(Options, $"weekly.{weekNumber}.json");
             }
 
             if (weekly.Leaderboard == null || weekly.Leaderboard.Count == 0)

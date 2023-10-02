@@ -28,7 +28,7 @@ start() {
 }
 
 stop() {
-    killall "$DOTNET_PATH/dotnet"
+    pkill -f "MaraBot"
 }
 
 restart() {
