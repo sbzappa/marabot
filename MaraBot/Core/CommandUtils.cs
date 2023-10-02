@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Text.RegularExpressions;
+using System.Net.Http;
 using DSharpPlus.CommandsNext;
 using DSharpPlus;
 using DSharpPlus.Entities;
@@ -23,6 +23,8 @@ namespace MaraBot.Core
                                                          "  --name string        Sets the name of the preset.\n" +
                                                          "  --description string Sets the description of the preset.\n" +
                                                          "```";
+
+        static readonly HttpClient s_Client = new HttpClient();
 
         private enum AttachmentFileType
         {
@@ -478,9 +480,7 @@ namespace MaraBot.Core
             var attachment = ctx.Message.Attachments[0];
             var url = attachment.Url;
 
-            var request = WebRequest.Create(url);
-            var response = await request.GetResponseAsync();
-            var dataStream = response.GetResponseStream();
+            var dataStream = await s_Client.GetStreamAsync(url);
 
             using (StreamReader r = new StreamReader(dataStream))
             {
@@ -502,9 +502,7 @@ namespace MaraBot.Core
             var attachment = ctx.Message.Attachments[0];
             var url = attachment.Url;
 
-            var request = WebRequest.Create(url);
-            var response = await request.GetResponseAsync();
-            var dataStream = response.GetResponseStream();
+            var dataStream = await s_Client.GetStreamAsync(url);
 
             if (dataStream == null)
                 throw new InvalidOperationException($"Could not open attachment file {url}");
