@@ -549,43 +549,46 @@ namespace MaraBot.Core
             var mysterySettingsPool = mysterySettings.ToHashSet();
             var mysterySettingsToRemove = new HashSet<KeyValuePair<string, MysterySetting>>();
 
-            do
+            await Task.Run(() =>
             {
-                foreach (var setting in mysterySettingsToRemove)
+                do
                 {
-                    mysterySettingsPool.Remove(setting);
-                }
-                mysterySettingsToRemove.Clear();
-
-                foreach (var setting in mysterySettingsPool)
-                {
-                    if (!String.IsNullOrEmpty(setting.Value.Requirement))
+                    foreach (var setting in mysterySettingsToRemove)
                     {
-                        // Skip setting if requirement is not met.
-                        var regex = new Regex(setting.Value.Requirement);
-                        if (!regex.IsMatch(optionsString))
-                            continue;
+                        mysterySettingsPool.Remove(setting);
                     }
+                    mysterySettingsToRemove.Clear();
 
-                    var randomIndex = RandomUtils.GetRandomIndex(1, 100);
-
-                    var weight = 0;
-
-                    foreach (var settingValue in setting.Value.Values)
+                    foreach (var setting in mysterySettingsPool)
                     {
-                        weight += settingValue.Value;
-                        if (weight >= randomIndex)
+                        if (!String.IsNullOrEmpty(setting.Value.Requirement))
                         {
-                            if (!String.IsNullOrEmpty(optionsString)) optionsString += " ";
-                            optionsString += $"{setting.Key}={settingValue.Key}";
-                            break;
+                            // Skip setting if requirement is not met.
+                            var regex = new Regex(setting.Value.Requirement);
+                            if (!regex.IsMatch(optionsString))
+                                continue;
                         }
-                    }
 
-                    mysterySettingsToRemove.Add(setting);
+                        var randomIndex = RandomUtils.GetRandomIndex(1, 100);
+
+                        var weight = 0;
+
+                        foreach (var settingValue in setting.Value.Values)
+                        {
+                            weight += settingValue.Value;
+                            if (weight >= randomIndex)
+                            {
+                                if (!String.IsNullOrEmpty(optionsString)) optionsString += " ";
+                                optionsString += $"{setting.Key}={settingValue.Key}";
+                                break;
+                            }
+                        }
+
+                        mysterySettingsToRemove.Add(setting);
+                    }
                 }
-            }
-            while (mysterySettingsToRemove.Count > 0);
+                while (mysterySettingsToRemove.Count > 0);
+            });
 
             var preset = CreatePresetFromOptionsString( String.IsNullOrEmpty(author) ? ctx.User.Username : author,  name, description, optionsString);
 
