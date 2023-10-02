@@ -25,6 +25,7 @@ namespace MaraBot
             var presets = await PresetIO.LoadPresetsAsync(options);
             var weeklyTask = WeeklyIO.LoadWeeklyAsync(presets, options);
             var responsesTask = EightBallIO.LoadResponsesAsync();
+            var mysterySettingsTask = MysterySettingsIO.LoadMysterySettingsAsync();
 
             var config = await configTask;
 
@@ -37,10 +38,12 @@ namespace MaraBot
 
             var weekly = await weeklyTask;
             var responses = await responsesTask;
+            var mysterySettings = await mysterySettingsTask;
 
             var services = new ServiceCollection()
                 .AddSingleton<IReadOnlyDictionary<string, Preset>>(_ => presets)
                 .AddSingleton<IReadOnlyDictionary<string, Option>>(_ => options)
+                .AddSingleton<IReadOnlyDictionary<string, MysterySetting>>(_ => mysterySettings)
                 .AddSingleton(config)
                 .AddSingleton(responses)
                 .AddSingleton(weekly)

@@ -26,6 +26,7 @@ namespace MaraBot.Core
 
         private enum AttachmentFileType
         {
+            None,
             Invalid,
             JsonPreset,
             LogFile
@@ -430,8 +431,8 @@ namespace MaraBot.Core
         {
             if (ctx.Message.Attachments == null || ctx.Message.Attachments.Count != 1)
             {
-                errorMessage = "No attachment provided. You must supply a file when using this command.";
-                return AttachmentFileType.Invalid;
+                errorMessage = String.Empty;
+                return AttachmentFileType.None;
             }
 
             var attachment = ctx.Message.Attachments[0];
@@ -533,6 +534,65 @@ namespace MaraBot.Core
             }
         }
 
+        private static async Task<(Preset Preset, string Seed, string ValidationHash)> GenerateMysteryRaceAsync(
+            CommandContext ctx,
+            string rawArgs,
+            IReadOnlyDictionary<string, MysterySetting> mysterySettings,
+            IReadOnlyDictionary<string, Option> options)
+        {
+            // Parse command line arguments to retrieve preset author, name and description if available.
+            ParseCustomRaceCommandLineArguments(rawArgs, out string author, out string name, out string description);
+
+            var seed = RandomUtils.GetRandomSeed();
+
+            var optionsString = String.Empty;
+            var mysterySettingsPool = mysterySettings.ToHashSet();
+            var mysterySettingsToRemove = new HashSet<KeyValuePair<string, MysterySetting>>();
+
+            do
+            {
+                foreach (var setting in mysterySettingsToRemove)
+                {
+                    mysterySettingsPool.Remove(setting);
+                }
+                mysterySettingsToRemove.Clear();
+
+                foreach (var setting in mysterySettingsPool)
+                {
+                    if (!String.IsNullOrEmpty(setting.Value.Requirement))
+                    {
+                        // Skip setting if requirement is not met.
+                        var regex = new Regex(setting.Value.Requirement);
+                        if (!regex.IsMatch(optionsString))
+                            continue;
+                    }
+
+                    var randomIndex = RandomUtils.GetRandomIndex(1, 100);
+
+                    var weight = 0;
+
+                    foreach (var settingValue in setting.Value.Values)
+                    {
+                        weight += settingValue.Value;
+                        if (weight >= randomIndex)
+                        {
+                            if (!String.IsNullOrEmpty(optionsString)) optionsString += " ";
+                            optionsString += $"{setting.Key}={settingValue.Key}";
+                            break;
+                        }
+                    }
+
+                    mysterySettingsToRemove.Add(setting);
+                }
+            }
+            while (mysterySettingsToRemove.Count > 0);
+
+            var preset = CreatePresetFromOptionsString( String.IsNullOrEmpty(author) ? ctx.User.Username : author,  name, description, optionsString);
+
+            preset.MakeDisplayable(options);
+            return (preset, seed, String.Empty);
+        }
+
         /// <summary>
         /// Loads a race attachment
         /// </summary>
@@ -541,7 +601,11 @@ namespace MaraBot.Core
         /// <param name="options">Preset options.</param>
         /// <returns>Tuple of preset and seed string.</returns>
         /// <exception cref="InvalidOperationException">Thrown if there was an error while parsing provided attachment.</exception>
-        public static async Task<(Preset Preset, string Seed, string ValidationHash)> LoadRaceAttachment(CommandContext ctx, string rawArgs, IReadOnlyDictionary<string, Option> options)
+        public static async Task<(Preset Preset, string Seed, string ValidationHash)> GenerateRace(
+            CommandContext ctx,
+            string rawArgs,
+            IReadOnlyDictionary<string, MysterySetting> mysterySettings,
+            IReadOnlyDictionary<string, Option> options)
         {
             var attachmentType = GetAttachmentFileType(ctx, out var errorMessage);
 
@@ -552,6 +616,9 @@ namespace MaraBot.Core
                     return (preset, String.Empty, String.Empty);
                 case AttachmentFileType.LogFile:
                     return await LoadLogAttachmentAsync(ctx, rawArgs, options);
+                case AttachmentFileType.None:
+                    return await GenerateMysteryRaceAsync(ctx, rawArgs, mysterySettings, options);
+
                 default:
                     throw new InvalidOperationException(errorMessage);
             }

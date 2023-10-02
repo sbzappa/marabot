@@ -118,7 +118,7 @@
   },
 
   "opNumSeeds": {
-    "required": "opGoal=mtr",
+    "requirement": "opGoal=mtr",
     "values": {
       "random": 50,
       "5"     : 10,
@@ -128,7 +128,7 @@
   },
 
   "opMinSeeds": {
-    "required": "opNumSeeds=random",
+    "requirement": "opNumSeeds=random",
     "values": {
       "5": 50,
       "6": 50
@@ -136,14 +136,14 @@
   },
 
   "opMaxSeeds": {
-    "required": "opNumSeeds=random",
+    "requirement": "opNumSeeds=random",
     "values": {
       "7": 50
     }
   },
 
   "oopsAllThis": {
-    "required": "opEnemies=oops",
+    "requirement": "opEnemies=oops",
     "values": {
       "random": 100
     }
@@ -156,14 +156,14 @@
   },
 
   "opExp": {
-    "value": {
+    "values": {
       "1": 25,
       "3": 10
     }
   },
 
   "opGold": {
-    "value": {
+    "values": {
       "0": 10,
       "1": 25,
       "3": 10
@@ -171,14 +171,14 @@
   },
 
   "opGoldCheckMul": {
-    "value": {
+    "values": {
       "2": 5,
       "3": 5
     }
   },
 
   "opGoldDropMul": {
-    "value": {
+    "values": {
       "0": 5,
       "100": 10,
       "200": 5

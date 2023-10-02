@@ -10,10 +10,10 @@ namespace MaraBot.IO
     using Core;
 
     /// <summary>
-    /// Options file IO.
+    /// Mystery Settings IO
     /// </summary>
-    /// <seealso cref="Option"/>
-    public static class OptionsIO
+    /// <seealso cref="MysterySetting"/>
+    public static class MysterySettingsIO
     {
         static readonly string[] k_ConfigFolders = new []
         {
@@ -26,11 +26,11 @@ namespace MaraBot.IO
         };
 
         /// <summary>
-        /// Reads the randomizer options from file.
+        /// Reads the mystery settings from file.
         /// </summary>
-        /// <returns>The randomizer options.</returns>
-        /// <exception cref="InvalidOperationException">No options file has been found.</exception>
-        public static async Task<Dictionary<string, Option>> LoadOptionsAsync()
+        /// <returns>The mystery settings.</returns>
+        /// <exception cref="InvalidOperationException">No mystery settings file has been found.</exception>
+        public static async Task<Dictionary<string, MysterySetting>> LoadMysterySettingsAsync()
         {
             var homeFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||
@@ -39,21 +39,21 @@ namespace MaraBot.IO
                     : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
             var appFolder = AppDomain.CurrentDomain.BaseDirectory;
 
-            var optionsPath = k_ConfigFolders
+            var settingsPath = k_ConfigFolders
                 .Select(path => path
                     .Replace("$HOME", homeFolder)
-                    .Replace("$APP", appFolder) + "/options.json")
+                    .Replace("$APP", appFolder) + "/mystery.json")
                 .FirstOrDefault(path => File.Exists(path));
 
-            if (String.IsNullOrEmpty(optionsPath))
+            if (String.IsNullOrEmpty(settingsPath))
             {
-                throw new InvalidOperationException($"No options found");
+                throw new InvalidOperationException($"No mystery settings found");
             }
 
-            using (StreamReader r = new StreamReader(optionsPath))
+            using (StreamReader r = new StreamReader(settingsPath))
             {
                 var json = await r.ReadToEndAsync();
-                return JsonConvert.DeserializeObject<Dictionary<string, Option>>
+                return JsonConvert.DeserializeObject<Dictionary<string, MysterySetting>>
                 (
                     json,
                     new JsonSerializerSettings

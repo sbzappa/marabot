@@ -26,6 +26,10 @@ namespace MaraBot.Commands
         /// </summary>
         public IReadOnlyDictionary<string, Option> Options { private get; set; }
         /// <summary>
+        /// Mystery Settings.
+        /// </summary>
+        public IReadOnlyDictionary<string, MysterySetting> MysterySettings { private get; set; }
+        /// <summary>
         /// Bot configuration.
         /// </summary>
         public Config Config { private get; set; }
@@ -91,7 +95,7 @@ namespace MaraBot.Commands
             string validationHash;
             try
             {
-                (preset, seed, validationHash) = await CommandUtils.LoadRaceAttachment(ctx, rawArgs, Options);
+                (preset, seed, validationHash) = await CommandUtils.GenerateRace(ctx, rawArgs, MysterySettings, Options);
             }
             catch (InvalidOperationException e)
             {
