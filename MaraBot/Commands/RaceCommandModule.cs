@@ -1,49 +1,72 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using MaraBot.Core;
+using MaraBot.Messages;
 
 namespace MaraBot.Commands
 {
-    using Core;
-    using Messages;
-
     /// <summary>
     /// Implements the race command.
-    /// This command is used to create a new create with a specified preset.
     /// </summary>
     public class RaceCommandModule : BaseCommandModule
     {
         /// <summary>
-        /// List of presets available.
+        /// Randomizer Options.
         /// </summary>
-        public IReadOnlyDictionary<string, Preset> Presets { private get; set; }
+        public IReadOnlyDictionary<string, Option> Options { private get; set; }
+        /// <summary>
+        /// Mystery Settings.
+        /// </summary>
+        public IReadOnlyDictionary<string, MysterySetting> MysterySettings { private get; set; }
+
+        /// <summary>
+        /// Bot configuration.
+        /// </summary>
+        public Config Config { private get; set; }
 
         /// <summary>
         /// Executes the race command.
         /// </summary>
         /// <param name="ctx">Command Context.</param>
-        /// <param name="presetName">Preset name to create the race with.</param>
+        /// <param name="rawArgs">Command line arguments.</param>
         /// <returns>Returns an asynchronous task.</returns>
         [Command("race")]
-        [Description("Generate a race based on the preset given.")]
+        [Description(
+            "Generate a new race.\n" +
+            "- Upload a log file to generate from an existing race\n" +
+            "- OR upload a preset file to generate from a custom preset\n" +
+            "- OR generate a race using random weekly settings.")]
         [Cooldown(5, 600, CooldownBucketType.User)]
         [RequireGuild]
         [RequireBotPermissions(Permissions.SendMessages)]
-        public async Task Execute(CommandContext ctx, string presetName)
+        public async Task Execute(CommandContext ctx, [RemainingText][Description(CommandUtils.kCustomRaceArgsDescription)] string rawArgs)
         {
-            if (!Presets.ContainsKey(presetName))
+            Preset preset;
+            string seed;
+            string validationHash;
+            try
             {
-                await ctx.RespondAsync($"{presetName} is not a a valid preset");
+                (preset, seed, validationHash) = await CommandUtils.GenerateRace(ctx, rawArgs, MysterySettings, Options);
+            }
+            catch (InvalidOperationException e)
+            {
+                await ctx.RespondAsync(e.Message);
                 await CommandUtils.SendFailReaction(ctx);
                 return;
             }
 
-            var seed = RandomUtils.GetRandomSeed();
-            var preset = Presets[presetName];
+            // Print validation in separate message to make sure
+            // we can pin just the race embed
+            await ctx.RespondAsync(PresetValidation.GenerateValidationMessage(preset, Options));
 
-            await ctx.RespondAsync(Display.RaceEmbed(preset, seed));
+            if (string.IsNullOrEmpty(seed))
+                seed = RandomUtils.GetRandomSeed();
+
+            await ctx.RespondAsync(Display.RaceEmbed(preset, seed, validationHash));
             await CommandUtils.SendSuccessReaction(ctx);
         }
     }

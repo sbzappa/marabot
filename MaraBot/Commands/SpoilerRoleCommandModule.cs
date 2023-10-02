@@ -33,7 +33,7 @@ namespace MaraBot.Commands
         /// <param name="rawArgs">Command line arguments</param>
         /// <returns>Returns an asynchronous task.</returns>
         [Command("spoiler")]
-        [Description("Grant or revoke the spoiler roles.")]
+        [Description("(Admin command) Grant or revoke the spoiler roles.")]
         [Cooldown(15, 600, CooldownBucketType.Channel)]
         [RequireGuild]
         [RequireBotPermissions(

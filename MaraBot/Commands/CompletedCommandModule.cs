@@ -42,7 +42,9 @@ namespace MaraBot.Commands
             Permissions.ManageMessages |
             Permissions.ManageRoles |
             Permissions.AccessChannels)]
-        public async Task Execute(CommandContext ctx, [RemainingText]string timeRaw)
+        public async Task Execute(
+            CommandContext ctx,
+            [RemainingText][Description("Elapsed time. Expecting HH:MM:SS format.")] string timeRaw)
         {
             // Give a sufficient delay before deleting message
             await Task.Delay(500);

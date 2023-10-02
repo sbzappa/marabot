@@ -30,7 +30,7 @@ namespace MaraBot.Commands
         [Cooldown(30, 600, CooldownBucketType.Channel)]
         [RequireGuild]
         [RequireBotPermissions(Permissions.SendMessages)]
-        public async Task Execute(CommandContext ctx, [RemainingText]string question)
+        public async Task Execute(CommandContext ctx, [RemainingText][Description("Question string")]string question)
         {
             await ctx.RespondAsync(Responses[RandomUtils.GetRandomIndex(0, Responses.Length - 1)]);
         }

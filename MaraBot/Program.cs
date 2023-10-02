@@ -22,8 +22,7 @@ namespace MaraBot
         {
             var configTask = ConfigIO.LoadConfigAsync();
             var options = await OptionsIO.LoadOptionsAsync();
-            var presets = await PresetIO.LoadPresetsAsync(options);
-            var weeklyTask = WeeklyIO.LoadWeeklyAsync(presets, options);
+            var weeklyTask = WeeklyIO.LoadWeeklyAsync(options);
             var responsesTask = EightBallIO.LoadResponsesAsync();
             var mysterySettingsTask = MysterySettingsIO.LoadMysterySettingsAsync();
 
@@ -41,7 +40,6 @@ namespace MaraBot
             var mysterySettings = await mysterySettingsTask;
 
             var services = new ServiceCollection()
-                .AddSingleton<IReadOnlyDictionary<string, Preset>>(_ => presets)
                 .AddSingleton<IReadOnlyDictionary<string, Option>>(_ => options)
                 .AddSingleton<IReadOnlyDictionary<string, MysterySetting>>(_ => mysterySettings)
                 .AddSingleton(config)
@@ -72,17 +70,13 @@ namespace MaraBot
                 Services = services
             });
 
-            commands.RegisterCommands<Commands.PresetsCommandModule>();
-            commands.RegisterCommands<Commands.PresetCommandModule>();
             commands.RegisterCommands<Commands.RaceCommandModule>();
-            commands.RegisterCommands<Commands.CustomRaceCommandModule>();
             commands.RegisterCommands<Commands.CreatePresetCommandModule>();
             commands.RegisterCommands<Commands.WeeklyCommandModule>();
             commands.RegisterCommands<Commands.CompletedCommandModule>();
             commands.RegisterCommands<Commands.ForfeitCommandModule>();
             commands.RegisterCommands<Commands.LeaderboardCommandModule>();
             commands.RegisterCommands<Commands.ResetWeeklyCommandModule>();
-            commands.RegisterCommands<Commands.SpoilerRoleCommandModule>();
             commands.RegisterCommands<Commands.EightBallCommandModule>();
 
             foreach(var c in commands) {

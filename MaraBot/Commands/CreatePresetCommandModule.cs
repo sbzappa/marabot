@@ -33,7 +33,7 @@ namespace MaraBot.Commands
         [Cooldown(5, 600, CooldownBucketType.User)]
         [RequireDirectMessage]
         [RequireBotPermissions(Permissions.SendMessages)]
-        public async Task Execute(CommandContext ctx, [RemainingText] string optionString)
+        public async Task Execute(CommandContext ctx, [RemainingText][Description("Raw options")] string optionString)
         {
             Preset preset;
             try

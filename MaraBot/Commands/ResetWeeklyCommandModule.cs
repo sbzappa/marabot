@@ -41,7 +41,11 @@ namespace MaraBot.Commands
         /// <param name="rawArgs">Command line arguments.</param>
         /// <returns>Returns an asynchronous task.</returns>
         [Command("reset")]
-        [Description("Resets the weekly race.")]
+        [Description(
+            "(Admin command) Resets the weekly race.\n" +
+            "- Upload a log file to generate from an existing race\n" +
+            "- OR upload a preset file to generate from a custom preset\n" +
+            "- OR generate a race using random weekly settings.")]
         [Cooldown(30, 600, CooldownBucketType.Channel)]
         [RequireGuild]
         [RequireBotPermissions(

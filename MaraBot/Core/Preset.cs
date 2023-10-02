@@ -109,6 +109,9 @@ namespace MaraBot.Core
         /// </summary>
         public void MakeDisplayable(IReadOnlyDictionary<string, Option> options)
         {
+            if (Options == null)
+                return;
+
             var list = new List<Tuple<Category, string, string>>();
 
             foreach (var pair in Options)
