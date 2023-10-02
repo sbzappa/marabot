@@ -636,6 +636,12 @@ namespace MaraBot.Core
         /// <exception cref="InvalidOperationException">Thrown if there was an error while parsing options string.</exception>
         public static Preset CreatePresetFromOptionsString(string author, string name, string description, string optionsString)
         {
+            // special case for opRole
+            optionsString = Regex.Replace(
+                optionsString,
+                "opRole=(?<setting>[^\\s]*)",
+                "opBoyRole=${setting} opGirlRole=${setting} opSpriteRole=${setting}");
+
             string[] optionsValues = String.IsNullOrEmpty(optionsString) ? new [] { "mode=rando" } : optionsString.Split(' ');
 
             var options = new Dictionary<string, string>();

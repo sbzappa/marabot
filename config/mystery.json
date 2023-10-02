@@ -1,4 +1,10 @@
 {
+  "version": {
+    "values": {
+      "1.34": 100
+    }
+  },
+
   "mode": {
     "values": {
       "open": 100
