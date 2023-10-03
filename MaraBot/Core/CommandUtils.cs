@@ -532,6 +532,38 @@ namespace MaraBot.Core
             }
         }
 
+        class MysterySettingSorter : IComparer<KeyValuePair<string, MysterySetting>>
+        {
+            public int Compare(KeyValuePair<string, MysterySetting> x, KeyValuePair<string, MysterySetting> y)
+            {
+                var xNoRequirement = String.IsNullOrEmpty(x.Value.Requirement);
+                var yNoRequirement = String.IsNullOrEmpty(y.Value.Requirement);
+
+                if (xNoRequirement && yNoRequirement)
+                    return x.Key.CompareTo(y.Key);
+
+                if (xNoRequirement)
+                    return -1;
+
+                if (yNoRequirement)
+                    return 1;
+
+                // x is a requirement of y
+                var xRegex = new Regex(x.Key);
+                if (xRegex.IsMatch(y.Value.Requirement))
+                    return -1;
+
+                // y is a requirement of x
+                var yRegex = new Regex(y.Key);
+                if (yRegex.IsMatch(x.Value.Requirement))
+                    return 1;
+
+                return 0;
+            }
+        }
+
+
+
         private static async Task<(Preset Preset, string Seed, string ValidationHash)> GenerateMysteryRaceAsync(
             CommandContext ctx,
             string rawArgs,
@@ -542,50 +574,38 @@ namespace MaraBot.Core
             ParseCustomRaceCommandLineArguments(rawArgs, out string author, out string name, out string description);
 
             var seed = RandomUtils.GetRandomSeed();
-
             var optionsString = String.Empty;
-            var mysterySettingsPool = mysterySettings.ToHashSet();
-            var mysterySettingsToRemove = new HashSet<KeyValuePair<string, MysterySetting>>();
 
             await Task.Run(() =>
             {
-                do
+                var sortedMysterySettings = mysterySettings.ToList();
+                sortedMysterySettings.Sort(new MysterySettingSorter());
+
+                foreach (var setting in sortedMysterySettings)
                 {
-                    foreach (var setting in mysterySettingsToRemove)
+                    if (!String.IsNullOrEmpty(setting.Value.Requirement))
                     {
-                        mysterySettingsPool.Remove(setting);
+                        // Skip setting if requirement is not met.
+                        var regex = new Regex(setting.Value.Requirement);
+                        if (!regex.IsMatch(optionsString))
+                            continue;
                     }
-                    mysterySettingsToRemove.Clear();
 
-                    foreach (var setting in mysterySettingsPool)
+                    var randomIndex = RandomUtils.GetRandomIndex(1, 100);
+
+                    var weight = 0;
+
+                    foreach (var settingValue in setting.Value.Values)
                     {
-                        if (!String.IsNullOrEmpty(setting.Value.Requirement))
+                        weight += settingValue.Value;
+                        if (weight >= randomIndex)
                         {
-                            // Skip setting if requirement is not met.
-                            var regex = new Regex(setting.Value.Requirement);
-                            if (!regex.IsMatch(optionsString))
-                                continue;
+                            if (!String.IsNullOrEmpty(optionsString)) optionsString += " ";
+                            optionsString += $"{setting.Key}={settingValue.Key}";
+                            break;
                         }
-
-                        var randomIndex = RandomUtils.GetRandomIndex(1, 100);
-
-                        var weight = 0;
-
-                        foreach (var settingValue in setting.Value.Values)
-                        {
-                            weight += settingValue.Value;
-                            if (weight >= randomIndex)
-                            {
-                                if (!String.IsNullOrEmpty(optionsString)) optionsString += " ";
-                                optionsString += $"{setting.Key}={settingValue.Key}";
-                                break;
-                            }
-                        }
-
-                        mysterySettingsToRemove.Add(setting);
                     }
                 }
-                while (mysterySettingsToRemove.Count > 0);
             });
 
             var preset = CreatePresetFromOptionsString( String.IsNullOrEmpty(author) ? ctx.User.Username : author,  name, description, optionsString);

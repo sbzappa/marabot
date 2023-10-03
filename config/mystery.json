@@ -13,13 +13,13 @@
 
   "bossElementRando": {
     "values": {
-      "yes": 20
+      "yes": 10
     }
   },
 
   "opGoal": {
     "values": {
-      "vlong": 40,
+      "vlong": 50,
       "mtr": 50
     }
   },
@@ -53,16 +53,17 @@
 
   "opEnemies": {
     "values": {
-      "vanilla": 10,
+      "vanilla": 15,
       "random" : 40,
-      "oops"   : 10
+      "oops"   : 5
     }
   },
 
   "opStatGrowth": {
+    "requirement": "opGoal=mtr",
     "values": {
-      "boss"  : 20,
-      "timed"  : 20
+      "boss"  : 10,
+      "timed"  : 5
     }
   },
 
@@ -95,6 +96,7 @@
   },
 
   "opTraps": {
+    "requirement": "opChestFreq=\\b(?!none)\\w+\\b",
     "values": {
       "none": 33,
       "many": 33
@@ -163,16 +165,16 @@
 
   "opExp": {
     "values": {
-      "1": 25,
-      "3": 10
+      "1": 5,
+      "3": 5
     }
   },
 
   "opGold": {
     "values": {
-      "0": 10,
-      "1": 25,
-      "3": 10
+      "0": 5,
+      "1": 5,
+      "3": 5
     }
   },
 
@@ -186,7 +188,7 @@
   "opGoldDropMul": {
     "values": {
       "0": 5,
-      "100": 10,
+      "100": 5,
       "200": 5
     }
   }
