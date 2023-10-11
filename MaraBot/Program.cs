@@ -78,6 +78,7 @@ namespace MaraBot
             commands.RegisterCommands<Commands.LeaderboardCommandModule>();
             commands.RegisterCommands<Commands.ResetWeeklyCommandModule>();
             commands.RegisterCommands<Commands.EightBallCommandModule>();
+            commands.RegisterCommands<Commands.CheatCommandModule>();
 
             foreach(var c in commands) {
                 c.Value.CommandExecuted += CommandEvents.OnCommandExecuted;
