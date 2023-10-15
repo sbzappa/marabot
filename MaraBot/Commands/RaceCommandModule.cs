@@ -46,11 +46,15 @@ namespace MaraBot.Commands
         public async Task Execute(CommandContext ctx, [RemainingText][Description(CommandUtils.kCustomRaceArgsDescription)] string rawArgs)
         {
             Preset preset;
-            string seed;
-            string validationHash;
+            string seed, validationHash;
+            string author, name, description;
+;
             try
             {
-                (preset, seed, validationHash) = await CommandUtils.GenerateRace(ctx, rawArgs, MysterySettings, Options);
+                // Parse command line arguments to retrieve preset author, name and description if available.
+                CommandUtils.ParseCustomRaceCommandLineArguments(rawArgs, out author, out name, out description);
+
+                (preset, seed, validationHash) = await CommandUtils.GenerateRace(ctx, author, name, description, MysterySettings, Options);
             }
             catch (InvalidOperationException e)
             {
@@ -65,6 +69,11 @@ namespace MaraBot.Commands
 
             if (string.IsNullOrEmpty(seed))
                 seed = RandomUtils.GetRandomSeed();
+
+            if (String.IsNullOrEmpty(validationHash))
+            {
+                (preset, seed, validationHash) = await CommandUtils.GenerateSeed(ctx, preset, seed, Config.RandomizerBinaryPath, Config.RomPath, Options);
+            }
 
             await ctx.RespondAsync(Display.RaceEmbed(preset, seed, validationHash));
             await CommandUtils.SendSuccessReaction(ctx);
