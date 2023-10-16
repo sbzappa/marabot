@@ -674,51 +674,130 @@ namespace MaraBot.Core
             CommandContext ctx,
             Preset preset,
             string seed,
-            string randomizerBinaryPath,
+            string randomizerExecutablePath,
             string romPath,
-            string linuxDisplay,
             IReadOnlyDictionary<string, Option> options)
         {
-            var tcs = new TaskCompletionSource<int>();
+            if (!File.Exists(randomizerExecutablePath))
+                throw new ArgumentException("Could not find randomizer executable.");
+
+            if (!File.Exists(romPath))
+                throw new ArgumentException("Could not find rom.");
+
+            var tempFolder =
+                (Environment.OSVersion.Platform == PlatformID.Unix ||
+                 Environment.OSVersion.Platform == PlatformID.MacOSX) ? "/tmp" : "%TEMP%";
 
             var rawOptionsString = string.Join(" ",
                 preset.Options.Select(kvp => $"{kvp.Key}={kvp.Value}")
             );
 
-            var randomizerProcess = new Process
+            if (Environment.OSVersion.Platform == PlatformID.Unix ||
+                Environment.OSVersion.Platform == PlatformID.MacOSX)
             {
-                StartInfo =
-                {
-                    WorkingDirectory = "/tmp/",
-                    FileName = "mono",
-                    ArgumentList =
-                    {
-                        $"{randomizerBinaryPath}",
-                        $"srcRom={romPath}",
-                        $"dstRom=/tmp/{seed}.sfc",
-                        $"seed={seed}",
-                        $"options=\"{rawOptionsString}\""
-                    }
-                },
-                EnableRaisingEvents = true
-            };
+                Process xvfbProcess = null;
 
-            if (!String.IsNullOrEmpty(linuxDisplay))
+                var displayEnv = Environment.GetEnvironmentVariable("DISPLAY");
+                if (String.IsNullOrEmpty(displayEnv))
+                {
+                    xvfbProcess = new Process
+                    {
+                        StartInfo =
+                        {
+                            FileName = "Xvfb",
+                            ArgumentList =
+                            {
+                                ":1"
+                            }
+                        }
+                    };
+
+                    try
+                    {
+                        xvfbProcess.Start();
+                    }
+                    catch(Exception exception)
+                    {
+                        throw new InvalidOperationException(
+                            "This feature requires Xvfb to setup a virtual display.\n" +
+                            $"Exception: {exception.Message}"
+                        );
+                    }
+                }
+
+                var tcs = new TaskCompletionSource<int>();
+                var randomizerProcess = new Process
+                {
+                    StartInfo =
+                    {
+                        WorkingDirectory = tempFolder,
+                        FileName = "mono",
+                        ArgumentList =
+                        {
+                            $"{randomizerExecutablePath}",
+                            $"srcRom={romPath}",
+                            $"dstRom={tempFolder}/{seed}.sfc",
+                            $"seed={seed}",
+                            $"options=\"{rawOptionsString}\""
+                        }
+                    },
+                    EnableRaisingEvents = true
+                };
+
+                randomizerProcess.StartInfo.EnvironmentVariables["DISPLAY"] = displayEnv;
+
+                randomizerProcess.Exited += (sender, args) =>
+                {
+                    tcs.SetResult(randomizerProcess.ExitCode);
+                    randomizerProcess.Dispose();
+                };
+
+                try
+                {
+                    randomizerProcess.Start();
+                }
+                catch (Exception exception)
+                {
+                    throw new InvalidOperationException(
+                        "This feature requires mono to run the randomizer executable.\n" +
+                        $"Exception: {exception.Message}"
+                    );
+                }
+
+                await tcs.Task;
+            }
+            else
             {
-                randomizerProcess.StartInfo.EnvironmentVariables.Add("DISPLAY", linuxDisplay);
+                var tcs = new TaskCompletionSource<int>();
+                var randomizerProcess = new Process
+                {
+                    StartInfo =
+                    {
+                        WorkingDirectory = tempFolder,
+                        FileName = $"{randomizerExecutablePath}",
+                        ArgumentList =
+                        {
+                            $"srcRom={romPath}",
+                            $"dstRom={tempFolder}/{seed}.sfc",
+                            $"seed={seed}",
+                            $"options=\"{rawOptionsString}\""
+                        }
+                    },
+                    EnableRaisingEvents = true
+                };
+
+                randomizerProcess.Start();
+
+                randomizerProcess.Exited += (sender, args) =>
+                {
+                    tcs.SetResult(randomizerProcess.ExitCode);
+                    randomizerProcess.Dispose();
+                };
+
+                await tcs.Task;
             }
 
-            randomizerProcess.Exited += (sender, args) =>
-            {
-                tcs.SetResult(randomizerProcess.ExitCode);
-                randomizerProcess.Dispose();
-            };
-
-            randomizerProcess.Start();
-
-            await tcs.Task;
-
-            return await LoadLogFileAsync($"/tmp/log_{seed}.txt", preset.Author, preset.Name, preset.Description, options);
+            return await LoadLogFileAsync($"{tempFolder}/log_{seed}.txt", preset.Author, preset.Name, preset.Description, options);
         }
 
 

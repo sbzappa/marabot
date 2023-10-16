@@ -41,10 +41,7 @@ namespace MaraBot.Core
         public readonly string WeeklySpoilerChannel;
 
         [JsonProperty]
-        public readonly string RandomizerBinaryPath;
-
-        [JsonProperty]
-        public readonly string LinuxDisplay;
+        public readonly string RandomizerExecutablePath;
 
         [JsonProperty]
         public readonly string RomPath;

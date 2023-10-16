@@ -6,6 +6,7 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using MaraBot.Core;
 using MaraBot.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace MaraBot.Commands
 {
@@ -72,7 +73,20 @@ namespace MaraBot.Commands
 
             if (String.IsNullOrEmpty(validationHash))
             {
-                (preset, seed, validationHash) = await CommandUtils.GenerateSeed(ctx, preset, seed, Config.RandomizerBinaryPath, Config.RomPath, Config.LinuxDisplay, Options);
+                try
+                {
+                    var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateSeed(ctx, preset, seed, Config.RandomizerExecutablePath, Config.RomPath, Options);
+                    if (newPreset.Equals(preset) && newSeed.Equals(seed))
+                    {
+                        validationHash = newValidationHash;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ctx.Client.Logger.LogWarning(
+                        "Could not create a validation hash.\n" +
+                        exception.Message);
+                }
             }
 
             await ctx.RespondAsync(Display.RaceEmbed(preset, seed, validationHash));
