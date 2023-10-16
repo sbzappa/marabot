@@ -702,7 +702,7 @@ namespace MaraBot.Core
                 {
                     xvfbProcess = new Process
                     {
-                        StartInfo =
+                        StartInfo = new ProcessStartInfo
                         {
                             FileName = "Xvfb",
                             ArgumentList =
@@ -718,6 +718,7 @@ namespace MaraBot.Core
                     }
                     catch(Exception exception)
                     {
+                        xvfbProcess.Dispose();
                         throw new InvalidOperationException(
                             "This feature requires Xvfb to setup a virtual display.\n" +
                             $"Exception: {exception.Message}"
@@ -758,6 +759,7 @@ namespace MaraBot.Core
                 }
                 catch (Exception exception)
                 {
+                    xvfbProcess?.Dispose();
                     throw new InvalidOperationException(
                         "This feature requires mono to run the randomizer executable.\n" +
                         $"Exception: {exception.Message}"
@@ -765,6 +767,9 @@ namespace MaraBot.Core
                 }
 
                 await tcs.Task;
+
+                xvfbProcess?.Kill();
+                xvfbProcess?.Dispose();
             }
             else
             {
