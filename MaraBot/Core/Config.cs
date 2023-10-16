@@ -44,6 +44,9 @@ namespace MaraBot.Core
         public readonly string RandomizerBinaryPath;
 
         [JsonProperty]
+        public readonly string LinuxDisplay;
+
+        [JsonProperty]
         public readonly string RomPath;
     }
 }

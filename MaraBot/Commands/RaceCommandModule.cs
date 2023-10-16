@@ -72,7 +72,7 @@ namespace MaraBot.Commands
 
             if (String.IsNullOrEmpty(validationHash))
             {
-                (preset, seed, validationHash) = await CommandUtils.GenerateSeed(ctx, preset, seed, Config.RandomizerBinaryPath, Config.RomPath, Options);
+                (preset, seed, validationHash) = await CommandUtils.GenerateSeed(ctx, preset, seed, Config.RandomizerBinaryPath, Config.RomPath, Config.LinuxDisplay, Options);
             }
 
             await ctx.RespondAsync(Display.RaceEmbed(preset, seed, validationHash));

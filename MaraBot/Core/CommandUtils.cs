@@ -676,6 +676,7 @@ namespace MaraBot.Core
             string seed,
             string randomizerBinaryPath,
             string romPath,
+            string linuxDisplay,
             IReadOnlyDictionary<string, Option> options)
         {
             var tcs = new TaskCompletionSource<int>();
@@ -684,29 +685,36 @@ namespace MaraBot.Core
                 preset.Options.Select(kvp => $"{kvp.Key}={kvp.Value}")
             );
 
-            var process = new Process
+            var randomizerProcess = new Process
             {
                 StartInfo =
                 {
                     WorkingDirectory = "/tmp/",
                     FileName = "mono",
-                    Arguments =
-                        $"{randomizerBinaryPath} " +
-                        $"srcRom={romPath} " +
-                        $"dstRom=/tmp/{seed}.sfc " +
-                        $"seed={seed} " +
+                    ArgumentList =
+                    {
+                        $"{randomizerBinaryPath}",
+                        $"srcRom={romPath}",
+                        $"dstRom=/tmp/{seed}.sfc",
+                        $"seed={seed}",
                         $"options=\"{rawOptionsString}\""
+                    }
                 },
                 EnableRaisingEvents = true
             };
 
-            process.Exited += (sender, args) =>
+            if (!String.IsNullOrEmpty(linuxDisplay))
             {
-                tcs.SetResult(process.ExitCode);
-                process.Dispose();
+                randomizerProcess.StartInfo.EnvironmentVariables.Add("DISPLAY", linuxDisplay);
+            }
+
+            randomizerProcess.Exited += (sender, args) =>
+            {
+                tcs.SetResult(randomizerProcess.ExitCode);
+                randomizerProcess.Dispose();
             };
 
-            process.Start();
+            randomizerProcess.Start();
 
             await tcs.Task;
 
