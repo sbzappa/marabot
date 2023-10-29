@@ -1,7 +1,7 @@
 {
   "version": {
     "values": {
-      "1.35": 100
+      "1.36": 100
     }
   },
 
@@ -190,6 +190,22 @@
       "0": 5,
       "100": 5,
       "200": 5
+    }
+  },
+
+  "opFlammieDrumInLogic": {
+    "values": {
+      "yes": 33
+    }
+  },
+
+  "opStartGold": {
+    "requirement": "opFlammieDrumInLogic=yes",
+    "values": {
+      "100": 25,
+      "200": 25,
+      "300": 25,
+      "400": 25
     }
   }
 }

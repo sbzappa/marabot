@@ -928,6 +928,16 @@
       "no": "No"
     }
   },
+
+  "opFlammieDrumInLogic": {
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Flammie Drum in Logic",
+    "category": "Open",
+    "value": {
+      "yes": "Yes"
+    }
+  },
+
   "oopsAllThis": {
     "$type" : "MaraBot.Core.EnumOption, MaraBot",
     "name"  : "But why owls?",
