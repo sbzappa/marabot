@@ -5,6 +5,7 @@ using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using MaraBot.IO;
+using Microsoft.Extensions.Logging;
 
 namespace MaraBot.Commands
 {
@@ -130,6 +131,24 @@ namespace MaraBot.Commands
             {
                 Weekly.Seed = seed;
                 Weekly.ValidationHash = validationHash;
+            }
+
+            if (String.IsNullOrEmpty(Weekly.ValidationHash))
+            {
+                try
+                {
+                    var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(ctx, Weekly.Preset, Weekly.Seed, Config.RandomizerExecutablePath, Config.RomPath, Options);
+                    if (newPreset.Equals(preset) && newSeed.Equals(seed))
+                    {
+                        Weekly.ValidationHash = newValidationHash;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ctx.Client.Logger.LogWarning(
+                        "Could not create a validation hash.\n" +
+                        exception.Message);
+                }
             }
 
             await WeeklyIO.StoreWeeklyAsync(Weekly);

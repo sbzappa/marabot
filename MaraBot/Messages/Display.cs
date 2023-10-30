@@ -19,6 +19,7 @@ namespace MaraBot.Messages
 
         public const string kValidCommandEmoji = ":white_check_mark:";
         public const string kInvalidCommandEmoji = ":no_entry_sign:";
+        public const string kRaceValidatedEmoji = ":regional_indicator_v:";
 
         public static readonly string[] kRankingEmoijs = new []
         {

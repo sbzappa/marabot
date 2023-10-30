@@ -71,11 +71,14 @@ namespace MaraBot.Commands
             if (string.IsNullOrEmpty(seed))
                 seed = RandomUtils.GetRandomSeed();
 
+            var response = await ctx.RespondAsync(Display.RaceEmbed(preset, seed, validationHash));
+            await CommandUtils.SendSuccessReaction(ctx);
+
             if (String.IsNullOrEmpty(validationHash))
             {
                 try
                 {
-                    var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateSeed(ctx, preset, seed, Config.RandomizerExecutablePath, Config.RomPath, Options);
+                    var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(ctx, preset, seed, Config.RandomizerExecutablePath, Config.RomPath, Options);
                     if (newPreset.Equals(preset) && newSeed.Equals(seed))
                     {
                         validationHash = newValidationHash;
@@ -89,8 +92,8 @@ namespace MaraBot.Commands
                 }
             }
 
-            await ctx.RespondAsync(Display.RaceEmbed(preset, seed, validationHash));
-            await CommandUtils.SendSuccessReaction(ctx);
+            await response.ModifyAsync(Display.RaceEmbed(preset, seed, validationHash).Build());
+            await CommandUtils.SendRaceValidatedReaction(ctx);
         }
     }
 }

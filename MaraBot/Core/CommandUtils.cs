@@ -69,11 +69,11 @@ namespace MaraBot.Core
         }
 
         /// <summary>
-        /// Send a success (or fail) reaction if the bot has the react permission.
+        /// Send a reaction if the bot has the react permission.
         /// The bot won't send reactions in DMs, because there it's way easier
         /// to see if a command completes.
         /// </summary>
-        public static async Task SendSuccessReaction(CommandContext ctx, bool success = true)
+        public static async Task SendReaction(CommandContext ctx, string emojiName)
         {
             if (IsDirectMessage(ctx))
                 return;
@@ -81,16 +81,32 @@ namespace MaraBot.Core
             if (!(await HasBotPermissions(ctx, Permissions.AddReactions)))
                 return;
 
-            var emoji = DiscordEmoji.FromName(ctx.Client, success ? Display.kValidCommandEmoji : Display.kInvalidCommandEmoji);
+            var emoji = DiscordEmoji.FromName(ctx.Client, emojiName);
             await ctx.Message.CreateReactionAsync(emoji);
         }
 
         /// <summary>
-        /// Calls SendSuccessReaction(ctx, false).
+        /// Send a success reaction.
+        /// </summary>
+        public static Task SendSuccessReaction(CommandContext ctx)
+        {
+            return SendReaction(ctx, Display.kValidCommandEmoji);
+        }
+
+        /// <summary>
+        /// Send a fail reaction.
         /// </summary>
         public static Task SendFailReaction(CommandContext ctx)
         {
-            return SendSuccessReaction(ctx, false);
+            return SendReaction(ctx, Display.kInvalidCommandEmoji);
+        }
+
+        /// <summary>
+        /// Send a race validated reaction.
+        /// </summary>
+        public static Task SendRaceValidatedReaction(CommandContext ctx)
+        {
+            return SendReaction(ctx, Display.kRaceValidatedEmoji);
         }
 
         /// <summary>
@@ -670,7 +686,7 @@ namespace MaraBot.Core
             }
         }
 
-        public static async Task<(Preset Preset, string Seed, string ValidationHash)> GenerateSeed(
+        public static async Task<(Preset Preset, string Seed, string ValidationHash)> GenerateValidationHash(
             CommandContext ctx,
             Preset preset,
             string seed,
