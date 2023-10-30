@@ -933,7 +933,7 @@
     "$type" : "MaraBot.Core.EnumOption, MaraBot",
     "name"  : "Flammie Drum in Logic",
     "category": "Open",
-    "value": {
+    "values": {
       "yes": "Yes"
     }
   },

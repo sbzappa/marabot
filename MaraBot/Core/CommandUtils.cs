@@ -696,10 +696,13 @@ namespace MaraBot.Core
                 Environment.OSVersion.Platform == PlatformID.MacOSX)
             {
                 Process xvfbProcess = null;
+                var framebufferFile = "/tmp/Xvfb_screen0";
 
                 var displayEnv = Environment.GetEnvironmentVariable("DISPLAY");
                 if (String.IsNullOrEmpty(displayEnv))
                 {
+                    var displayNumber = 1;
+
                     xvfbProcess = new Process
                     {
                         StartInfo = new ProcessStartInfo
@@ -707,7 +710,9 @@ namespace MaraBot.Core
                             FileName = "Xvfb",
                             ArgumentList =
                             {
-                                ":1"
+                                $":{displayNumber}",
+                                "-fbdir",
+                                "/tmp/"
                             }
                         }
                     };
@@ -722,6 +727,32 @@ namespace MaraBot.Core
                         throw new InvalidOperationException(
                             "This feature requires Xvfb to setup a virtual display.\n" +
                             $"Exception: {exception.Message}"
+                        );
+                    }
+
+                    var timeout = TimeSpan.FromMilliseconds(5000);
+                    DateTimeOffset timeoutAt = DateTimeOffset.UtcNow + timeout;
+                    var fileExists = false;
+                    while (true)
+                    {
+                        if (File.Exists(framebufferFile))
+                        {
+                            fileExists = true;
+                            break;
+                        }
+                        if (DateTimeOffset.UtcNow >= timeoutAt) break;
+                        await Task.Delay(10);
+                    }
+
+                    if (fileExists)
+                        displayEnv = $":{displayNumber}";
+                    else
+                    {
+                        xvfbProcess?.Kill();
+                        xvfbProcess?.Dispose();
+
+                        throw new InvalidOperationException(
+                            $"Could not find Xvfb framebuffer file {framebufferFile}."
                         );
                     }
                 }
@@ -767,6 +798,8 @@ namespace MaraBot.Core
                 }
 
                 await tcs.Task;
+
+                File.Delete(framebufferFile);
 
                 xvfbProcess?.Kill();
                 xvfbProcess?.Dispose();
