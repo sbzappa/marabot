@@ -47,13 +47,18 @@ required for the bot to authenticate itself with Discord. Look for
   ],
   "weeklyCompletedRole": "did the weekly",
   "weeklyForfeitedRole": "forfeited the weekly",
-  "weeklySpoilerChannel": "spoilers"
+  "weeklySpoilerChannel": "spoilers",
+  "randomizerExecutablePath": "(optional) path to randomizer executable",
+  "romPath": "(optional) path to rom"
 }
 ```
 
 You can copy your `config.json` in either: 
 - `config/`
 - `$HOME/marabot/config/`
+
+The randomizer executable and the associated rom can be used to generate validation hashes.
+The rom is never distributed.
 
 ### Compilation and Running
 
