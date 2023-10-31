@@ -28,9 +28,6 @@ namespace MaraBot
             var mysterySettingsTask = MysterySettingsIO.LoadMysterySettingsAsync();
             using var mutexRegistry = new MutexRegistry();
 
-            using var weeklyWriteAccessMutex = new SemaphoreSlim(1);
-            using var randomizerExecutableMutex = new SemaphoreSlim(1);
-
             var config = await configTask;
 
             var discord = new DiscordShardedClient(new DiscordConfiguration()
