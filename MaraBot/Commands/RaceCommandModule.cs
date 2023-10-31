@@ -23,11 +23,14 @@ namespace MaraBot.Commands
         /// Mystery Settings.
         /// </summary>
         public IReadOnlyDictionary<string, MysterySetting> MysterySettings { private get; set; }
-
         /// <summary>
         /// Bot configuration.
         /// </summary>
         public Config Config { private get; set; }
+        /// <summary>
+        /// Mutex registry.
+        /// </summary>
+        public MutexRegistry MutexRegistry { private get; set; }
 
         /// <summary>
         /// Executes the race command.
@@ -78,7 +81,7 @@ namespace MaraBot.Commands
             {
                 try
                 {
-                    var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(ctx, preset, seed, Config.RandomizerExecutablePath, Config.RomPath, Options);
+                    var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(ctx, preset, seed, Config, Options, MutexRegistry);
                     if (newPreset.Equals(preset) && newSeed.Equals(seed))
                     {
                         validationHash = newValidationHash;

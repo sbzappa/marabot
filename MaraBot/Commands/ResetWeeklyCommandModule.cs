@@ -34,6 +34,10 @@ namespace MaraBot.Commands
         /// Bot configuration.
         /// </summary>
         public Config Config { private get; set; }
+        /// <summary>
+        /// Mutex registry.
+        /// </summary>
+        public MutexRegistry MutexRegistry { private get; set; }
 
         /// <summary>
         /// Executes the weekly command.
@@ -64,6 +68,8 @@ namespace MaraBot.Commands
             var previousWeek = Weekly.WeekNumber;
             var currentWeek = RandomUtils.GetWeekNumber();
             var backupAndResetWeekly = previousWeek != currentWeek;
+
+            using var mutexLock = await MutexLock.WaitAsync(MutexRegistry.WeeklyWriteAccessMutex);
 
             // Make a backup of the previous week's weekly and create a new
             // weekly for the current week.
@@ -137,7 +143,7 @@ namespace MaraBot.Commands
             {
                 try
                 {
-                    var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(ctx, Weekly.Preset, Weekly.Seed, Config.RandomizerExecutablePath, Config.RomPath, Options);
+                    var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(ctx, Weekly.Preset, Weekly.Seed, Config, Options, MutexRegistry);
                     if (newPreset.Equals(preset) && newSeed.Equals(seed))
                     {
                         Weekly.ValidationHash = newValidationHash;

@@ -14,6 +14,7 @@ namespace MaraBot.Core
     using Messages;
     using IO;
     using System.Diagnostics;
+    using System.Threading;
 
     public static class CommandUtils
     {
@@ -690,15 +691,17 @@ namespace MaraBot.Core
             CommandContext ctx,
             Preset preset,
             string seed,
-            string randomizerExecutablePath,
-            string romPath,
-            IReadOnlyDictionary<string, Option> options)
+            Config config,
+            IReadOnlyDictionary<string, Option> options,
+            MutexRegistry mutexRegistry)
         {
-            if (!File.Exists(randomizerExecutablePath))
+            if (!File.Exists(config.RandomizerExecutablePath))
                 throw new ArgumentException("Could not find randomizer executable.");
 
-            if (!File.Exists(romPath))
+            if (!File.Exists(config.RomPath))
                 throw new ArgumentException("Could not find rom.");
+
+            using var mutexLock = await MutexLock.WaitAsync(mutexRegistry.RandomizerExecutableMutex);
 
             var tempFolder =
                 (Environment.OSVersion.Platform == PlatformID.Unix ||
@@ -782,8 +785,8 @@ namespace MaraBot.Core
                         FileName = "mono",
                         ArgumentList =
                         {
-                            $"{randomizerExecutablePath}",
-                            $"srcRom={romPath}",
+                            $"{config.RandomizerExecutablePath}",
+                            $"srcRom={config.RomPath}",
                             $"dstRom={tempFolder}/{seed}.sfc",
                             $"seed={seed}",
                             $"options=\"{rawOptionsString}\""
@@ -828,10 +831,10 @@ namespace MaraBot.Core
                     StartInfo =
                     {
                         WorkingDirectory = tempFolder,
-                        FileName = $"{randomizerExecutablePath}",
+                        FileName = $"{config.RandomizerExecutablePath}",
                         ArgumentList =
                         {
-                            $"srcRom={romPath}",
+                            $"srcRom={config.RomPath}",
                             $"dstRom={tempFolder}/{seed}.sfc",
                             $"seed={seed}",
                             $"options=\"{rawOptionsString}\""

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MaraBot
 {
+    using System.Threading;
     using Core;
     using IO;
 
@@ -25,6 +26,10 @@ namespace MaraBot
             var weeklyTask = WeeklyIO.LoadWeeklyAsync(options);
             var responsesTask = EightBallIO.LoadResponsesAsync();
             var mysterySettingsTask = MysterySettingsIO.LoadMysterySettingsAsync();
+            using var mutexRegistry = new MutexRegistry();
+
+            using var weeklyWriteAccessMutex = new SemaphoreSlim(1);
+            using var randomizerExecutableMutex = new SemaphoreSlim(1);
 
             var config = await configTask;
 
@@ -46,6 +51,7 @@ namespace MaraBot
                 .AddSingleton(responses)
                 .AddSingleton(weekly)
                 .AddSingleton<IReadOnlyWeekly>(_ => weekly)
+                .AddSingleton(mutexRegistry)
                 .BuildServiceProvider();
 
             // Test for network before connecting to discord.
