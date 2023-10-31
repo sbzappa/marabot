@@ -25,6 +25,10 @@ namespace MaraBot.Commands
         /// Bot configuration.
         /// </summary>
         public Config Config { private get; set; }
+        /// <summary>
+        /// Mutex registry.
+        /// </summary>
+        public MutexRegistry MutexRegistry { private get; set; }
 
         /// <summary>
         /// Executes the completed command.
@@ -62,8 +66,11 @@ namespace MaraBot.Commands
             }
 
             // Add user to leaderboard.
-            Weekly.AddToLeaderboard(ctx.User.Username, time);
-            await WeeklyIO.StoreWeeklyAsync(Weekly);
+            using (await MutexLock.WaitAsync(MutexRegistry.WeeklyWriteAccessMutex))
+            {
+                Weekly.AddToLeaderboard(ctx.User.Username, time);
+                await WeeklyIO.StoreWeeklyAsync(Weekly);
+            }
 
             // Send message in current channel and in spoiler channel.
             var message = $"Adding {ctx.User.Mention} to the leaderboard!";

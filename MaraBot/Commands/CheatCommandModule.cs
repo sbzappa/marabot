@@ -5,9 +5,6 @@ using DSharpPlus.CommandsNext.Attributes;
 
 namespace MaraBot.Commands
 {
-    using Core;
-    using Messages;
-
     /// <summary>
     /// Implements the cheat command.
     /// This command is used to remind users that cheating is never the answer :)

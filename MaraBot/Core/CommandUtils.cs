@@ -13,6 +13,8 @@ namespace MaraBot.Core
 {
     using Messages;
     using IO;
+    using System.Diagnostics;
+    using System.Threading;
 
     public static class CommandUtils
     {
@@ -68,11 +70,11 @@ namespace MaraBot.Core
         }
 
         /// <summary>
-        /// Send a success (or fail) reaction if the bot has the react permission.
+        /// Send a reaction if the bot has the react permission.
         /// The bot won't send reactions in DMs, because there it's way easier
         /// to see if a command completes.
         /// </summary>
-        public static async Task SendSuccessReaction(CommandContext ctx, bool success = true)
+        public static async Task SendReaction(CommandContext ctx, string emojiName)
         {
             if (IsDirectMessage(ctx))
                 return;
@@ -80,16 +82,32 @@ namespace MaraBot.Core
             if (!(await HasBotPermissions(ctx, Permissions.AddReactions)))
                 return;
 
-            var emoji = DiscordEmoji.FromName(ctx.Client, success ? Display.kValidCommandEmoji : Display.kInvalidCommandEmoji);
+            var emoji = DiscordEmoji.FromName(ctx.Client, emojiName);
             await ctx.Message.CreateReactionAsync(emoji);
         }
 
         /// <summary>
-        /// Calls SendSuccessReaction(ctx, false).
+        /// Send a success reaction.
+        /// </summary>
+        public static Task SendSuccessReaction(CommandContext ctx)
+        {
+            return SendReaction(ctx, Display.kValidCommandEmoji);
+        }
+
+        /// <summary>
+        /// Send a fail reaction.
         /// </summary>
         public static Task SendFailReaction(CommandContext ctx)
         {
-            return SendSuccessReaction(ctx, false);
+            return SendReaction(ctx, Display.kInvalidCommandEmoji);
+        }
+
+        /// <summary>
+        /// Send a race validated reaction.
+        /// </summary>
+        public static Task SendRaceValidatedReaction(CommandContext ctx)
+        {
+            return SendReaction(ctx, Display.kRaceValidatedEmoji);
         }
 
         /// <summary>
@@ -382,7 +400,7 @@ namespace MaraBot.Core
             return input;
         }
 
-        private static void ParseCustomRaceCommandLineArguments(string rawArgs, out string author, out string name, out string description)
+        public static void ParseCustomRaceCommandLineArguments(string rawArgs, out string author, out string name, out string description)
         {
             bool inQuotes = false;
 
@@ -493,11 +511,13 @@ namespace MaraBot.Core
             }
         }
 
-        private static async Task<(Preset Preset, string Seed, string ValidationHash)> LoadLogAttachmentAsync(CommandContext ctx, string rawArgs, IReadOnlyDictionary<string, Option> options)
+        private static async Task<(Preset Preset, string Seed, string ValidationHash)> LoadLogAttachmentAsync(
+            CommandContext ctx,
+            string author,
+            string name,
+            string description,
+            IReadOnlyDictionary<string, Option> options)
         {
-            // Parse command line arguments to retrieve preset author, name and description if available.
-            ParseCustomRaceCommandLineArguments(rawArgs, out string author, out string name, out string description);
-
             // Load attachment file.
             var attachment = ctx.Message.Attachments[0];
             var url = attachment.Url;
@@ -507,7 +527,29 @@ namespace MaraBot.Core
             if (dataStream == null)
                 throw new InvalidOperationException($"Could not open attachment file {url}");
 
-            using (StreamReader r = new StreamReader(dataStream))
+            return await LoadLogStreamAsync(dataStream, author, name, description, options);
+        }
+
+        public static async Task<(Preset Preset, string Seed, string ValidationHash)> LoadLogFileAsync(
+            string logFilePath,
+            string author,
+            string name,
+            string description,
+            IReadOnlyDictionary<string, Option> options)
+        {
+            using var fileStream = File.OpenRead(logFilePath);
+
+            return await LoadLogStreamAsync(fileStream, author, name, description, options);
+        }
+
+        private static async Task<(Preset Preset, string Seed, string ValidationHash)> LoadLogStreamAsync(
+            Stream stream,
+            string author,
+            string name,
+            string description,
+            IReadOnlyDictionary<string, Option> options)
+        {
+            using (StreamReader r = new StreamReader(stream))
             {
                 var allFileTask = r.ReadToEndAsync();
 
@@ -525,7 +567,7 @@ namespace MaraBot.Core
                 var optionsString = optionsMatch.Success ? optionsMatch.Groups["options"].Value : string.Empty;
                 string validationHash = validationHashMatch.Success ? validationHashMatch.Groups["validationHash"].Value : string.Empty;
 
-                var preset = CreatePresetFromOptionsString( String.IsNullOrEmpty(author) ? ctx.User.Username : author,  name, description, optionsString);
+                var preset = CreatePresetFromOptionsString(String.IsNullOrEmpty(author) ? "Mara" : author,  name, description, optionsString);
 
                 preset.MakeDisplayable(options);
                 return (preset, seed, validationHash);
@@ -563,16 +605,14 @@ namespace MaraBot.Core
         }
 
 
-
         private static async Task<(Preset Preset, string Seed, string ValidationHash)> GenerateMysteryRaceAsync(
             CommandContext ctx,
-            string rawArgs,
+            string author,
+            string name,
+            string description,
             IReadOnlyDictionary<string, MysterySetting> mysterySettings,
             IReadOnlyDictionary<string, Option> options)
         {
-            // Parse command line arguments to retrieve preset author, name and description if available.
-            ParseCustomRaceCommandLineArguments(rawArgs, out string author, out string name, out string description);
-
             var seed = RandomUtils.GetRandomSeed();
             var optionsString = String.Empty;
 
@@ -608,7 +648,7 @@ namespace MaraBot.Core
                 }
             });
 
-            var preset = CreatePresetFromOptionsString( String.IsNullOrEmpty(author) ? ctx.User.Username : author,  name, description, optionsString);
+            var preset = CreatePresetFromOptionsString( String.IsNullOrEmpty(author) ? "Mara" : author,  name, description, optionsString);
 
             preset.MakeDisplayable(options);
             return (preset, seed, String.Empty);
@@ -624,7 +664,9 @@ namespace MaraBot.Core
         /// <exception cref="InvalidOperationException">Thrown if there was an error while parsing provided attachment.</exception>
         public static async Task<(Preset Preset, string Seed, string ValidationHash)> GenerateRace(
             CommandContext ctx,
-            string rawArgs,
+            string author,
+            string name,
+            string description,
             IReadOnlyDictionary<string, MysterySetting> mysterySettings,
             IReadOnlyDictionary<string, Option> options)
         {
@@ -636,14 +678,185 @@ namespace MaraBot.Core
                     var preset = await LoadPresetAttachmentAsync(ctx, options);
                     return (preset, String.Empty, String.Empty);
                 case AttachmentFileType.LogFile:
-                    return await LoadLogAttachmentAsync(ctx, rawArgs, options);
+                    return await LoadLogAttachmentAsync(ctx, author, name, description, options);
                 case AttachmentFileType.None:
-                    return await GenerateMysteryRaceAsync(ctx, rawArgs, mysterySettings, options);
+                    return await GenerateMysteryRaceAsync(ctx, author, name, description, mysterySettings, options);
 
                 default:
                     throw new InvalidOperationException(errorMessage);
             }
         }
+
+        public static async Task<(Preset Preset, string Seed, string ValidationHash)> GenerateValidationHash(
+            CommandContext ctx,
+            Preset preset,
+            string seed,
+            Config config,
+            IReadOnlyDictionary<string, Option> options,
+            MutexRegistry mutexRegistry)
+        {
+            if (!File.Exists(config.RandomizerExecutablePath))
+                throw new ArgumentException("Could not find randomizer executable.");
+
+            if (!File.Exists(config.RomPath))
+                throw new ArgumentException("Could not find rom.");
+
+            using var mutexLock = await MutexLock.WaitAsync(mutexRegistry.RandomizerExecutableMutex);
+
+            var tempFolder =
+                (Environment.OSVersion.Platform == PlatformID.Unix ||
+                 Environment.OSVersion.Platform == PlatformID.MacOSX) ? "/tmp" : "%TEMP%";
+
+            var rawOptionsString = string.Join(" ",
+                preset.Options.Select(kvp => $"{kvp.Key}={kvp.Value}")
+            );
+
+            if (Environment.OSVersion.Platform == PlatformID.Unix ||
+                Environment.OSVersion.Platform == PlatformID.MacOSX)
+            {
+                Process xvfbProcess = null;
+                var framebufferFile = "/tmp/Xvfb_screen0";
+
+                var displayEnv = Environment.GetEnvironmentVariable("DISPLAY");
+                if (String.IsNullOrEmpty(displayEnv))
+                {
+                    var displayNumber = 1;
+
+                    xvfbProcess = new Process
+                    {
+                        StartInfo = new ProcessStartInfo
+                        {
+                            FileName = "Xvfb",
+                            ArgumentList =
+                            {
+                                $":{displayNumber}",
+                                "-fbdir",
+                                "/tmp/"
+                            }
+                        }
+                    };
+
+                    try
+                    {
+                        xvfbProcess.Start();
+                    }
+                    catch(Exception exception)
+                    {
+                        xvfbProcess.Dispose();
+                        throw new InvalidOperationException(
+                            "This feature requires Xvfb to setup a virtual display.\n" +
+                            $"Exception: {exception.Message}"
+                        );
+                    }
+
+                    var timeout = TimeSpan.FromMilliseconds(5000);
+                    DateTimeOffset timeoutAt = DateTimeOffset.UtcNow + timeout;
+                    var fileExists = false;
+                    while (true)
+                    {
+                        if (File.Exists(framebufferFile))
+                        {
+                            fileExists = true;
+                            break;
+                        }
+                        if (DateTimeOffset.UtcNow >= timeoutAt) break;
+                        await Task.Delay(10);
+                    }
+
+                    if (fileExists)
+                        displayEnv = $":{displayNumber}";
+                    else
+                    {
+                        xvfbProcess?.Kill();
+                        xvfbProcess?.Dispose();
+
+                        throw new InvalidOperationException(
+                            $"Could not find Xvfb framebuffer file {framebufferFile}."
+                        );
+                    }
+                }
+
+                var tcs = new TaskCompletionSource<int>();
+                var randomizerProcess = new Process
+                {
+                    StartInfo =
+                    {
+                        WorkingDirectory = tempFolder,
+                        FileName = "mono",
+                        ArgumentList =
+                        {
+                            $"{config.RandomizerExecutablePath}",
+                            $"srcRom={config.RomPath}",
+                            $"dstRom={tempFolder}/{seed}.sfc",
+                            $"seed={seed}",
+                            $"options=\"{rawOptionsString}\""
+                        }
+                    },
+                    EnableRaisingEvents = true
+                };
+
+                randomizerProcess.StartInfo.EnvironmentVariables["DISPLAY"] = displayEnv;
+
+                randomizerProcess.Exited += (sender, args) =>
+                {
+                    tcs.SetResult(randomizerProcess.ExitCode);
+                    randomizerProcess.Dispose();
+                };
+
+                try
+                {
+                    randomizerProcess.Start();
+                }
+                catch (Exception exception)
+                {
+                    xvfbProcess?.Dispose();
+                    throw new InvalidOperationException(
+                        "This feature requires mono to run the randomizer executable.\n" +
+                        $"Exception: {exception.Message}"
+                    );
+                }
+
+                await tcs.Task;
+
+                File.Delete(framebufferFile);
+
+                xvfbProcess?.Kill();
+                xvfbProcess?.Dispose();
+            }
+            else
+            {
+                var tcs = new TaskCompletionSource<int>();
+                var randomizerProcess = new Process
+                {
+                    StartInfo =
+                    {
+                        WorkingDirectory = tempFolder,
+                        FileName = $"{config.RandomizerExecutablePath}",
+                        ArgumentList =
+                        {
+                            $"srcRom={config.RomPath}",
+                            $"dstRom={tempFolder}/{seed}.sfc",
+                            $"seed={seed}",
+                            $"options=\"{rawOptionsString}\""
+                        }
+                    },
+                    EnableRaisingEvents = true
+                };
+
+                randomizerProcess.Start();
+
+                randomizerProcess.Exited += (sender, args) =>
+                {
+                    tcs.SetResult(randomizerProcess.ExitCode);
+                    randomizerProcess.Dispose();
+                };
+
+                await tcs.Task;
+            }
+
+            return await LoadLogFileAsync($"{tempFolder}/log_{seed}.txt", preset.Author, preset.Name, preset.Description, options);
+        }
+
 
         /// <summary>
         /// Creates a preset from raw options string.

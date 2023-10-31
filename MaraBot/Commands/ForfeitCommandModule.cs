@@ -26,6 +26,10 @@ namespace MaraBot.Commands
         /// Bot configuration.
         /// </summary>
         public Config Config { private get; set; }
+        /// <summary>
+        /// Mutex registry.
+        /// </summary>
+        public MutexRegistry MutexRegistry { private get; set; }
 
         /// <summary>
         /// Executes the forfeit command.
@@ -51,8 +55,11 @@ namespace MaraBot.Commands
             await ctx.Message.DeleteAsync();
 
             // Add user to leaderboard.
-            Weekly.AddToLeaderboard(ctx.User.Username, TimeSpan.MaxValue);
-            await WeeklyIO.StoreWeeklyAsync(Weekly);
+            using (await MutexLock.WaitAsync(MutexRegistry.WeeklyWriteAccessMutex))
+            {
+                Weekly.AddToLeaderboard(ctx.User.Username, TimeSpan.MaxValue);
+                await WeeklyIO.StoreWeeklyAsync(Weekly);
+            }
 
             // Send message in current channel and in spoiler channel.
             var message = $"{ctx.User.Mention} forfeited the weekly!";

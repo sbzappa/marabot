@@ -5,6 +5,7 @@ using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using MaraBot.IO;
+using Microsoft.Extensions.Logging;
 
 namespace MaraBot.Commands
 {
@@ -33,6 +34,10 @@ namespace MaraBot.Commands
         /// Bot configuration.
         /// </summary>
         public Config Config { private get; set; }
+        /// <summary>
+        /// Mutex registry.
+        /// </summary>
+        public MutexRegistry MutexRegistry { private get; set; }
 
         /// <summary>
         /// Executes the weekly command.
@@ -63,6 +68,8 @@ namespace MaraBot.Commands
             var previousWeek = Weekly.WeekNumber;
             var currentWeek = RandomUtils.GetWeekNumber();
             var backupAndResetWeekly = previousWeek != currentWeek;
+
+            using var mutexLock = await MutexLock.WaitAsync(MutexRegistry.WeeklyWriteAccessMutex);
 
             // Make a backup of the previous week's weekly and create a new
             // weekly for the current week.
@@ -95,11 +102,15 @@ namespace MaraBot.Commands
 
             // Load in the new preset in attachment.
             Preset preset;
-            string seed;
-            string validationHash;
+            string seed, validationHash;
+            string author, name, description;
+
             try
             {
-                (preset, seed, validationHash) = await CommandUtils.GenerateRace(ctx, rawArgs, MysterySettings, Options);
+                // Parse command line arguments to retrieve preset author, name and description if available.
+                CommandUtils.ParseCustomRaceCommandLineArguments(rawArgs, out author, out name, out description);
+
+                (preset, seed, validationHash) = await CommandUtils.GenerateRace(ctx, author, name, description, MysterySettings, Options);
             }
             catch (InvalidOperationException e)
             {
@@ -126,6 +137,24 @@ namespace MaraBot.Commands
             {
                 Weekly.Seed = seed;
                 Weekly.ValidationHash = validationHash;
+            }
+
+            if (String.IsNullOrEmpty(Weekly.ValidationHash))
+            {
+                try
+                {
+                    var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(ctx, Weekly.Preset, Weekly.Seed, Config, Options, MutexRegistry);
+                    if (newPreset.Equals(preset) && newSeed.Equals(seed))
+                    {
+                        Weekly.ValidationHash = newValidationHash;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ctx.Client.Logger.LogWarning(
+                        "Could not create a validation hash.\n" +
+                        exception.Message);
+                }
             }
 
             await WeeklyIO.StoreWeeklyAsync(Weekly);

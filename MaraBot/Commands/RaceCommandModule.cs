@@ -6,6 +6,7 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using MaraBot.Core;
 using MaraBot.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace MaraBot.Commands
 {
@@ -22,11 +23,14 @@ namespace MaraBot.Commands
         /// Mystery Settings.
         /// </summary>
         public IReadOnlyDictionary<string, MysterySetting> MysterySettings { private get; set; }
-
         /// <summary>
         /// Bot configuration.
         /// </summary>
         public Config Config { private get; set; }
+        /// <summary>
+        /// Mutex registry.
+        /// </summary>
+        public MutexRegistry MutexRegistry { private get; set; }
 
         /// <summary>
         /// Executes the race command.
@@ -46,11 +50,15 @@ namespace MaraBot.Commands
         public async Task Execute(CommandContext ctx, [RemainingText][Description(CommandUtils.kCustomRaceArgsDescription)] string rawArgs)
         {
             Preset preset;
-            string seed;
-            string validationHash;
+            string seed, validationHash;
+            string author, name, description;
+;
             try
             {
-                (preset, seed, validationHash) = await CommandUtils.GenerateRace(ctx, rawArgs, MysterySettings, Options);
+                // Parse command line arguments to retrieve preset author, name and description if available.
+                CommandUtils.ParseCustomRaceCommandLineArguments(rawArgs, out author, out name, out description);
+
+                (preset, seed, validationHash) = await CommandUtils.GenerateRace(ctx, author, name, description, MysterySettings, Options);
             }
             catch (InvalidOperationException e)
             {
@@ -66,8 +74,29 @@ namespace MaraBot.Commands
             if (string.IsNullOrEmpty(seed))
                 seed = RandomUtils.GetRandomSeed();
 
-            await ctx.RespondAsync(Display.RaceEmbed(preset, seed, validationHash));
+            var response = await ctx.RespondAsync(Display.RaceEmbed(preset, seed, validationHash));
             await CommandUtils.SendSuccessReaction(ctx);
+
+            if (String.IsNullOrEmpty(validationHash))
+            {
+                try
+                {
+                    var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(ctx, preset, seed, Config, Options, MutexRegistry);
+                    if (newPreset.Equals(preset) && newSeed.Equals(seed))
+                    {
+                        validationHash = newValidationHash;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ctx.Client.Logger.LogWarning(
+                        "Could not create a validation hash.\n" +
+                        exception.Message);
+                }
+            }
+
+            await response.ModifyAsync(Display.RaceEmbed(preset, seed, validationHash).Build());
+            await CommandUtils.SendRaceValidatedReaction(ctx);
         }
     }
 }

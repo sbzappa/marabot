@@ -39,5 +39,11 @@ namespace MaraBot.Core
         /// </summary>
         [JsonProperty]
         public readonly string WeeklySpoilerChannel;
+
+        [JsonProperty]
+        public readonly string RandomizerExecutablePath;
+
+        [JsonProperty]
+        public readonly string RomPath;
     }
 }
