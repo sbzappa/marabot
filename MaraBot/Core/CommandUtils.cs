@@ -789,7 +789,7 @@ namespace MaraBot.Core
                             $"srcRom={config.RomPath}",
                             $"dstRom={tempFolder}/{seed}.sfc",
                             $"seed={seed}",
-                            $"options=\"{rawOptionsString}\""
+                            $"options={rawOptionsString}"
                         }
                     },
                     EnableRaisingEvents = true
@@ -837,7 +837,7 @@ namespace MaraBot.Core
                             $"srcRom={config.RomPath}",
                             $"dstRom={tempFolder}/{seed}.sfc",
                             $"seed={seed}",
-                            $"options=\"{rawOptionsString}\""
+                            $"options={rawOptionsString}"
                         }
                     },
                     EnableRaisingEvents = true
