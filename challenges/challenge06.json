@@ -1,0 +1,21 @@
+{
+  "name": "Challenge 6: Santa is confused...",
+  "description": "...and randomized all character's roles on accident",
+  "author": "Menblock",
+  "difficulty": "3",
+  "options": {
+    "aggBosses": "yes",
+    "opXmasMaps": "yes",
+    "opAllowLockedItems": "yes",
+    "opBoyRole": "randomunique",
+    "opGirlRole": "randomunique",
+    "opSpriteRole": "randomunique",
+    "mode": "open",
+    "opStatGrowth": "boss",
+    "opDifficulty": "kindahard",
+    "opExp": "triple",
+    "opGoal": "vlong",
+    "opLogic": "restrictive",
+    "opStartChar": "random"
+  }
+}

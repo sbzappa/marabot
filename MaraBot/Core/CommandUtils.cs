@@ -493,7 +493,7 @@ namespace MaraBot.Core
             return AttachmentFileType.Invalid;
         }
 
-        private static async Task<Preset> LoadPresetAttachmentAsync(CommandContext ctx, IReadOnlyDictionary<string, Option> options)
+        private static async Task<Preset> LoadPresetAttachmentAsync(CommandContext ctx, IReadOnlyDictionary<string, Option> options, Config config)
         {
             var attachment = ctx.Message.Attachments[0];
             var url = attachment.Url;
@@ -503,7 +503,7 @@ namespace MaraBot.Core
             using (StreamReader r = new StreamReader(dataStream))
             {
                 var jsonContent = await r.ReadToEndAsync();
-                var preset = PresetIO.LoadPreset(jsonContent, options);
+                var preset = PresetIO.LoadPreset(jsonContent, options, config);
                 if (preset.Equals(default))
                     throw new InvalidOperationException("Could not parse custom json preset. Please supply a valid json file.");
 
@@ -668,14 +668,15 @@ namespace MaraBot.Core
             string name,
             string description,
             IReadOnlyDictionary<string, MysterySetting> mysterySettings,
-            IReadOnlyDictionary<string, Option> options)
+            IReadOnlyDictionary<string, Option> options,
+            Config config)
         {
             var attachmentType = GetAttachmentFileType(ctx, out var errorMessage);
 
             switch (attachmentType)
             {
                 case AttachmentFileType.JsonPreset:
-                    var preset = await LoadPresetAttachmentAsync(ctx, options);
+                    var preset = await LoadPresetAttachmentAsync(ctx, options, config);
                     return (preset, String.Empty, String.Empty);
                 case AttachmentFileType.LogFile:
                     return await LoadLogAttachmentAsync(ctx, author, name, description, options);
@@ -915,6 +916,27 @@ namespace MaraBot.Core
                 case 3 : return $"{n}rd";
                 default: return $"{n}th";
             }
+        }
+
+        const string k_RabiteStartEmoji = "<:rabiteD:889669696687845377>";
+        const string k_RabiteMiddleEmoji = "<:rabiteB:889669135905202268>";
+        const string k_RabiteEndEmoji = "<:rabiteE:889669742749704272>";
+
+        public static string IntegerToRabiteEmojis(int n)
+        {
+            if (n < 1)
+                throw new ArgumentOutOfRangeException("Integer must be positive");
+
+            var str = k_RabiteStartEmoji;
+
+            for (int i = 1; i < n; ++i)
+            {
+                str += k_RabiteMiddleEmoji;
+            }
+
+            str += k_RabiteEndEmoji;
+
+            return str;
         }
     }
 }

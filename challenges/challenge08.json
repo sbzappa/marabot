@@ -1,0 +1,16 @@
+{
+  "name": "Challenge 8: Sadly, no trace of them was ever found...",
+  "description": "The save strats are real!",
+  "author": "Menblock",
+  "difficulty": "4",
+  "options": {
+    "moreItems": "no",
+    "starterGear": "yes",
+    "ohko": "yes",
+    "opAutosave": "no",
+    "mode": "open",
+    "opCharacters": "startboth",
+    "opGoal": "mtr",
+    "opLogic": "restrictive"
+  }
+}

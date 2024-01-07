@@ -73,8 +73,12 @@ namespace MaraBot.Messages
                 embed.AddField(preset.Name, String.IsNullOrEmpty(preset.Description) ? "\u200B" : preset.Description);
             }
 
+            embed.AddField("Author", preset.Author);
+
+            if (preset.Difficulty != 0)
+                embed.AddField("Difficulty", CommandUtils.IntegerToRabiteEmojis(preset.Difficulty));
+
             embed
-                .AddField("Author", preset.Author)
                 .AddOptions(preset)
                 .AddField("Seed", Formatter.BlockCode(seed));
 
@@ -120,6 +124,45 @@ namespace MaraBot.Messages
             return embed;
         }
 
+        public static DiscordMessageBuilder PresetsFlipBook(
+            Preset preset,
+            int index,
+            int count,
+            string buttonFirstID,
+            string buttonPreviousID,
+            string buttonNextID,
+            string buttonLastID)
+        {
+            return new DiscordMessageBuilder()
+                .AddPresetsFlipBook(
+                    preset, index, count,
+                    buttonFirstID, buttonPreviousID, buttonNextID, buttonLastID);
+        }
+
+        public static T AddPresetsFlipBook<T>(
+            this T builder,
+            Preset preset,
+            int index,
+            int count,
+            string buttonFirstID,
+            string buttonPreviousID,
+            string buttonNextID,
+            string buttonLastID)
+            where T : BaseDiscordMessageBuilder<T>
+        {
+            builder
+                .AddEmbed(Display.PresetEmbed(preset))
+                .AddComponents(new DiscordComponent[]
+                {
+                    new DiscordButtonComponent(ButtonStyle.Success, buttonFirstID, "FIRST", index == 0),
+                    new DiscordButtonComponent(ButtonStyle.Success, buttonPreviousID, "PREVIOUS", index == 0),
+                    new DiscordButtonComponent(ButtonStyle.Secondary, "dont_care", $"{index + 1}/{count}", true),
+                    new DiscordButtonComponent(ButtonStyle.Success, buttonNextID, "NEXT", index == count - 1),
+                    new DiscordButtonComponent(ButtonStyle.Success, buttonLastID, "LAST", index == count - 1)
+                });
+            return builder;
+        }
+
         /// <summary>
         /// Displays a preset information.
         /// </summary>
@@ -133,11 +176,15 @@ namespace MaraBot.Messages
                 Color = DiscordColor.Green
             };
 
-            embed
-                .AddField("Preset", preset.Name)
-                .AddField("Description", preset.Description)
-                .AddField("Author", preset.Author)
-                .AddOptions(preset);
+            embed.AddField("Preset", preset.Name);
+
+            if (!String.IsNullOrEmpty(preset.Description))
+                embed.AddField("Description", preset.Description);
+
+            if (!String.IsNullOrEmpty(preset.Author))
+                embed.AddField("Author", preset.Author);
+
+            embed.AddOptions(preset);
 
             return embed;
         }

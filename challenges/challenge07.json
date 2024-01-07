@@ -1,0 +1,19 @@
+{
+  "name": "Challenge 7: Save the Mana Tree!",
+  "description": "High level enemies are defending Pure Land. Train, fight and save the Mana Tree!",
+  "author": "Menblock",
+  "difficulty": "2",
+  "options": {
+    "opAiRando": "swap",
+    "opBoyRole": "random",
+    "opGirlRole": "random",
+    "opSpriteRole": "random",
+    "mode": "open",
+    "opStatGrowth": "vanilla",
+    "opCharacters": "findbothCL",
+    "opGoal": "mtr",
+    "opBosses": "swap",
+    "opLogic": "restrictive",
+    "opStartChar": "random"
+  }
+}

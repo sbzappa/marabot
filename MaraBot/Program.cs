@@ -21,14 +21,13 @@ namespace MaraBot
 
         static async Task MainAsync()
         {
-            var configTask = ConfigIO.LoadConfigAsync();
+            var config = await ConfigIO.LoadConfigAsync();
             var options = await OptionsIO.LoadOptionsAsync();
             var weeklyTask = WeeklyIO.LoadWeeklyAsync(options);
+            var challengePresetsTask = PresetIO.LoadChallengePresetsAsync(options, config);
             var responsesTask = EightBallIO.LoadResponsesAsync();
             var mysterySettingsTask = MysterySettingsIO.LoadMysterySettingsAsync();
             using var mutexRegistry = new MutexRegistry();
-
-            var config = await configTask;
 
             var discord = new DiscordShardedClient(new DiscordConfiguration()
             {
@@ -38,6 +37,7 @@ namespace MaraBot
             });
 
             var weekly = await weeklyTask;
+            var challenges = await challengePresetsTask;
             var responses = await responsesTask;
             var mysterySettings = await mysterySettingsTask;
 
@@ -48,6 +48,7 @@ namespace MaraBot
                 .AddSingleton(responses)
                 .AddSingleton(weekly)
                 .AddSingleton<IReadOnlyWeekly>(_ => weekly)
+                .AddSingleton<IReadOnlyDictionary<string, Preset>>(_ => challenges)
                 .AddSingleton(mutexRegistry)
                 .BuildServiceProvider();
 
@@ -82,6 +83,8 @@ namespace MaraBot
             commands.RegisterCommands<Commands.ResetWeeklyCommandModule>();
             commands.RegisterCommands<Commands.EightBallCommandModule>();
             commands.RegisterCommands<Commands.CheatCommandModule>();
+            commands.RegisterCommands<Commands.ChallengeCommandModule>();
+            commands.RegisterCommands<Commands.ChallengesCommandModule>();
 
             foreach(var c in commands) {
                 c.Value.CommandExecuted += CommandEvents.OnCommandExecuted;

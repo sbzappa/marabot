@@ -1,0 +1,15 @@
+{
+  "Name": "Challenge 18: Are the seconds getting faster, or is it just me?",
+  "Description": "Level up faster than the game, and you'll be fine.",
+  "Author": "Menblock",
+  "Difficulty": "4",
+  "Options": {
+    "opNumSeeds": "7",
+    "mode": "open",
+    "opStatGrowth": "timed",
+    "opDifficulty": "hard",
+    "opCharacters": "find1CL",
+    "opGoal": "mtr",
+    "opLogic": "restrictive"
+  }
+}

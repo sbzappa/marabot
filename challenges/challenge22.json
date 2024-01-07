@@ -1,0 +1,13 @@
+{
+  "Name": "Challenge 22: Metal Crawlers suck, this run will prove it",
+  "Author": "Menblock",
+  "Difficulty": "1",
+  "Options": {
+    "oopsAllThis": "49",
+    "mode": "open",
+    "opCharacters": "none",
+    "opGoal": "mtr",
+    "opEnemies": "oops",
+    "opLogic": "restrictive"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "Name": "Challenge 12: RIP Midge Mallet and Moogle Belt",
+  "Description": "You only have a fixed amount of damage cancels during boss fights. Use them wisely.",
+  "Author": "Menblock",
+  "Difficulty": "4",
+  "Options": {
+    "moreItems": "no",
+    "bossElementRando": "yes",
+    "dmgCancelAllow": "consumables",
+    "ohko": "yes",
+    "opNumSeeds": "7",
+    "mode": "open",
+    "opCharacters": "findbothCL",
+    "opGoal": "mtr",
+    "opLogic": "restrictive"
+  }
+}

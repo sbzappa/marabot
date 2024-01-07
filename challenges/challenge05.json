@@ -1,0 +1,13 @@
+{
+  "name": "Challenge 5: Rando Defendo",
+  "description": "How it feels to wear armor: https://www.youtube.com/watch?v=FcZd305VI60",
+  "author": "Menblock",
+  "difficulty": "2",
+  "options": {
+    "defRefactor": "yes",
+    "rPreserve": "yes",
+    "mode": "rando",
+    "rExp": "normal",
+    "rGold": "triple"
+  }
+}

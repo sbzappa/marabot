@@ -110,7 +110,7 @@ namespace MaraBot.Commands
                 // Parse command line arguments to retrieve preset author, name and description if available.
                 CommandUtils.ParseCustomRaceCommandLineArguments(rawArgs, out author, out name, out description);
 
-                (preset, seed, validationHash) = await CommandUtils.GenerateRace(ctx, author, name, description, MysterySettings, Options);
+                (preset, seed, validationHash) = await CommandUtils.GenerateRace(ctx, author, name, description, MysterySettings, Options, Config);
             }
             catch (InvalidOperationException e)
             {

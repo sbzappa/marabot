@@ -1,0 +1,14 @@
+{
+  "name": "Challenge 3: Needs more levels",
+  "description": "Relevant ~xkcd~ clip: https://clips.twitch.tv/ZealousDiligentBeeDancingBaby",
+  "author": "Menblock",
+  "difficulty": "2",
+  "options": {
+    "opMinLevel": "yes",
+    "mode": "open",
+    "opStatGrowth": "boss",
+    "opCharacters": "findbothCL",
+    "opGoal": "mtr",
+    "opLogic": "restrictive"
+  }
+}

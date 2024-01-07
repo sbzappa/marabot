@@ -1,0 +1,14 @@
+{
+  "name": "Challenge 2: You have one shot",
+  "description": "Or it's over!",
+  "author": "Menblock",
+  "difficulty": "3",
+  "options": {
+    "ohko": "yes",
+    "mode": "open",
+    "opCharacters": "findbothCL",
+    "opGoal": "mtr",
+    "opBosses": "swap",
+    "opLogic": "restrictive"
+  }
+}
