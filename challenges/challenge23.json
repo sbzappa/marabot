@@ -1,0 +1,10 @@
+{
+  "Name": "Challenge 23: Rando rando",
+  "Author": "Menblock",
+  "Difficulty": "3",
+  "Options": {
+    "bossElementRando": "yes",
+    "rDifficulty": "150",
+    "mode": "rando"
+  }
+}

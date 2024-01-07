@@ -1,0 +1,24 @@
+{
+  "Name": "Challenge 10: We ran out of gold.",
+  "Description": "Guess you'll have to use it wisely.",
+  "Author": "Menblock",
+  "Difficulty": "3",
+  "Options": {
+    "bossElementRando": "yes",
+    "enemyInfiniteMp": "yes",
+    "opBoyRole": "randomunique",
+    "opGirlRole": "randomunique",
+    "opSpriteRole": "randomunique",
+    "opGold": "0",
+    "opGoldCheckMul": "2.5",
+    "opGoldDropMul": "0",
+    "opStartGold": "2500",
+    "mode": "open",
+    "opDifficulty": "kindahard",
+    "opCharacters": "find1CL",
+    "opGoal": "mtr",
+    "opBosses": "vanilla",
+    "opLogic": "restrictive",
+    "opStartChar": "random"
+  }
+}

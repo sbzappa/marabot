@@ -11,6 +11,8 @@ A Secret of Mana Randomizer bot for Discord.
 - `!forfeit`: Forfeit the weekly, but gain access to the spoiler channel. WIll add you to the leaderboard as DNF.
 - `!leaderboard [weekNumber]`: Display specified week's leaderboard. Without parameters, display this week's leaderboard (only if in spoiler channel).
 - `!reset [--author string][--name string][--description string]`: Reset the current weekly when the week is over and create a new race using a .json preset or .txt log file attached to this message. If no file is attached, generate a randomized race using mystery weekly settings (only available to people with a race organizer role for security reasons).
+- `!challenge [presetName]`: Generate a custom challenge race using a preset name or challenge randomly from the list of challenge presets.
+- `!challenges`: Browse through existing challenge presets.
 - `!spoiler [--done member][--completed member][--forfeit member][--revoke member]`: Grant or Revoke spoiler roles manually (only available to people with a race organizer role for security reasons).
 - `!8ball [rawOptions]`: Ask Mara a question and bask in her wisdom!!! 
 

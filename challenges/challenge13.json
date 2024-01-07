@@ -1,0 +1,14 @@
+{
+  "Name": "Challenge 13: Back to a Classic",
+  "Description": "Hoot hoot. 🦉",
+  "Author": "Menblock",
+  "Difficulty": "1",
+  "Options": {
+    "confusionFix": "no",
+    "mode": "open",
+    "opDifficulty": "kindahard",
+    "opGoal": "mtr",
+    "opEnemies": "oops",
+    "opLogic": "restrictive"
+  }
+}

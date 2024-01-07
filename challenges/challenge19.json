@@ -1,0 +1,19 @@
+{
+  "Name": "Challenge 19: What's your favorite ice cream?",
+  "Description": "Chocolate with a hint of vanilla.",
+  "Author": "Menblock",
+  "Difficulty": "2",
+  "Options": {
+    "opManaBeastScale": "vanilla",
+    "opBoyRole": "randomunique",
+    "opGirlRole": "randomunique",
+    "opSpriteRole": "randomunique",
+    "mode": "open",
+    "opStatGrowth": "vanilla",
+    "opCharacters": "findbothCL",
+    "opGoal": "vlong",
+    "opBosses": "swap",
+    "opLogic": "restrictive",
+    "opStartChar": "random"
+  }
+}

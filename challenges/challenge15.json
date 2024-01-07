@@ -1,0 +1,14 @@
+{
+  "Name": "Challenge 15: Tick Tock",
+  "Description": "Cause of death: poisoning",
+  "Author": "Menblock",
+  "Difficulty": "2",
+  "Options": {
+    "percentPoison": "yes",
+    "deathByPoison": "yes",
+    "opNumSeeds": "7",
+    "mode": "open",
+    "opGoal": "mtr",
+    "opLogic": "restrictive"
+  }
+}

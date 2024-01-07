@@ -29,16 +29,16 @@ namespace MaraBot.Core
         public readonly string Author;
 
         /// <summary>
+        /// Difficulty of the preset.
+        /// </summary>
+        [JsonProperty]
+        public readonly int Difficulty;
+
+        /// <summary>
         /// List of option flags as used in the randomizer options string.
         /// </summary>
         [JsonProperty]
         public readonly Dictionary<string, string> Options;
-
-        /// <summary>
-        /// Priority of the preset in determining the next weekly preset.
-        /// </summary>
-        [JsonProperty]
-        public readonly int Weight;
 
         /// <summary>
         /// Human-readable string describing the Open Mode Goal if applicable.
@@ -79,8 +79,8 @@ namespace MaraBot.Core
             Name = name;
             Description = description;
             Author = author;
+            Difficulty = 0;
             Options = new Dictionary<string, string>(options);
-            Weight = 1;
             m_OpenModeGoal = String.Empty;
             m_GeneralOptions = m_ModeOptions = m_OtherOptions = null;
         }
@@ -94,8 +94,8 @@ namespace MaraBot.Core
             Name = preset.Name;
             Description = preset.Description;
             Author = preset.Author;
+            Difficulty = preset.Difficulty;
             Options = new Dictionary<string, string>(preset.Options);
-            Weight = preset.Weight;
 
             m_OpenModeGoal = String.Empty;
             m_GeneralOptions = new Dictionary<string, string>(preset.GeneralOptions);

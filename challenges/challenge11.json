@@ -1,0 +1,17 @@
+{
+  "Name": "Challenge 11: Where's my magic?",
+  "Description": "It's time to bring out the weaponry!",
+  "Author": "Menblock",
+  "Difficulty": "2",
+  "Options": {
+    "bossElementRando": "yes",
+    "opGirlRole": "ogboy",
+    "opSpriteRole": "ogboy",
+    "mode": "open",
+    "opStatGrowth": "boss",
+    "opDifficulty": "kindahard",
+    "opCharacters": "findbothCL",
+    "opGoal": "mtr",
+    "opLogic": "restrictive"
+  }
+}

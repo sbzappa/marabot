@@ -1,0 +1,13 @@
+{
+  "name": "Challenge 1: Baby's first lag%",
+  "description": "Not really baby's first, but it's a first :D",
+  "author": "Menblock",
+  "difficulty": "1",
+  "options": {
+    "oopsAllThis": "46",
+    "mode": "open",
+    "opGoal": "mtr",
+    "opEnemies": "oops",
+    "opLogic": "restrictive"
+  }
+}

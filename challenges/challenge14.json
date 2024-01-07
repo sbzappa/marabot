@@ -1,0 +1,16 @@
+{
+  "Name": "Challenge 14: Elemental Aggression",
+  "Description": "But is there really aggression if nobody can observe it?",
+  "Author": "Menblock",
+  "Difficulty": "3",
+  "Options": {
+    "aggBosses": "yes",
+    "obscureDamage": "yes",
+    "obscureHp": "yes",
+    "bossElementRando": "yes",
+    "mode": "open",
+    "opCharacters": "findbothCL",
+    "opGoal": "mtr",
+    "opLogic": "restrictive"
+  }
+}
