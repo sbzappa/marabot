@@ -13,7 +13,7 @@
 
   "bossElementRando": {
     "values": {
-      "yes": 10
+      "yes": 40
     }
   },
 
@@ -62,7 +62,7 @@
   "opStatGrowth": {
     "requirement": "opGoal=mtr",
     "values": {
-      "boss"  : 10,
+      "boss"  : 20,
       "timed"  : 5
     }
   },
@@ -90,8 +90,7 @@
 
   "opComplexity": {
     "values": {
-      "easy": 10,
-      "hard": 10
+      "hard": 40
     }
   },
 
@@ -114,7 +113,7 @@
 
   "opDisableHints": {
     "values": {
-      "yes": 10
+      "yes": 30
     }
   },
 
