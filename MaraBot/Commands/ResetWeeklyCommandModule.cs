@@ -66,7 +66,7 @@ namespace MaraBot.Commands
             }
 
             var previousWeek = Weekly.WeekNumber;
-            var currentWeek = RandomUtils.GetWeekNumber();
+            var currentWeek = WeeklyUtils.GetWeekNumber();
             var backupAndResetWeekly = previousWeek != currentWeek;
 
             using var mutexLock = await MutexLock.WaitAsync(MutexRegistry.WeeklyWriteAccessMutex);
@@ -77,7 +77,7 @@ namespace MaraBot.Commands
             {
                 try
                 {
-                    await CommandUtils.RevokeAllRolesAsync(ctx, new[]
+                    await CommandUtils.RevokeAllRolesAsync(ctx.Guild, new[]
                     {
                         Config.WeeklyCompletedRole,
                         Config.WeeklyForfeitedRole
@@ -131,7 +131,7 @@ namespace MaraBot.Commands
             Weekly.Preset = preset;
             if (string.IsNullOrEmpty(seed))
             {
-                Weekly.Seed = RandomUtils.GetRandomSeed();
+                Weekly.Seed = WeeklyUtils.GetRandomSeed();
             }
             else
             {

@@ -6,10 +6,27 @@ namespace MaraBot.Core
     /// <summary>
     /// Methods used to generate randomizer seeds.
     /// </summary>
-    public static class RandomUtils
+    public static class WeeklyUtils
     {
         static Random s_TimeBasedRandom = new Random(DateTime.Now.GetHashCode());
         static DateTime s_FirstWeek = new DateTime(2021, 08, 13, 0, 0, 0);
+        static readonly TimeSpan s_WeeklyDuration = TimeSpan.FromDays(7.0);
+
+        /// <summary>
+        /// Retrieves the duration until next weekly reset.
+        /// </summary>
+        /// <returns>Returns a TimeSpan duration until next weekly reset.</returns>
+        public static TimeSpan GetRemainingWeeklyDuration(int weekNumber)
+        {
+            var currentWeek = GetWeek(weekNumber);
+            var elapsed = DateTime.UtcNow.Subtract(currentWeek);
+            var divide = elapsed.Divide(s_WeeklyDuration);
+
+            if (divide >= 1.0)
+                return TimeSpan.Zero;
+
+            return s_WeeklyDuration - elapsed;
+        }
 
         /// <summary>
         /// Retrieves a random integer index in between minIndex and maxIndex.
@@ -44,6 +61,26 @@ namespace MaraBot.Core
 
             return elapsedWeeks;
         }
+
+        /// <summary>
+        /// Retrieves the current week (starting date) for
+        /// the current weekly.
+        /// </summary>
+        /// <returns>Returns a DateTime time stamp.</returns>
+        public static DateTime GetWeek() =>
+            GetWeek(GetWeekNumber());
+
+        /// <summary>
+        /// Retrieves the week (starting date) for
+        /// specified week number.
+        /// </summary>
+        /// <returns>Returns a DateTime time stamp.</returns>
+        public static DateTime GetWeek(int weekNumber)
+        {
+            var elapsed = s_WeeklyDuration.Multiply(weekNumber);
+            return s_FirstWeek.Add(elapsed);
+        }
+
 
         private static string GetSeed(Random randomGenerator)
         {

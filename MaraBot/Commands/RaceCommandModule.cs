@@ -72,7 +72,7 @@ namespace MaraBot.Commands
             await ctx.RespondAsync(PresetValidation.GenerateValidationMessage(preset, Options));
 
             if (string.IsNullOrEmpty(seed))
-                seed = RandomUtils.GetRandomSeed();
+                seed = WeeklyUtils.GetRandomSeed();
 
             var response = await ctx.RespondAsync(Display.RaceEmbed(preset, seed, validationHash));
             await CommandUtils.SendSuccessReaction(ctx);

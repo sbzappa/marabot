@@ -35,23 +35,30 @@ namespace MaraBot.Core
         [JsonProperty]
         public readonly string WeeklyForfeitedRole;
         /// <summary>
+        /// Channel with weekly posts and leaderboards.
+        /// </summary>
+        [JsonProperty]
+        public readonly string WeeklyChannel;
+        /// <summary>
         /// Channel with weekly spoilers.
         /// </summary>
         [JsonProperty]
         public readonly string WeeklySpoilerChannel;
-
+        /// <summary>
+        /// Channel with challenge posts.
+        /// </summary>
+        [JsonProperty]
+        public readonly string ChallengeChannel;
         /// <summary>
         /// Randomizer version.
         /// </summary>
         [JsonProperty]
         public readonly string RandomizerVersion;
-
         /// <summary>
         /// Path to randomizer executable.
         /// </summary>
         [JsonProperty]
         public readonly string RandomizerExecutablePath;
-
         /// <summary>
         /// Path to rom.
         /// </summary>

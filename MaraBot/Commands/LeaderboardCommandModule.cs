@@ -48,7 +48,7 @@ namespace MaraBot.Commands
             Permissions.AccessChannels)]
         public async Task Execute(CommandContext ctx, [Description("(optional) Week number.")]int weekNumber = -1)
         {
-            var currentWeek = RandomUtils.GetWeekNumber();
+            var currentWeek = WeeklyUtils.GetWeekNumber();
             weekNumber = weekNumber == -1 ? currentWeek : weekNumber;
 
             var weekly = Weekly;
