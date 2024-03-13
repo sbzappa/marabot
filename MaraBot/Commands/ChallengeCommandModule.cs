@@ -77,7 +77,7 @@ namespace MaraBot.Commands
             var validationHash = String.Empty;
             try
             {
-                var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(ctx, preset, seed, Config, Options, MutexRegistry);
+                var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(preset, seed, Config, Options, MutexRegistry);
                 if (newPreset.Equals(preset) && newSeed.Equals(seed))
                 {
                     validationHash = newValidationHash;

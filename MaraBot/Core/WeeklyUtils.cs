@@ -29,6 +29,17 @@ namespace MaraBot.Core
         }
 
         /// <summary>
+        /// Retrieves the duration until next challenge reset
+        /// </summary>
+        /// <returns>Returns a TimeSpan duration until next challenge reset.</returns>
+        public static TimeSpan GetRemainingChallengeDuration()
+        {
+            var nextMonth = DateTime.UtcNow.AddMonths(1);
+            var timeOfReset = new DateTime(nextMonth.Year, nextMonth.Month, 1);
+            return timeOfReset - DateTime.UtcNow;
+        }
+
+        /// <summary>
         /// Retrieves a random integer index in between minIndex and maxIndex.
         /// </summary>
         /// <param name="minIndex">Min Index value.</param>

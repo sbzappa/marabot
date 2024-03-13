@@ -143,7 +143,7 @@ namespace MaraBot.Commands
             {
                 try
                 {
-                    var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(ctx, Weekly.Preset, Weekly.Seed, Config, Options, MutexRegistry);
+                    var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(Weekly.Preset, Weekly.Seed, Config, Options, MutexRegistry);
                     if (newPreset.Equals(preset) && newSeed.Equals(seed))
                     {
                         Weekly.ValidationHash = newValidationHash;

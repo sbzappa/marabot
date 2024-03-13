@@ -735,7 +735,6 @@ namespace MaraBot.Core
         }
 
         public static async Task<(Preset Preset, string Seed, string ValidationHash)> GenerateValidationHash(
-            CommandContext ctx,
             Preset preset,
             string seed,
             Config config,

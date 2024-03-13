@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,6 +8,7 @@ using DSharpPlus;
 using MaraBot.Core;
 using MaraBot.IO;
 using MaraBot.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace MaraBot.Tasks
 {
@@ -14,17 +17,40 @@ namespace MaraBot.Tasks
         private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
         public DiscordShardedClient Discord { get; set; }
-        public Weekly Weekly { get; set; }
+
+        public IReadOnlyDictionary<string, Option> Options { get; set; }
+        public IReadOnlyDictionary<string, Preset> Challenges { get; set; }
         public Config Config { get; set; }
+        public MutexRegistry MutexRegistry { get; set; }
+
+        private static readonly string k_ChallengeTimeStamp = "$HOME/challenge.stamp";
 
         public async Task StartAsync()
         {
+            var homeFolder =
+                (Environment.OSVersion.Platform == PlatformID.Unix ||
+                 Environment.OSVersion.Platform == PlatformID.MacOSX)
+                    ? Environment.GetEnvironmentVariable("HOME")
+                    : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+
+            var challengeTimeStamp = k_ChallengeTimeStamp.Replace("$HOME", homeFolder);
+
             try
             {
                 while (!_cts.Token.IsCancellationRequested)
                 {
+                    if (File.Exists(challengeTimeStamp))
+                    {
+                        var timeStamp = File.GetLastWriteTime(challengeTimeStamp);
+                        if (timeStamp.Month == DateTime.UtcNow.Month)
+                        {
+                            await Task.Delay(WeeklyUtils.GetRemainingChallengeDuration(), _cts.Token);
+                        }
+                    }
+
                     await TryResetChallenge();
-                    await Task.Delay(WeeklyUtils.GetRemainingWeeklyDuration(Weekly.WeekNumber), _cts.Token);
+
+                    File.Create(challengeTimeStamp);
                 }
             }
             catch (OperationCanceledException)
@@ -44,35 +70,38 @@ namespace MaraBot.Tasks
                 .SelectMany(shard => shard.Guilds)
                 .Select(kvp => kvp.Value);
 
-            var previousWeek = Weekly.WeekNumber;
-            var currentWeek = WeeklyUtils.GetWeekNumber();
-            var backupAndResetWeekly = previousWeek != currentWeek;
+            var index = WeeklyUtils.GetRandomIndex(0, Challenges.Count);
+            var preset = Challenges.Values.ElementAt(index);
+            var seed = WeeklyUtils.GetRandomSeed();
 
-            // Make a backup of the previous week's weekly and create a new
-            // weekly for the current week.
-            if (!backupAndResetWeekly)
-                return;
+            var validationMessage = PresetValidation.GenerateValidationMessage(preset, Options);
+
+            var validationHash = String.Empty;
+            try
+            {
+                var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(preset, seed, Config, Options, MutexRegistry);
+                if (newPreset.Equals(preset) && newSeed.Equals(seed))
+                {
+                    validationHash = newValidationHash;
+                }
+            }
+            catch (Exception exception)
+            {
+                Discord.Logger.LogWarning(
+                    "Could not create a validation hash.\n" +
+                    exception.Message);
+            }
+
+
+            var raceEmbed = Display.RaceEmbed(preset, seed, validationHash);
 
             foreach (var guild in guilds)
             {
-                await CommandUtils.RevokeAllRolesAsync(guild, new[]
-                {
-                    Config.WeeklyCompletedRole,
-                    Config.WeeklyForfeitedRole
-                });
-
-                await CommandUtils.SendToChannelAsync(
-                    guild,
-                    Config.WeeklyChannel,
-                    await Display.LeaderboardEmbedAsync(guild, Weekly, false));
+                // Print validation in separate message to make sure
+                // we can pin just the race embed
+                await CommandUtils.SendToChannelAsync(guild, Config.ChallengeChannel, validationMessage);
+                await CommandUtils.SendToChannelAsync(guild, Config.ChallengeChannel, raceEmbed);
             }
-
-            // Backup weekly settings to json before overriding.
-            await WeeklyIO.StoreWeeklyAsync(Weekly, $"weekly.{previousWeek}.json");
-
-            // Set weekly to blank with a fresh leaderboard.
-            Weekly.Load(Weekly.NotSet);
-            await WeeklyIO.StoreWeeklyAsync(Weekly);
         }
 
         public void StopAsync()
