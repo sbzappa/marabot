@@ -302,9 +302,15 @@ namespace MaraBot.Core
             }
         }
 
+        /// <summary>
+        /// Sends a message to a specific channel.
+        /// </summary
         public static Task SendToChannelAsync(CommandContext ctx, string channelName, DiscordEmbed embed) =>
             SendToChannelAsync(ctx, channelName, new DiscordMessageBuilder().WithEmbed(embed));
 
+        /// <summary>
+        /// Sends a message to a specific channel.
+        /// </summary
         public static Task SendToChannelAsync(CommandContext ctx, string channelName, string message) =>
             SendToChannelAsync(ctx, channelName, new DiscordMessageBuilder().WithContent(message));
 
@@ -330,12 +336,21 @@ namespace MaraBot.Core
             await channel.SendMessageAsync(messageBuilder);
         }
 
+        /// <summary>
+        /// Sends a message to a specific channel.
+        /// </summary>
         public static Task SendToChannelAsync(DiscordGuild guild, string channelName, DiscordEmbed embed) =>
             SendToChannelAsync(guild, channelName, new DiscordMessageBuilder().WithEmbed(embed));
 
+        /// <summary>
+        /// Sends a message to a specific channel.
+        /// </summary
         public static Task SendToChannelAsync(DiscordGuild guild, string channelName, string message) =>
             SendToChannelAsync(guild, channelName, new DiscordMessageBuilder().WithContent(message));
 
+        /// <summary>
+        /// Sends a message to a specific channel.
+        /// </summary
         public static async Task SendToChannelAsync(DiscordGuild guild, string channelName, DiscordMessageBuilder messageBuilder)
         {
             var channel = guild.Channels
@@ -734,6 +749,9 @@ namespace MaraBot.Core
             }
         }
 
+        /// <summary>
+        /// Generates the validation hash using SoMAncientCave.exe.
+        /// </summary>
         public static async Task<(Preset Preset, string Seed, string ValidationHash)> GenerateValidationHash(
             Preset preset,
             string seed,

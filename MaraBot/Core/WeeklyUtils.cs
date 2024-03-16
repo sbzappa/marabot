@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace MaraBot.Core
@@ -11,6 +12,16 @@ namespace MaraBot.Core
         static Random s_TimeBasedRandom = new Random(DateTime.Now.GetHashCode());
         static DateTime s_FirstWeek = new DateTime(2021, 08, 13, 0, 0, 0);
         static readonly TimeSpan s_WeeklyDuration = TimeSpan.FromDays(7.0);
+
+        enum ChallengeDuration
+        {
+            EveryMinute,
+            EveryWeek,
+            EveryMonth
+        }
+
+        static readonly ChallengeDuration s_ChallengeDuration = ChallengeDuration.EveryMonth;
+
 
         /// <summary>
         /// Retrieves the duration until next weekly reset.
@@ -29,14 +40,55 @@ namespace MaraBot.Core
         }
 
         /// <summary>
-        /// Retrieves the duration until next challenge reset
+        /// Retrieves the duration until next challenge reset.
         /// </summary>
         /// <returns>Returns a TimeSpan duration until next challenge reset.</returns>
-        public static TimeSpan GetRemainingChallengeDuration()
+        public static TimeSpan GetRemainingChallengeDuration(DateTime timeStamp)
         {
-            var nextMonth = DateTime.UtcNow.AddMonths(1);
-            var timeOfReset = new DateTime(nextMonth.Year, nextMonth.Month, 1);
+            DateTime timeOfReset;
+            switch (s_ChallengeDuration)
+            {
+                case ChallengeDuration.EveryMinute:
+                {
+                    var nextMinute = timeStamp.AddMinutes(1);
+                    timeOfReset = new DateTime(nextMinute.Year, nextMinute.Month, nextMinute.Day, nextMinute.Hour, nextMinute.Minute, 0);
+                    break;
+                }
+                case ChallengeDuration.EveryWeek:
+                {
+                    var nextWeek = timeStamp.AddDays(7);
+                    timeOfReset = new DateTime(nextWeek.Year, nextWeek.Month, nextWeek.Day);
+                    break;
+                }
+                case ChallengeDuration.EveryMonth:
+                default:
+                {
+                    var nextMonth = timeStamp.AddMonths(1);
+                    timeOfReset = new DateTime(nextMonth.Year, nextMonth.Month, 1);
+                    break;
+                }
+            }
+
             return timeOfReset - DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Returns whether challenge should be reset.
+        /// </summary>
+        /// <param name="timeStamp">TimeStamp of last </param>
+        /// <returns></returns>
+        public static bool ShouldResetChallenge(DateTime timeStamp)
+        {
+            switch (s_ChallengeDuration)
+            {
+                case ChallengeDuration.EveryMinute:
+                    return timeStamp.Minute != DateTime.UtcNow.Minute;
+                case ChallengeDuration.EveryWeek:
+                    return ISOWeek.GetWeekOfYear(timeStamp) != ISOWeek.GetWeekOfYear(DateTime.UtcNow);
+                case ChallengeDuration.EveryMonth:
+                default:
+                    return timeStamp.Month != DateTime.UtcNow.Month;
+            }
         }
 
         /// <summary>

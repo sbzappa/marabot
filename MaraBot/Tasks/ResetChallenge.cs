@@ -39,18 +39,20 @@ namespace MaraBot.Tasks
             {
                 while (!_cts.Token.IsCancellationRequested)
                 {
+                    var timeStamp = DateTime.UnixEpoch;
+
                     if (File.Exists(challengeTimeStamp))
+                        timeStamp = File.GetLastWriteTime(challengeTimeStamp);
+
+                    if (await TryResetChallenge(timeStamp))
                     {
-                        var timeStamp = File.GetLastWriteTime(challengeTimeStamp);
-                        if (timeStamp.Month == DateTime.UtcNow.Month)
-                        {
-                            await Task.Delay(WeeklyUtils.GetRemainingChallengeDuration(), _cts.Token);
-                        }
+                        File.Create(challengeTimeStamp);
+                        timeStamp = DateTime.UtcNow;
                     }
 
-                    await TryResetChallenge();
-
-                    File.Create(challengeTimeStamp);
+                    var duration = WeeklyUtils.GetRemainingChallengeDuration(timeStamp);
+                    if (duration > TimeSpan.Zero)
+                        await Task.Delay(duration, _cts.Token);
                 }
             }
             catch (OperationCanceledException)
@@ -63,8 +65,11 @@ namespace MaraBot.Tasks
             }
         }
 
-        private async Task TryResetChallenge()
+        private async Task<bool> TryResetChallenge(DateTime timeStamp)
         {
+            if (!WeeklyUtils.ShouldResetChallenge(timeStamp))
+                return false;
+
             var guilds = Discord.ShardClients
                 .Select(kvp => kvp.Value)
                 .SelectMany(shard => shard.Guilds)
@@ -73,8 +78,6 @@ namespace MaraBot.Tasks
             var index = WeeklyUtils.GetRandomIndex(0, Challenges.Count);
             var preset = Challenges.Values.ElementAt(index);
             var seed = WeeklyUtils.GetRandomSeed();
-
-            var validationMessage = PresetValidation.GenerateValidationMessage(preset, Options);
 
             var validationHash = String.Empty;
             try
@@ -97,11 +100,10 @@ namespace MaraBot.Tasks
 
             foreach (var guild in guilds)
             {
-                // Print validation in separate message to make sure
-                // we can pin just the race embed
-                await CommandUtils.SendToChannelAsync(guild, Config.ChallengeChannel, validationMessage);
                 await CommandUtils.SendToChannelAsync(guild, Config.ChallengeChannel, raceEmbed);
             }
+
+            return true;
         }
 
         public void StopAsync()
