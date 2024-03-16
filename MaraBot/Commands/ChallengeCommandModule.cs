@@ -54,7 +54,7 @@ namespace MaraBot.Commands
             // Generate from random preset.
             if (String.IsNullOrEmpty(presetName))
             {
-                var index = RandomUtils.GetRandomIndex(0, Challenges.Count);
+                var index = WeeklyUtils.GetRandomIndex(0, Challenges.Count);
                 preset = Challenges.Values.ElementAt(index);
             }
             // Generate from existing preset name.
@@ -69,7 +69,7 @@ namespace MaraBot.Commands
             // we can pin just the race embed
             await ctx.RespondAsync(PresetValidation.GenerateValidationMessage(preset, Options));
 
-            var seed = RandomUtils.GetRandomSeed();
+            var seed = WeeklyUtils.GetRandomSeed();
 
             var response = await ctx.RespondAsync(Display.RaceEmbed(preset, seed));
             await CommandUtils.SendSuccessReaction(ctx);
@@ -77,7 +77,7 @@ namespace MaraBot.Commands
             var validationHash = String.Empty;
             try
             {
-                var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(ctx, preset, seed, Config, Options, MutexRegistry);
+                var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(preset, seed, Config, Options, MutexRegistry);
                 if (newPreset.Equals(preset) && newSeed.Equals(seed))
                 {
                     validationHash = newValidationHash;

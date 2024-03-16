@@ -184,6 +184,9 @@ namespace MaraBot.Messages
             if (!String.IsNullOrEmpty(preset.Author))
                 embed.AddField("Author", preset.Author);
 
+            if (preset.Difficulty != 0)
+                embed.AddField("Difficulty", CommandUtils.IntegerToRabiteEmojis(preset.Difficulty));
+
             embed.AddOptions(preset);
 
             return embed;

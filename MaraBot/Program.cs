@@ -11,6 +11,7 @@ namespace MaraBot
     using System.Threading;
     using Core;
     using IO;
+    using MaraBot.Tasks;
 
     internal class Program
     {
@@ -91,8 +92,22 @@ namespace MaraBot
                 c.Value.CommandErrored += CommandEvents.OnCommandErrored;
             }
 
+            var resetChallenge = new ResetChallenge
+            {
+                Discord = discord,
+                Options = options,
+                Challenges = challenges,
+                Config = config,
+                MutexRegistry = mutexRegistry
+            };
+            var resetChallengeTask = resetChallenge.StartAsync();
+
             await discord.StartAsync();
+
             await Task.Delay(-1);
+
+            resetChallenge.StopAsync();
+            await resetChallengeTask;
         }
     }
 }

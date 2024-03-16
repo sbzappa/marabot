@@ -127,32 +127,31 @@ namespace MaraBot.Core
             return roles.Select(r => r.IsMentionable || hasPerms ? $"@({r.Name})" : r.Mention).ToArray();
         }
 
-        private static async Task<IEnumerable<DiscordRole>> ConvertRoleNamesToRoles(CommandContext ctx, IEnumerable<string> roleStrings)
+
+        private static Task<IEnumerable<DiscordRole>> ConvertRoleNamesToRoles(DiscordGuild guild, IEnumerable<string> roleStrings)
         {
-            var roles = ctx.Guild.Roles.Values
+            var roles = guild.Roles.Values
                 .Where(role => roleStrings.Contains(role.Name));
 
             if (!roles.Any())
             {
-                var errorMessage = $"No roles matching specified search have been found in guild {ctx.Guild.Name}.";
-                await ctx.RespondAsync(errorMessage);
+                var errorMessage = $"No roles matching specified search have been found in guild {guild.Name}.";
                 throw new InvalidOperationException(errorMessage);
             }
 
-            return roles;
+            return Task.FromResult(roles);
         }
 
-        private static async Task<IEnumerable<DiscordMember>> ConvertMemberNamesToMembers(CommandContext ctx, IEnumerable<string> memberStrings)
+        private static async Task<IEnumerable<DiscordMember>> ConvertMemberNamesToMembers(DiscordGuild guild, IEnumerable<string> memberStrings)
         {
-            var allMembers = await ctx.Guild.GetAllMembersAsync();
+            var allMembers = await guild.GetAllMembersAsync();
 
             var members = allMembers
                 .Where(member => memberStrings.Contains(member.Username));
 
             if (!members.Any())
             {
-                var errorMessage = $"No members matching specified search have been found in guild {ctx.Guild.Name}.";
-                await ctx.RespondAsync(errorMessage);
+                var errorMessage = $"No members matching specified search have been found in guild {guild.Name}.";
                 throw new InvalidOperationException(errorMessage);
             }
 
@@ -168,33 +167,31 @@ namespace MaraBot.Core
         /// <exception cref="InvalidOperationException">There are no matching roles.</exception>
         public static async Task GrantRolesToSelfAsync(CommandContext ctx, IEnumerable<string> roleStrings)
         {
-            var rolesTask = ConvertRoleNamesToRoles(ctx, roleStrings);
-            await GrantRolesAsync(ctx, new [] {ctx.Member}, await rolesTask);
+            var rolesTask = ConvertRoleNamesToRoles(ctx.Guild, roleStrings);
+            await GrantRolesAsync(new [] {ctx.Member}, await rolesTask);
         }
 
         /// <summary>
         /// Grants roles to specified members.
         /// </summary>
         /// <param name="ctx">Command Context.</param>
-        /// <param name="memberStrings">Array of member names.</param>
         /// <param name="roleStrings">Array of role names.</param>
         /// <returns>Returns an asynchronous task.</returns>
-        /// <exception cref="InvalidOperationException">There are no matching roles or no matching members.</exception>
-        public static async Task GrantRolesAsync(CommandContext ctx, IEnumerable<string> memberStrings, IEnumerable<string> roleStrings)
+        /// <exception cref="InvalidOperationException">There are no matching roles.</exception>
+        public static async Task GrantRolesAsync(DiscordGuild guild, IEnumerable<string> memberStrings, IEnumerable<string> roleStrings)
         {
-            var rolesTask = ConvertRoleNamesToRoles(ctx, roleStrings);
-            var membersTask = ConvertMemberNamesToMembers(ctx, memberStrings);
-            await GrantRolesAsync(ctx, await membersTask, await rolesTask);
+            var rolesTask = ConvertRoleNamesToRoles(guild, roleStrings);
+            var membersTask = ConvertMemberNamesToMembers(guild, memberStrings);
+            await GrantRolesAsync(await membersTask, await rolesTask);
         }
 
         /// <summary>
         /// Grants roles to specified members.
         /// </summary>
-        /// <param name="ctx">Command Context.</param>
         /// <param name="members">Array of members.</param>
         /// <param name="roles">Array of roles.</param>
         /// <returns>Returns an asynchronous task.</returns>
-        public static async Task GrantRolesAsync(CommandContext ctx, IEnumerable<DiscordMember> members, IEnumerable<DiscordRole> roles)
+        static async Task GrantRolesAsync(IEnumerable<DiscordMember> members, IEnumerable<DiscordRole> roles)
         {
             var grantTasks = new List<Task>();
             foreach (var role in roles)
@@ -217,36 +214,65 @@ namespace MaraBot.Core
         /// <summary>
         /// Revokes specified roles from all members that have them.
         /// </summary>
-        /// <param name="ctx">Command Context.</param>
+        /// <param name="guild">Discord guild.</param>
         /// <param name="roleStrings">Array of role names.</param>
         /// <returns>Returns an asynchronous task.</returns>
         /// <exception cref="InvalidOperationException">There are no matching roles.</exception>
-        public static async Task RevokeAllRolesAsync(CommandContext ctx, IEnumerable<string> roleStrings)
+        public static async Task RevokeAllRolesAsync(DiscordGuild guild, IEnumerable<string> roleStrings)
         {
-            var allMembersTask = ctx.Guild.GetAllMembersAsync();
+            var allMembersTask = guild.GetAllMembersAsync();
 
-            var roles= await ConvertRoleNamesToRoles(ctx, roleStrings);
+            var roles= await ConvertRoleNamesToRoles(guild, roleStrings);
             var allMembers = await allMembersTask;
 
             var members = allMembers
-                .Where(member => member.Roles.Any(role => roles.Contains(role)));
+                .Where(member => member.Roles.Any(role => roles.Contains(role)))
+                .Where(member => member.Roles.All(role =>
+                    guild.CurrentMember.Roles.Any(clientRole => clientRole.Position > role.Position)));
 
-            await RevokeRolesAsync(ctx, members, roles);
+            await RevokeRolesAsync(members, roles);
+        }
+
+        /// <summary>
+        /// Revokes roles from specified members.
+        /// </summary>
+        /// <param name="guild">Discord guild.</param>
+        /// <param name="memberStrings">Array of member names.</param>
+        /// <param name="roleStrings">Array of role names.</param>
+        /// <returns>Returns an asynchronous task.</returns>
+        /// <exception cref="InvalidOperationException">There are no matching roles or no matching members.</exception>
+        public static async Task RevokeRolesAsync(DiscordGuild guild, IEnumerable<string> memberStrings, IEnumerable<string> roleStrings)
+        {
+            var roles = ConvertRoleNamesToRoles(guild, roleStrings);
+            var members = ConvertMemberNamesToMembers(guild, memberStrings);
+            await RevokeRolesAsync(await members, await roles);
         }
 
         /// <summary>
         /// Revokes roles from specified members.
         /// </summary>
         /// <param name="ctx">Command Context.</param>
-        /// <param name="memberStrings">Array of member names.</param>
-        /// <param name="roleStrings">Array of role names.</param>
+        /// <param name="members">Array of members.</param>
+        /// <param name="roles">Array of roles.</param>
         /// <returns>Returns an asynchronous task.</returns>
-        /// <exception cref="InvalidOperationException">There are no matching roles or no matching members.</exception>
-        public static async Task RevokeRolesAsync(CommandContext ctx, IEnumerable<string> memberStrings, IEnumerable<string> roleStrings)
+        public static async Task RevokeRolesAsync(IEnumerable<DiscordMember> members, IEnumerable<DiscordRole> roles)
         {
-            var roles = ConvertRoleNamesToRoles(ctx, roleStrings);
-            var members = ConvertMemberNamesToMembers(ctx, memberStrings);
-            await RevokeRolesAsync(ctx, await members, await roles);
+            var revokeTasks = new List<Task>();
+            foreach (var role in roles)
+            {
+                var tasks = members
+                    .Select(member => member.RevokeRoleAsync(role))
+                    .ToList();
+
+                revokeTasks.AddRange(tasks);
+            }
+
+            while (revokeTasks.Any())
+            {
+                var finishedTask = await Task.WhenAny(revokeTasks);
+                revokeTasks.Remove(finishedTask);
+                await finishedTask;
+            }
         }
 
         /// <summary>
@@ -276,9 +302,15 @@ namespace MaraBot.Core
             }
         }
 
+        /// <summary>
+        /// Sends a message to a specific channel.
+        /// </summary
         public static Task SendToChannelAsync(CommandContext ctx, string channelName, DiscordEmbed embed) =>
             SendToChannelAsync(ctx, channelName, new DiscordMessageBuilder().WithEmbed(embed));
 
+        /// <summary>
+        /// Sends a message to a specific channel.
+        /// </summary
         public static Task SendToChannelAsync(CommandContext ctx, string channelName, string message) =>
             SendToChannelAsync(ctx, channelName, new DiscordMessageBuilder().WithContent(message));
 
@@ -298,6 +330,35 @@ namespace MaraBot.Core
                     errorMessage + "\n" +
                     kFriendlyMessage);
 
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            await channel.SendMessageAsync(messageBuilder);
+        }
+
+        /// <summary>
+        /// Sends a message to a specific channel.
+        /// </summary>
+        public static Task SendToChannelAsync(DiscordGuild guild, string channelName, DiscordEmbed embed) =>
+            SendToChannelAsync(guild, channelName, new DiscordMessageBuilder().WithEmbed(embed));
+
+        /// <summary>
+        /// Sends a message to a specific channel.
+        /// </summary
+        public static Task SendToChannelAsync(DiscordGuild guild, string channelName, string message) =>
+            SendToChannelAsync(guild, channelName, new DiscordMessageBuilder().WithContent(message));
+
+        /// <summary>
+        /// Sends a message to a specific channel.
+        /// </summary
+        public static async Task SendToChannelAsync(DiscordGuild guild, string channelName, DiscordMessageBuilder messageBuilder)
+        {
+            var channel = guild.Channels
+                .FirstOrDefault(kvp => channelName.Equals(kvp.Value.Name)).Value;
+
+            if (channel == null)
+            {
+                var errorMessage = $"Channel {channelName} has not been found in guild {guild.Name}.";
                 throw new InvalidOperationException(errorMessage);
             }
 
@@ -613,7 +674,7 @@ namespace MaraBot.Core
             IReadOnlyDictionary<string, MysterySetting> mysterySettings,
             IReadOnlyDictionary<string, Option> options)
         {
-            var seed = RandomUtils.GetRandomSeed();
+            var seed = WeeklyUtils.GetRandomSeed();
             var optionsString = String.Empty;
 
             await Task.Run(() =>
@@ -631,7 +692,7 @@ namespace MaraBot.Core
                             continue;
                     }
 
-                    var randomIndex = RandomUtils.GetRandomIndex(1, 100);
+                    var randomIndex = WeeklyUtils.GetRandomIndex(1, 100);
 
                     var weight = 0;
 
@@ -688,8 +749,10 @@ namespace MaraBot.Core
             }
         }
 
+        /// <summary>
+        /// Generates the validation hash using SoMAncientCave.exe.
+        /// </summary>
         public static async Task<(Preset Preset, string Seed, string ValidationHash)> GenerateValidationHash(
-            CommandContext ctx,
             Preset preset,
             string seed,
             Config config,

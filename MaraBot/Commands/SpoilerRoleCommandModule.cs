@@ -85,14 +85,14 @@ namespace MaraBot.Commands
             }
 
             if (membersToGrantDoneRole.Count > 0)
-                await CommandUtils.GrantRolesAsync(ctx, membersToGrantDoneRole, new[] {Config.WeeklyCompletedRole});
+                await CommandUtils.GrantRolesAsync(ctx.Guild, membersToGrantDoneRole, new[] {Config.WeeklyCompletedRole});
 
             if (membersToGrantForfeitRole.Count > 0)
-                await CommandUtils.GrantRolesAsync(ctx, membersToGrantDoneRole, new[] {Config.WeeklyForfeitedRole});
+                await CommandUtils.GrantRolesAsync(ctx.Guild, membersToGrantDoneRole, new[] {Config.WeeklyForfeitedRole});
 
             if (membersToRevokeRoles.Count > 0)
             {
-                await CommandUtils.RevokeRolesAsync(ctx,
+                await CommandUtils.RevokeRolesAsync(ctx.Guild,
                     membersToRevokeRoles,
                     new[]
                     {

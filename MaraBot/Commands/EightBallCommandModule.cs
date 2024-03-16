@@ -32,7 +32,7 @@ namespace MaraBot.Commands
         [RequireBotPermissions(Permissions.SendMessages)]
         public async Task Execute(CommandContext ctx, [RemainingText][Description("Question string")]string question)
         {
-            await ctx.RespondAsync(Responses[RandomUtils.GetRandomIndex(0, Responses.Length - 1)]);
+            await ctx.RespondAsync(Responses[WeeklyUtils.GetRandomIndex(0, Responses.Length - 1)]);
         }
     }
 }

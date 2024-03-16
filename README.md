@@ -49,7 +49,10 @@ required for the bot to authenticate itself with Discord. Look for
   ],
   "weeklyCompletedRole": "did the weekly",
   "weeklyForfeitedRole": "forfeited the weekly",
+  "weeklyChannel": "weekly",
   "weeklySpoilerChannel": "spoilers",
+  "challengeChannel": "challenges",
+  "randomizerVersion": "version of randomizer executable",
   "randomizerExecutablePath": "(optional) path to randomizer executable",
   "romPath": "(optional) path to rom"
 }

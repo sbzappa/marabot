@@ -84,7 +84,7 @@ namespace MaraBot.Core
 
         public static Weekly NotSet => new Weekly
         {
-            WeekNumber = RandomUtils.GetWeekNumber(),
+            WeekNumber = WeeklyUtils.GetWeekNumber(),
             PresetName = "not-set",
             Seed = "0",
             ValidationHash = String.Empty,
