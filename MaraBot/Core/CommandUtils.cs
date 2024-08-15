@@ -773,10 +773,10 @@ namespace MaraBot.Core
                 preset.Options.Select(kvp => $"{kvp.Key}={kvp.Value}")
             );
 
-            /*
             if (Environment.OSVersion.Platform == PlatformID.Unix ||
                 Environment.OSVersion.Platform == PlatformID.MacOSX)
             {
+                /*
                 Process xvfbProcess = null;
                 var framebufferFile = "/tmp/Xvfb_screen0";
 
@@ -838,6 +838,7 @@ namespace MaraBot.Core
                         );
                     }
                 }
+                */
 
                 var tcs = new TaskCompletionSource<int>();
                 var randomizerProcess = new Process
@@ -858,7 +859,7 @@ namespace MaraBot.Core
                     EnableRaisingEvents = true
                 };
 
-                randomizerProcess.StartInfo.EnvironmentVariables["DISPLAY"] = displayEnv;
+                //randomizerProcess.StartInfo.EnvironmentVariables["DISPLAY"] = displayEnv;
 
                 randomizerProcess.Exited += (sender, args) =>
                 {
@@ -872,7 +873,7 @@ namespace MaraBot.Core
                 }
                 catch (Exception exception)
                 {
-                    xvfbProcess?.Dispose();
+                    //xvfbProcess?.Dispose();
                     throw new InvalidOperationException(
                         "This feature requires mono to run the randomizer executable.\n" +
                         $"Exception: {exception.Message}"
@@ -881,13 +882,12 @@ namespace MaraBot.Core
 
                 await tcs.Task;
 
-                File.Delete(framebufferFile);
+                //File.Delete(framebufferFile);
 
-                xvfbProcess?.Kill();
-                xvfbProcess?.Dispose();
+                //xvfbProcess?.Kill();
+                //xvfbProcess?.Dispose();
             }
             else
-            */
             {
                 var tcs = new TaskCompletionSource<int>();
                 var randomizerProcess = new Process
