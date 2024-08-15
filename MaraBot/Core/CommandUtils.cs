@@ -665,9 +665,7 @@ namespace MaraBot.Core
             }
         }
 
-
-        private static async Task<(Preset Preset, string Seed, string ValidationHash)> GenerateMysteryRaceAsync(
-            CommandContext ctx,
+        public static async Task<(Preset Preset, string Seed, string ValidationHash)> GenerateMysteryRaceAsync(
             string author,
             string name,
             string description,
@@ -742,7 +740,7 @@ namespace MaraBot.Core
                 case AttachmentFileType.LogFile:
                     return await LoadLogAttachmentAsync(ctx, author, name, description, options);
                 case AttachmentFileType.None:
-                    return await GenerateMysteryRaceAsync(ctx, author, name, description, mysterySettings, options);
+                    return await GenerateMysteryRaceAsync(author, name, description, mysterySettings, options);
 
                 default:
                     throw new InvalidOperationException(errorMessage);
