@@ -773,6 +773,7 @@ namespace MaraBot.Core
                 preset.Options.Select(kvp => $"{kvp.Key}={kvp.Value}")
             );
 
+            /*
             if (Environment.OSVersion.Platform == PlatformID.Unix ||
                 Environment.OSVersion.Platform == PlatformID.MacOSX)
             {
@@ -886,6 +887,7 @@ namespace MaraBot.Core
                 xvfbProcess?.Dispose();
             }
             else
+            */
             {
                 var tcs = new TaskCompletionSource<int>();
                 var randomizerProcess = new Process
