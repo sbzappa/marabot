@@ -102,12 +102,26 @@ namespace MaraBot
             };
             var resetChallengeTask = resetChallenge.StartAsync();
 
+            var resetWeekly = new ResetWeekly
+            {
+                Discord = discord,
+                Weekly = weekly,
+                Options = options,
+                Config = config,
+                MutexRegistry = mutexRegistry,
+                MysterySettings = mysterySettings
+            };
+            var resetWeeklyTask = resetWeekly.StartAsync();
+
             await discord.StartAsync();
 
             await Task.Delay(-1);
 
             resetChallenge.StopAsync();
             await resetChallengeTask;
+
+            resetWeekly.StopAsync();
+            await resetWeeklyTask;
         }
     }
 }

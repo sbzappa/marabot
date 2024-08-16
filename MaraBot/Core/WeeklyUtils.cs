@@ -10,8 +10,9 @@ namespace MaraBot.Core
     public static class WeeklyUtils
     {
         static Random s_TimeBasedRandom = new Random(DateTime.Now.GetHashCode());
-        static DateTime s_FirstWeek = new DateTime(2021, 08, 13, 0, 0, 0);
+        static DateTime s_FirstWeek = new DateTime(2021, 08, 13, 18, 0, 0, DateTimeKind.Utc);
         static readonly TimeSpan s_WeeklyDuration = TimeSpan.FromDays(7.0);
+        //static readonly TimeSpan s_WeeklyDuration = TimeSpan.FromMinutes(1.0);
 
         enum ChallengeDuration
         {
@@ -21,7 +22,6 @@ namespace MaraBot.Core
         }
 
         static readonly ChallengeDuration s_ChallengeDuration = ChallengeDuration.EveryMonth;
-
 
         /// <summary>
         /// Retrieves the duration until next weekly reset.
@@ -120,9 +120,9 @@ namespace MaraBot.Core
         public static int GetWeekNumber()
         {
             var elapsed = DateTime.UtcNow.Subtract(s_FirstWeek);
-            var elapsedWeeks = elapsed.Days / 7;
+            var divide = elapsed.Divide(s_WeeklyDuration);
 
-            return elapsedWeeks;
+            return (int)Math.Truncate(divide);
         }
 
         /// <summary>

@@ -51,6 +51,11 @@ namespace MaraBot.Tasks
                     }
 
                     var duration = WeeklyUtils.GetRemainingChallengeDuration(timeStamp);
+
+                    // At most check remaining duration every day.
+                    if (duration > TimeSpan.FromDays(1))
+                        duration = TimeSpan.FromDays(1);
+
                     if (duration > TimeSpan.Zero)
                         await Task.Delay(duration, _cts.Token);
                 }

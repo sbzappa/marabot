@@ -266,7 +266,7 @@ namespace MaraBot.Messages
             IEnumerable<KeyValuePair<string, TimeSpan>> leaderboard = weekly.Leaderboard;
 
             // To avoid giving away any ranking, avoid sorting the leaderboard when preventing spoilers.
-            if (!preventSpoilers)
+            if (leaderboard != null && !preventSpoilers)
             {
                 leaderboard = leaderboard
                     .OrderBy(kvp => kvp.Value);
