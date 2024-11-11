@@ -37,7 +37,7 @@ namespace MaraBot.Commands
         /// <param name="ctx">Command Context.</param>
         /// <returns>Returns an asynchronous task.</returns>
         [Command("forfeit")]
-        [Aliases("forfeited", "ff")]
+        [Aliases("forfeited", "ff", "dnf")]
         [Description("Forfeit the weekly.")]
         [Cooldown(5, 600, CooldownBucketType.User)]
         [RequireGuild]
