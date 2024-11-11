@@ -1,7 +1,4 @@
-using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace MaraBot.Core
@@ -11,6 +8,17 @@ namespace MaraBot.Core
     /// </summary>
     public struct MysterySetting
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="requirement">Setting requirement</param>
+        /// <param name="values">Setting values</param>
+        public MysterySetting(string requirement = default, Dictionary<string, int> values = null)
+        {
+            Requirement = requirement;
+            Values = values ?? new Dictionary<string, int>();
+        }
+
         /// <summary>
         /// Optional requirement for that setting to be active.
         /// </summary>

@@ -1,10 +1,4 @@
 {
-  "version": {
-    "values": {
-      "1.38": 100
-    }
-  },
-
   "mode": {
     "values": {
       "open": 100
@@ -62,7 +56,7 @@
   "opStatGrowth": {
     "requirement": "opGoal=mtr",
     "values": {
-      "boss"  : 20,
+      "bosses"  : 20,
       "timed"  : 5
     }
   },

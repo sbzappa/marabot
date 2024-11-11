@@ -673,13 +673,15 @@ namespace MaraBot.Core
         /// <param name="description">Description of the race</param>
         /// <param name="mysterySettings">List of weekly settings</param>
         /// <param name="options">Randomizer options</param>
+        /// <param name="config">Bot configuration</param>
         /// <returns>Tuple of preset and seed string.</returns>
         public static async Task<(Preset Preset, string Seed, string ValidationHash)> GenerateMysteryRaceAsync(
             string author,
             string name,
             string description,
             IReadOnlyDictionary<string, MysterySetting> mysterySettings,
-            IReadOnlyDictionary<string, Option> options)
+            IReadOnlyDictionary<string, Option> options,
+            Config config)
         {
             var seed = WeeklyUtils.GetRandomSeed();
             var optionsString = String.Empty;
@@ -687,6 +689,13 @@ namespace MaraBot.Core
             await Task.Run(() =>
             {
                 var sortedMysterySettings = mysterySettings.ToList();
+
+                var versionSetting = new MysterySetting("", new Dictionary<string, int>(new[]
+                {
+                    new KeyValuePair<string, int>(config.RandomizerVersion, 100)
+                }));
+                sortedMysterySettings.Add(new("version", versionSetting));
+
                 sortedMysterySettings.Sort(new MysterySettingSorter());
 
                 foreach (var setting in sortedMysterySettings)
@@ -749,7 +758,7 @@ namespace MaraBot.Core
                 case AttachmentFileType.LogFile:
                     return await LoadLogAttachmentAsync(ctx, author, name, description, options);
                 case AttachmentFileType.None:
-                    return await GenerateMysteryRaceAsync(author, name, description, mysterySettings, options);
+                    return await GenerateMysteryRaceAsync(author, name, description, mysterySettings, options, config);
 
                 default:
                     throw new InvalidOperationException(errorMessage);

@@ -103,7 +103,7 @@ namespace MaraBot.Tasks
 
             try
             {
-                (Weekly.Preset, Weekly.Seed, _) = await CommandUtils.GenerateMysteryRaceAsync(default, name, default, MysterySettings, Options);
+                (Weekly.Preset, Weekly.Seed, _) = await CommandUtils.GenerateMysteryRaceAsync(default, name, default, MysterySettings, Options, Config);
             }
             catch (InvalidOperationException e)
             {
