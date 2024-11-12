@@ -42,12 +42,15 @@ namespace MaraBot.Tasks
                     var timeStamp = DateTime.UnixEpoch;
 
                     if (File.Exists(challengeTimeStamp))
-                        timeStamp = File.GetLastWriteTime(challengeTimeStamp);
+                        timeStamp = File.GetLastWriteTime(challengeTimeStamp).ToUniversalTime();
 
                     if (await TryResetChallenge(timeStamp))
                     {
-                        File.Create(challengeTimeStamp);
                         timeStamp = DateTime.UtcNow;
+                        if (File.Exists(challengeTimeStamp))
+                            File.SetLastWriteTime(challengeTimeStamp, timeStamp);
+                        else
+                            File.Create(challengeTimeStamp);
                     }
 
                     var duration = WeeklyUtils.GetRemainingChallengeDuration(timeStamp);

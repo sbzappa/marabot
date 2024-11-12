@@ -77,19 +77,8 @@ namespace MaraBot.Core
         /// </summary>
         /// <param name="timeStamp">TimeStamp of last </param>
         /// <returns></returns>
-        public static bool ShouldResetChallenge(DateTime timeStamp)
-        {
-            switch (s_ChallengeDuration)
-            {
-                case ChallengeDuration.EveryMinute:
-                    return timeStamp.Minute != DateTime.UtcNow.Minute;
-                case ChallengeDuration.EveryWeek:
-                    return ISOWeek.GetWeekOfYear(timeStamp) != ISOWeek.GetWeekOfYear(DateTime.UtcNow);
-                case ChallengeDuration.EveryMonth:
-                default:
-                    return timeStamp.Month != DateTime.UtcNow.Month;
-            }
-        }
+        public static bool ShouldResetChallenge(DateTime timeStamp) =>
+            GetRemainingChallengeDuration(timeStamp) <= TimeSpan.Zero;
 
         /// <summary>
         /// Retrieves a random integer index in between minIndex and maxIndex.
