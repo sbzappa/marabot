@@ -694,7 +694,7 @@ namespace MaraBot.Core
                 {
                     new KeyValuePair<string, int>(config.RandomizerVersion, 100)
                 }));
-                sortedMysterySettings.Add(new("version", versionSetting));
+                sortedMysterySettings.Add(new KeyValuePair<string, MysterySetting>("version", versionSetting));
 
                 sortedMysterySettings.Sort(new MysterySettingSorter());
 
