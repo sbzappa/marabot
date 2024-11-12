@@ -701,7 +701,7 @@
     "name"  : "Enemy stat growth",
     "category" : "Open",
     "values": {
-      "boss"  : "Increase after bosses",
+      "bosses"  : "Increase after bosses",
       "timed"  : "Timed",
       "nofuture": "No Future",
       "vanilla": "None (vanilla)"
