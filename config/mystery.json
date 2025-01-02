@@ -5,6 +5,12 @@
     }
   },
 
+  "raceMode": {
+    "values": {
+      "yes": 100
+    }
+  },
+
   "bossElementRando": {
     "values": {
       "yes": 40

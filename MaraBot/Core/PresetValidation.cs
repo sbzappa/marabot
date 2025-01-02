@@ -186,13 +186,9 @@ namespace MaraBot.Core
                 }
 
                 // Check for race-safety.
-                // Note that we check the actual options,
-                // because we need to know when opSpoilerLog
-                // is unparseable.
-                if (preset.Options.ContainsKey("opSpoilerLog") && preset.Options["opSpoilerLog"] == "no")
+                if (preset.Options.ContainsKey("opSpoilerLog") && preset.Options["opSpoilerLog"] == "no" ||
+                    preset.Options.ContainsKey("raceMode") && preset.Options["raceMode"] == "yes")
                     errors.Add($"{kValidationGoodPrefix} Options are race-safe.");
-                else if (preset.Options.ContainsKey("opSpoilerLog"))
-                    errors.Add($"{kValidationInfoPrefix} Options might not be race-safe, because I don't know if a spoiler log gets generated.");
                 else
                     errors.Add($"{kValidationInfoPrefix} Options are not race-safe, because a spoiler log gets generated.");
             }
