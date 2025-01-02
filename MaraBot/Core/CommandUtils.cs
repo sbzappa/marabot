@@ -616,7 +616,7 @@ namespace MaraBot.Core
 
                 var seedRegex = new Regex("Seed = (?<seed>[A-F0-9]{1,16})");
                 var optionsRegex = new Regex("[[]ALL_OPTIONS[]] = <(?<options>[^>\n]*)");
-                var validationHashRegex = new Regex("Hash check value: (?<validationHash>[A-F0-9]{1,8})");
+                var validationHashRegex = new Regex("Hash check value: r?(?<validationHash>[A-F0-9]{1,8})");
 
                 var allFile = await allFileTask;
 

@@ -482,8 +482,14 @@
       "no": "No"
     }
   },
-
-
+  "raceMode": {
+    "$type" : "MaraBot.Core.EnumOption, MaraBot",
+    "name"  : "Race mode",
+    "category" : "General",
+    "values": {
+      "yes": "Yes"
+    }
+  },
 
   "rBosses": {
     "$type" : "MaraBot.Core.EnumOption, MaraBot",
