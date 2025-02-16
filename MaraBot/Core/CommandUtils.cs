@@ -661,7 +661,7 @@ namespace MaraBot.Core
                 if (yRegex.IsMatch(x.Value.Requirement))
                     return 1;
 
-                return 0;
+                return -1;
             }
         }
 
