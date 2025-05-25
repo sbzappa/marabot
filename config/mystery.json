@@ -113,7 +113,7 @@
 
   "opDisableHints": {
     "values": {
-      "yes": 30
+      "yes": 50
     }
   },
 
@@ -152,7 +152,7 @@
   "oopsAllThis": {
     "requirement": "opEnemies=oops",
     "values": {
-      "random": 100
+      "random": 90
     }
   },
 
@@ -204,6 +204,48 @@
       "200": 25,
       "300": 25,
       "400": 25
+    }
+  },
+
+  "starterGear": {
+    "values": {
+      "yes": 25
+    }
+  },
+
+  "funSpeedup": {
+    "values": {
+      "no": 25
+    }
+  },
+
+  "mpAtLevel": {
+    "values": {
+      "no": 25
+    }
+  },
+
+  "fasterMagicLevel": {
+    "values": {
+      "no": 25
+    }
+  },
+
+  "fasterWeaponLevel": {
+    "values": {
+      "no": 25
+    }
+  },
+
+  "trashWeapons": {
+    "values": {
+      "no": 25
+    }
+  },
+
+  "defRefactor": {
+    "values": {
+      "yes": 10
     }
   }
 }
