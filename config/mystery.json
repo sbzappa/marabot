@@ -227,12 +227,15 @@
 
   "fasterMagicLevel": {
     "values": {
+      "yes": 75,
       "no": 25
     }
   },
 
   "fasterWeaponLevel": {
+    "requirement": "fasterMagicLevel=yes",
     "values": {
+      "yes": 75,
       "no": 25
     }
   },
