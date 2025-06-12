@@ -42,7 +42,7 @@ namespace MaraBot.IO
             var settingsPath = k_ConfigFolders
                 .Select(path => path
                     .Replace("$HOME", homeFolder)
-                    .Replace("$APP", appFolder) + "/mystery.json")
+                    .Replace("$APP", appFolder) + "/weekly-200.json")
                 .FirstOrDefault(path => File.Exists(path));
 
             if (String.IsNullOrEmpty(settingsPath))
