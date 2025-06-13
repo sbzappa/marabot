@@ -725,7 +725,7 @@ namespace MaraBot.Core
                 }
             });
 
-            var preset = CreatePresetFromOptionsString( String.IsNullOrEmpty(author) ? "Mara" : author,  name, description, optionsString);
+            var preset = CreatePresetFromOptionsString( String.IsNullOrEmpty(author) ? "Leoned" : author,  name, description, optionsString);
 
             preset.MakeDisplayable(options);
             return (preset, seed, String.Empty);
