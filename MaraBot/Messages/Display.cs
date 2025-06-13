@@ -108,7 +108,7 @@ namespace MaraBot.Messages
 
             return new DiscordMessageBuilder()
                 .AddEmbed(embed)
-                .AddFile("logFile", stream);
+                .AddFile("logFile.txt", stream);
         }
 
         /// <summary>
