@@ -66,85 +66,85 @@
   },
 
   "opChestFreq": {
-    "value": {
+    "values": {
       "highest": 100
     }
   },
 
   "opXmasItems": {
-    "value": {
+    "values": {
       "yes": 100
     }
   },
 
   "opDisableHints": {
-    "value": {
+    "values": {
       "yes": 100
     }
   },
 
   "opShowLevels": {
-    "value": {
+    "values": {
       "no": 100
     }
   },
 
   "opXmasMaps": {
-    "value": {
+    "values": {
       "yes": 100
     }
   },
 
   "opAllowLockedItems": {
-    "value": {
+    "values": {
       "yes": 100
     }
   },
 
   "opExp": {
-    "value": {
+    "values": {
       "1": 100
     }
   },
 
   "opGold": {
-    "value": {
+    "values": {
       "1": 100
     }
   },
 
   "opGoldDropMul": {
-    "value": {
+    "values": {
       "1": 100
     }
   },
 
   "opStartGold": {
-    "value": {
+    "values": {
       "1": 100
     }
   },
 
   "opStartLevel": {
-    "value": {
+    "values": {
       "5": 100
     }
   },
 
   "opDifficulty": {
-    "value": {
+    "values": {
       "hard": 100
     }
   },
 
   "opCharacters": {
-    "value": {
-      "finbothCL": 100
+    "values": {
+      "findbothCL": 100
     }
   },
 
   "opStatusAilments": {
-    "value": {
+    "values": {
       "awful": 100
     }
   },

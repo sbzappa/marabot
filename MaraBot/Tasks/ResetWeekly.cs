@@ -113,20 +113,20 @@ namespace MaraBot.Tasks
                 return;
             }
 
-            try
-            {
-                var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(Weekly.Preset, Weekly.Seed, Config, Options, MutexRegistry);
-                if (newPreset.Equals(Weekly.Preset) && newSeed.Equals(Weekly.Seed))
-                {
-                    Weekly.ValidationHash = newValidationHash;
-                }
-            }
-            catch (Exception exception)
-            {
-                Discord.Logger.LogWarning(
-                    "Could not create a validation hash.\n" +
-                    exception.Message);
-            }
+            //try
+            //{
+            //    var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(Weekly.Preset, Weekly.Seed, Config, Options, MutexRegistry);
+            //    if (newPreset.Equals(Weekly.Preset) && newSeed.Equals(Weekly.Seed))
+            //    {
+            //        Weekly.ValidationHash = newValidationHash;
+            //    }
+            //}
+            //catch (Exception exception)
+            //{
+            //    Discord.Logger.LogWarning(
+            //        "Could not create a validation hash.\n" +
+            //        exception.Message);
+            //}
 
             await WeeklyIO.StoreWeeklyAsync(Weekly);
 

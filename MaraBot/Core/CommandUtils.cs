@@ -683,7 +683,7 @@ namespace MaraBot.Core
             IReadOnlyDictionary<string, Option> options,
             Config config)
         {
-            var seed = WeeklyUtils.GetRandomSeed();
+            var seed = "uh-oh";
             var optionsString = String.Empty;
 
             await Task.Run(() =>

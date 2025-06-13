@@ -90,7 +90,7 @@ namespace MaraBot.Commands
                     exception.Message);
             }
 
-            await response.ModifyAsync(Display.RaceEmbed(preset, seed, validationHash).Build());
+            //await response.ModifyAsync(Display.RaceEmbed(preset, seed, validationHash).Build());
             await CommandUtils.SendRaceValidatedReaction(ctx);
         }
     }

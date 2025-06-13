@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.Entities;
 
 using MaraBot.Core;
+using MaraBot.IO;
 
 namespace MaraBot.Messages
 {
@@ -35,7 +37,7 @@ namespace MaraBot.Messages
         /// <param name="seed">Generated seed.</param>
         /// <param name="validationHash">Validation hash (optional).</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder RaceEmbed(in Preset preset, string seed, string validationHash = default)
+        public static DiscordMessageBuilder RaceEmbed(in Preset preset, string seed, string validationHash = default)
         {
             return RaceEmbed(preset, seed, validationHash, DateTime.Now);
         }
@@ -48,7 +50,7 @@ namespace MaraBot.Messages
         /// <param name="validationHash"></param>
         /// <param name="timestamp">Timestamp at which race was generated.</param>
         /// <returns>Returns an embed builder.</returns>
-        public static DiscordEmbedBuilder RaceEmbed(in Preset preset, string seed, string validationHash, DateTime timestamp)
+        public static DiscordMessageBuilder RaceEmbed(in Preset preset, string seed, string validationHash, DateTime timestamp)
         {
             var embed = new DiscordEmbedBuilder
             {
@@ -79,17 +81,34 @@ namespace MaraBot.Messages
                 embed.AddField("Difficulty", CommandUtils.IntegerToRabiteEmojis(preset.Difficulty));
 
             embed
-                .AddOptions(preset)
-                .AddField("Seed", Formatter.BlockCode(seed));
+                .AddOptions(preset);
+                //.AddField("Seed", Formatter.BlockCode(seed));
 
-            if (!String.IsNullOrEmpty(validationHash))
-            {
-                embed.AddField("Validation Hash", Formatter.BlockCode(validationHash));
-            }
+            //if (!String.IsNullOrEmpty(validationHash))
+            //{
+            //    embed.AddField("Validation Hash", Formatter.BlockCode(validationHash));
+            //}
 
-            embed.AddField("Raw Options", Formatter.BlockCode(rawOptionsString));
+            //embed.AddField("Raw Options", Formatter.BlockCode(rawOptionsString));
 
-            return embed;
+            var homeFolder =
+                (Environment.OSVersion.Platform == PlatformID.Unix ||
+                 Environment.OSVersion.Platform == PlatformID.MacOSX)
+                    ? Environment.GetEnvironmentVariable("HOME")
+                    : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+            var appFolder = AppDomain.CurrentDomain.BaseDirectory;
+
+            var logFile = MysterySettingsIO.k_ConfigFolders
+                .Select(path => path
+                    .Replace("$HOME", homeFolder)
+                    .Replace("$APP", appFolder) + "/weekly-200.log")
+                .FirstOrDefault(path => File.Exists(path));
+
+            var stream = new FileStream(logFile, FileMode.Open);
+
+            return new DiscordMessageBuilder()
+                .AddEmbed(embed)
+                .AddFile("logFile", stream);
         }
 
         /// <summary>
@@ -205,7 +224,11 @@ namespace MaraBot.Messages
             int columnIndex = 0;
             foreach (var option in options)
             {
-                optionStrings[columnIndex] += $"{option.Key}: _{option.Value}_";
+                var optionValue = option.Value;
+                if (optionValue.Length > 40)
+                    optionValue = $"{optionValue.Substring(0, 40)}...";
+
+                optionStrings[columnIndex] += $"{option.Key}: _{optionValue}_";
 
                 if ((++index % numberOfElementsPerColumn == 0))
                     ++columnIndex;

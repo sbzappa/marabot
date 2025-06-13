@@ -15,7 +15,7 @@ namespace MaraBot.IO
     /// <seealso cref="MysterySetting"/>
     public static class MysterySettingsIO
     {
-        static readonly string[] k_ConfigFolders = new []
+        public static readonly string[] k_ConfigFolders = new []
         {
             "config",
             "../../../config",

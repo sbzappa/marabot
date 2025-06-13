@@ -74,29 +74,29 @@ namespace MaraBot.Commands
             if (string.IsNullOrEmpty(seed))
                 seed = WeeklyUtils.GetRandomSeed();
 
-            var response = await ctx.RespondAsync(Display.RaceEmbed(preset, seed, validationHash));
+            await ctx.RespondAsync(Display.RaceEmbed(preset, seed, validationHash));
             await CommandUtils.SendSuccessReaction(ctx);
 
-            if (String.IsNullOrEmpty(validationHash))
-            {
-                try
-                {
-                    var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(preset, seed, Config, Options, MutexRegistry);
-                    if (newPreset.Equals(preset) && newSeed.Equals(seed))
-                    {
-                        validationHash = newValidationHash;
-                    }
-                }
-                catch (Exception exception)
-                {
-                    ctx.Client.Logger.LogWarning(
-                        "Could not create a validation hash.\n" +
-                        exception.Message);
-                }
-            }
+            //if (String.IsNullOrEmpty(validationHash))
+            //{
+            //    try
+            //    {
+            //        var (newPreset, newSeed, newValidationHash) = await CommandUtils.GenerateValidationHash(preset, seed, Config, Options, MutexRegistry);
+            //        if (newPreset.Equals(preset) && newSeed.Equals(seed))
+            //        {
+            //            validationHash = newValidationHash;
+            //        }
+            //    }
+            //    catch (Exception exception)
+            //    {
+            //        ctx.Client.Logger.LogWarning(
+            //            "Could not create a validation hash.\n" +
+            //            exception.Message);
+            //    }
+            //}
 
-            await response.ModifyAsync(Display.RaceEmbed(preset, seed, validationHash).Build());
-            await CommandUtils.SendRaceValidatedReaction(ctx);
+            //await response.ModifyAsync(Display.RaceEmbed(preset, seed, validationHash).Build());
+            //await CommandUtils.SendRaceValidatedReaction(ctx);
         }
     }
 }
