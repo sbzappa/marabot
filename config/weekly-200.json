@@ -11,18 +11,6 @@
     }
   },
 
-  "aggBosses": {
-    "values": {
-      "yes": 100
-    }
-  },
-
-  "noStaminaRun": {
-    "values": {
-      "yes": 100
-    }
-  },
-
   "mpAtLevel": {
     "values": {
       "no": 100
@@ -32,12 +20,6 @@
   "fasterMagicLevel": {
     "values": {
       "no": 100
-    }
-  },
-
-  "percentPoison": {
-    "values": {
-      "yes": 100
     }
   },
 
@@ -128,12 +110,6 @@
   "opStartLevel": {
     "values": {
       "5": 100
-    }
-  },
-
-  "opDifficulty": {
-    "values": {
-      "hard": 100
     }
   },
 
