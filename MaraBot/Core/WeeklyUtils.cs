@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace MaraBot.Core
 {
@@ -9,7 +10,7 @@ namespace MaraBot.Core
     /// </summary>
     public static class WeeklyUtils
     {
-        static Random s_TimeBasedRandom = new Random(DateTime.Now.GetHashCode());
+        static RandomNumberGenerator s_RNG = RandomNumberGenerator.Create();
         static DateTime s_FirstWeek = new DateTime(2021, 08, 13, 18, 0, 0, DateTimeKind.Utc);
         static readonly TimeSpan s_WeeklyDuration = TimeSpan.FromDays(7.0);
         //static readonly TimeSpan s_WeeklyDuration = TimeSpan.FromMinutes(1.0);
@@ -88,7 +89,7 @@ namespace MaraBot.Core
         /// <returns>Returns a random integer index.</returns>
         public static int GetRandomIndex(int minIndex, int maxIndex)
         {
-            return s_TimeBasedRandom.Next(minIndex, maxIndex);
+            return RandomNumberGenerator.GetInt32(minIndex, maxIndex);
         }
 
         /// <summary>
@@ -98,7 +99,7 @@ namespace MaraBot.Core
         /// <returns>Returns a random seed value.</returns>
         public static string GetRandomSeed()
         {
-            return GetSeed(s_TimeBasedRandom);
+            return GetSeed();
         }
 
         /// <summary>
@@ -134,10 +135,9 @@ namespace MaraBot.Core
         }
 
 
-        private static string GetSeed(Random randomGenerator)
+        private static string GetSeed()
         {
-            byte[] buffer = new byte[8];
-            randomGenerator.NextBytes(buffer);
+            var buffer = RandomNumberGenerator.GetBytes(8);
             return String.Concat(buffer.Select(x => x.ToString("X2")).ToArray());
         }
     }
