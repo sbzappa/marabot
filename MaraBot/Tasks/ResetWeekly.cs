@@ -114,7 +114,7 @@ namespace MaraBot.Tasks
 
                     if (previousWeekGoal == "mtr")
                     {
-                        settingsCopy["opGoal"] = new (null, new Dictionary<string, int>(new []
+                        settingsCopy["opGoal"] = new MysterySetting(null, new Dictionary<string, int>(new []
                         {
                             new KeyValuePair<string, int>("vlong", 75),
                             new KeyValuePair<string, int>("mtr", 25)
@@ -122,7 +122,7 @@ namespace MaraBot.Tasks
                     }
                     else if (previousWeekGoal == "vlong")
                     {
-                        settingsCopy["opGoal"] = new (null, new Dictionary<string, int>(new []
+                        settingsCopy["opGoal"] = new MysterySetting(null, new Dictionary<string, int>(new []
                         {
                             new KeyValuePair<string, int>("vlong", 25),
                             new KeyValuePair<string, int>("mtr", 75)

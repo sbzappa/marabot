@@ -10,7 +10,6 @@ namespace MaraBot.Core
     /// </summary>
     public static class WeeklyUtils
     {
-        static RandomNumberGenerator s_RNG = RandomNumberGenerator.Create();
         static DateTime s_FirstWeek = new DateTime(2021, 08, 13, 18, 0, 0, DateTimeKind.Utc);
         static readonly TimeSpan s_WeeklyDuration = TimeSpan.FromDays(7.0);
         //static readonly TimeSpan s_WeeklyDuration = TimeSpan.FromMinutes(1.0);
