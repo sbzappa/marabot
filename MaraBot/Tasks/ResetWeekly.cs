@@ -69,6 +69,9 @@ namespace MaraBot.Tasks
             var currentWeek = WeeklyUtils.GetWeekNumber();
             var backupAndResetWeekly = previousWeek != currentWeek;
 
+            string previousWeekGoal = String.Empty;
+            Weekly.Preset.Options?.TryGetValue("opGoal", out previousWeekGoal);
+
             // Make a backup of the previous week's weekly and create a new
             // weekly for the current week.
             if (!backupAndResetWeekly)
@@ -103,7 +106,33 @@ namespace MaraBot.Tasks
 
             try
             {
-                (Weekly.Preset, Weekly.Seed, _) = await CommandUtils.GenerateMysteryRaceAsync(default, name, default, MysterySettings, Options, Config);
+                // Tweak settings to favour cycling between mtr and vlong seeds
+                var settings = MysterySettings;
+                if (!String.IsNullOrEmpty(previousWeekGoal))
+                {
+                    var settingsCopy = new Dictionary<string, MysterySetting>(settings);
+
+                    if (previousWeekGoal == "mtr")
+                    {
+                        settingsCopy["opGoal"] = new MysterySetting(null, new Dictionary<string, int>(new []
+                        {
+                            new KeyValuePair<string, int>("vlong", 75),
+                            new KeyValuePair<string, int>("mtr", 25)
+                        }));
+                    }
+                    else if (previousWeekGoal == "vlong")
+                    {
+                        settingsCopy["opGoal"] = new MysterySetting(null, new Dictionary<string, int>(new []
+                        {
+                            new KeyValuePair<string, int>("vlong", 25),
+                            new KeyValuePair<string, int>("mtr", 75)
+                        }));
+                    }
+
+                    settings = settingsCopy;
+                }
+
+                (Weekly.Preset, Weekly.Seed, _) = await CommandUtils.GenerateMysteryRaceAsync(default, name, default, settings, Options, Config);
             }
             catch (InvalidOperationException e)
             {

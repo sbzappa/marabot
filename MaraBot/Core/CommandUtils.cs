@@ -708,14 +708,14 @@ namespace MaraBot.Core
                             continue;
                     }
 
-                    var randomIndex = WeeklyUtils.GetRandomIndex(1, 100);
+                    var randomIndex = WeeklyUtils.GetRandomIndex(0, 100);
 
                     var weight = 0;
 
                     foreach (var settingValue in setting.Value.Values)
                     {
                         weight += settingValue.Value;
-                        if (weight >= randomIndex)
+                        if (weight > randomIndex)
                         {
                             if (!String.IsNullOrEmpty(optionsString)) optionsString += " ";
                             optionsString += $"{setting.Key}={settingValue.Key}";
